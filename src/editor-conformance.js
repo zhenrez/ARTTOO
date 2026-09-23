@@ -4,12 +4,23 @@ function assert(condition, message) {
   if (!condition) throw new Error(`editor conformance failed: ${message}`);
 }
 
+function assertCandidateAdapter(adapter) {
+  if (!adapter || typeof adapter.render !== 'function') {
+    throw new Error('editor adapter must implement render(view)');
+  }
+}
+
 /**
  * Exercise the ARTTOO-owned editor boundary without depending on a provider SDK.
  * A candidate adapter passes only if it renders canonical projections and all
  * mutations return through canonical revision-checked operations.
  */
 export function runEditorAdapterConformance({ project, artboardId, objectId, adapter }) {
+  // Validate the candidate itself before wrapping it for instrumentation. Without
+  // this guard the wrapper's render() function can make a non-adapter appear valid
+  // to createEditorHost and fail later with a provider-specific TypeError.
+  assertCandidateAdapter(adapter);
+
   const originalRevision = project.revision;
   const originalX = project.objects[objectId]?.transform?.x;
   assert(originalX !== undefined, 'fixture object is missing');
