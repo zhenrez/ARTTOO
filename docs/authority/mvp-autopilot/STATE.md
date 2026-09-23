@@ -1,54 +1,51 @@
 # ARTTOO MVP Autopilot State
 
-**Updated:** 2026-09-23T16:27Z
+**Updated:** 2026-09-23T17:03Z
 **Canonical repository:** `zhenrez/ARTTOO`
-**Main feature head observed:** `e5e15480920927bde727ee2c33948b14730af916`
-**Last verified PR head:** `31a9bd0931fba2fcf03f52f7091b547c44b1f869`
-**Working branch:** none
-**Pull request:** none open after PR #12 merge
+**Main head observed:** `6b778524902a11c1a32742cd30bd3bc6fed69701`
+**Last verified main head:** `6b778524902a11c1a32742cd30bd3bc6fed69701` — workflow `35888970891` SUCCESS
+**Working branch:** `mvp/checkpoint-1-visible-save-reopen`
+**Pull request:** pending
 
 ## Lease / handoff
-- Driver A released PR #12 direct pointer/touch rotation to Driver B.
-- Driver B verified exact PR head `31a9bd0931fba2fcf03f52f7091b547c44b1f869` in workflow `35885722775` SUCCESS, independently inspected the rotation semantics, and confirmed GitHub mergeability.
-- Driver B squash-merged PR #12 with expected-head protection as `e5e15480920927bde727ee2c33948b14730af916`.
-- Driver B lease is **RELEASED / HANDOFF TO DRIVER A**. Do not race a new increment until Driver A refreshes this state.
+- Driver B verified and merged PR #12, then released the implementation lane.
+- Driver A owns the active lease for visible local save/reopen fidelity on `mvp/checkpoint-1-visible-save-reopen`.
+- Scope: connect the existing canonical local-draft persistence to the browser workspace with explicit save state and save/reopen regression evidence. No cloud sync/provider selection.
+- Expected evidence: browser save persists the canonical project; a fresh editor bootstrap reopens the same project/revision/objects; missing/corrupt persistence fails closed without fabricating recovered state; existing verification remains green.
 
 ## Verified completed gates
 - **Checkpoint 0 complete / merged.**
-- **Checkpoint 1 partial.** PRs #3–#12 are merged. Q08 now has direct move, resize and rotate Pointer Events evidence plus numeric/keyboard alternatives, but Checkpoint 1 is not declared complete until the remaining exit contract is audited.
+- **Checkpoint 1 partial.** PRs #3–#12 are merged. Q08 has direct move, resize and rotate Pointer Events evidence plus numeric/keyboard alternatives. Remaining exit requirements still require direct evidence.
 
 ## Verified repository/application state
+- Current main `6b778524902a11c1a32742cd30bd3bc6fed69701` is VERIFIED GREEN in workflow `35888970891`.
 - Canonical project/document state remains authoritative; editor/browser layers remain adapters/controllers.
 - Visible drawing/history/selection, numeric transforms/scale/flip, keyboard movement, and direct Pointer Events move/resize/rotate are implemented through the canonical host.
-- Direct rotation preview is transient controller/render state; pointerup emits one revision-checked canonical `object.transform` rotation; pointercancel discards transient rotation state and rerenders canonical truth; undo restores prior rotation.
-- Numeric rotation remains available.
+- `src/local-draft.js` already serializes/reopens canonical projects through a Storage-compatible boundary, with semantic round-trip tests; the real browser bootstrap does not yet use it and always creates a new project.
 - No editor SDK/vendor has been selected.
 
 ## Work completed this run
-- Refreshed main, branches, open PRs/issues, CI and authority evidence.
-- Read current main and newer PR #12 handoff state; accepted Driver A's explicit handoff.
-- Inspected PR #12 browser-editor patch and focused direct-rotation regression.
-- Verified exact latest PR head CI SUCCESS and mergeability.
-- Squash-merged PR #12 with expected-head protection.
-- Audited the current Checkpoint-1 authority enough to establish that direct transforms alone do not close the gate: persistent workspace/save-reopen, broader editor-tool depth, and accessibility/round-trip evidence remain material requirements.
+- Refreshed main, branches, open PRs/issues, recent commits and exact-main CI.
+- Re-read authority manifest, autopilot state/automation contract, current product/technology authority, capability contracts and existing persistence/runtime code.
+- Audited Checkpoint-1 exit evidence and selected visible save/reopen as the smallest direct missing capability.
+- Took the bounded implementation lease on a dedicated branch.
 
 ## Productive fallback
-Not used; primary verification/integration path was available.
+Not used; primary repository mutation is available.
 
 ## Verification evidence
-- PR #12 exact head `31a9bd0931fba2fcf03f52f7091b547c44b1f869`: workflow `35885722775` SUCCESS.
-- PR #12 merge commit: `e5e15480920927bde727ee2c33948b14730af916`.
-- No exact merged-feature workflow had surfaced when checked immediately after merge; do not claim merged-main green until an exact-head push workflow succeeds.
+- Main `6b778524902a11c1a32742cd30bd3bc6fed69701`: workflow `35888970891` SUCCESS.
+- No open PRs or issues at lease acquisition.
+- Existing `test/local-draft.test.js` proves semantic canonical round-trip and immutable-source retrieval in a memory Storage fixture, but browser save/reopen is not yet evidenced.
 
 ## Blockers
-- FIRST recheck exact merged-feature CI for `e5e15480920927bde727ee2c33948b14730af916`.
-- Checkpoint 1 remains partial. The next task must be selected from the remaining shared-editor exit requirements rather than assuming Q08 completion closes the checkpoint.
+None at lease acquisition.
 
 ## Owner decisions required
 None.
 
 ## Next highest-leverage task
-Driver A: FIRST verify exact merged-feature CI for `e5e15480920927bde727ee2c33948b14730af916`. If green and no newer conflicting lease exists, audit the remaining Checkpoint-1 acceptance contract against current runtime/tests and take the smallest direct missing capability. Prefer visible save/reopen/persistence fidelity if still unproven, because canonical local-draft persistence already exists and the authority requires explicit save state, save/reopen round-trip fidelity, recovery behavior, and one continuous project model. Do not begin Checkpoint 2 merely because direct transform equivalence is now implemented.
+Implement visible browser save/reopen using the existing canonical local-draft boundary, with explicit save state and focused fresh-bootstrap round-trip/failure evidence. Keep persistence local/$0 and provider-neutral.
 
 ## Continuation prompt
-Driver A: refresh current main, branches, PRs/leases and exact merged-feature CI for `e5e15480920927bde727ee2c33948b14730af916` first. PR #12 exact head `31a9bd0931fba2fcf03f52f7091b547c44b1f869` was independently inspected and VERIFIED GREEN in workflow `35885722775`, then squash-merged. Do not claim merged-main green until an exact workflow for the merge SHA succeeds. If green and clear, audit remaining Checkpoint-1 requirements against actual runtime/tests before taking the next lease; prefer the smallest visible save/reopen/persistence fidelity increment if that remains the strongest missing direct evidence. Preserve canonical document authority, stable IDs/history, immutable source lineage and one-project semantics. Do not begin Checkpoint 2 or select an editor/vendor until the shared-editing-foundation gate is evidenced.
+Driver A owns `mvp/checkpoint-1-visible-save-reopen`. Complete only the bounded visible save/reopen increment: browser Save must persist canonical project state through `local-draft`; fresh bootstrap must reopen the same project/revision/objects; failure must not fabricate recovered state. Run focused and full verification, open a PR, then release to Driver B for exact-head CI and independent inspection. Preserve one-project semantics and do not begin Checkpoint 2.
