@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "node --test",
-    "check": "node --check src/document.js && node --test"
+    "check": "node --check src/document.js && node --check src/asset-store.js && node --check src/draft-store.js && node --check src/editor-adapter.js && node --test"
   },
   "engines": { "node": ">=20" }
 }
