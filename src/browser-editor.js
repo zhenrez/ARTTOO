@@ -71,7 +71,7 @@ export function mountBrowserEditor({ project, artboardId, svg, undoButton, redoB
     selectedObjectId = objectId;
     activePoints = null;
     const object = host.getProject().objects[objectId];
-    moveGesture = { pointerId: event.pointerId, start: mmPoint(svg, event), transform: { ...object.transform }, target: event.target };
+    moveGesture = { pointerId: event.pointerId, start: mmPoint(svg, event), transform: { ...object.transform } };
     svg.setPointerCapture?.(event.pointerId);
     host.render();
   };
@@ -79,7 +79,7 @@ export function mountBrowserEditor({ project, artboardId, svg, undoButton, redoB
     if (!moveGesture || event.pointerId !== moveGesture.pointerId) return;
     const point = mmPoint(svg, event);
     const preview = { ...moveGesture.transform, x: moveGesture.transform.x + point.x - moveGesture.start.x, y: moveGesture.transform.y + point.y - moveGesture.start.y };
-    const selectedPath = svg.children.find?.((child) => child.dataset?.objectId === selectedObjectId) ?? moveGesture.target;
+    const selectedPath = Array.from(svg.children).find((child) => child.dataset?.objectId === selectedObjectId);
     selectedPath?.setAttribute?.('transform', svgTransform(preview));
   };
   const commitMove = (event) => {
