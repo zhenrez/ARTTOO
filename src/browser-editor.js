@@ -43,6 +43,8 @@ export function mountBrowserEditor({ project, artboardId, svg, undoButton, redoB
           transformControls.x.value = selected.transform.x;
           transformControls.y.value = selected.transform.y;
           transformControls.rotation.value = selected.transform.rotationDeg;
+          if (transformControls.scaleX) transformControls.scaleX.value = selected.transform.scaleX;
+          if (transformControls.scaleY) transformControls.scaleY.value = selected.transform.scaleY;
         }
         transformControls.selection.textContent = selected ? `Selected ${selected.objectId}` : 'No object selected';
       }
@@ -52,6 +54,11 @@ export function mountBrowserEditor({ project, artboardId, svg, undoButton, redoB
     },
   };
   const host = createEditorHost({ project, artboardId, adapter });
+  const transformSelected = (patch) => {
+    if (!selectedObjectId) return;
+    const current = host.getProject();
+    host.dispatch({ type: 'object.transform', expectedRevision: current.revision, objectId: selectedObjectId, transform: patch });
+  };
   const commitStroke = () => {
     if (!activePoints || activePoints.length < 2) { activePoints = null; return; }
     const current = host.getProject();
@@ -70,20 +77,15 @@ export function mountBrowserEditor({ project, artboardId, svg, undoButton, redoB
   redoButton.addEventListener('click', () => host.redo());
   if (transformControls) {
     transformControls.apply.addEventListener('click', () => {
-      if (!selectedObjectId) return;
-      const current = host.getProject();
-      host.dispatch({ type: 'object.transform', expectedRevision: current.revision, objectId: selectedObjectId, transform: { x: finiteNumber(transformControls.x, 'x'), y: finiteNumber(transformControls.y, 'y'), rotationDeg: finiteNumber(transformControls.rotation, 'rotation') } });
+      const patch = { x: finiteNumber(transformControls.x, 'x'), y: finiteNumber(transformControls.y, 'y'), rotationDeg: finiteNumber(transformControls.rotation, 'rotation') };
+      if (transformControls.scaleX) patch.scaleX = finiteNumber(transformControls.scaleX, 'scale x');
+      if (transformControls.scaleY) patch.scaleY = finiteNumber(transformControls.scaleY, 'scale y');
+      transformSelected(patch);
     });
-    transformControls.nudgeLeft.addEventListener('click', () => {
-      if (!selectedObjectId) return;
-      const current = host.getProject(); const object = current.objects[selectedObjectId];
-      host.dispatch({ type: 'object.transform', expectedRevision: current.revision, objectId: selectedObjectId, transform: { x: object.transform.x - 1 } });
-    });
-    transformControls.nudgeRight.addEventListener('click', () => {
-      if (!selectedObjectId) return;
-      const current = host.getProject(); const object = current.objects[selectedObjectId];
-      host.dispatch({ type: 'object.transform', expectedRevision: current.revision, objectId: selectedObjectId, transform: { x: object.transform.x + 1 } });
-    });
+    transformControls.nudgeLeft.addEventListener('click', () => { if (!selectedObjectId) return; const object = host.getProject().objects[selectedObjectId]; transformSelected({ x: object.transform.x - 1 }); });
+    transformControls.nudgeRight.addEventListener('click', () => { if (!selectedObjectId) return; const object = host.getProject().objects[selectedObjectId]; transformSelected({ x: object.transform.x + 1 }); });
+    transformControls.flipX?.addEventListener('click', () => { if (!selectedObjectId) return; const object = host.getProject().objects[selectedObjectId]; transformSelected({ scaleX: -object.transform.scaleX }); });
+    transformControls.flipY?.addEventListener('click', () => { if (!selectedObjectId) return; const object = host.getProject().objects[selectedObjectId]; transformSelected({ scaleY: -object.transform.scaleY }); });
   }
   const onKeyDown = (event) => {
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z') { event.preventDefault(); if (event.shiftKey) host.redo(); else host.undo(); return; }
@@ -91,8 +93,8 @@ export function mountBrowserEditor({ project, artboardId, svg, undoButton, redoB
     const delta = event.shiftKey ? 10 : 1;
     const moves = { ArrowLeft: [-delta, 0], ArrowRight: [delta, 0], ArrowUp: [0, -delta], ArrowDown: [0, delta] };
     const move = moves[event.key]; if (!move) return;
-    event.preventDefault(); const current = host.getProject(); const object = current.objects[selectedObjectId];
-    host.dispatch({ type: 'object.transform', expectedRevision: current.revision, objectId: selectedObjectId, transform: { x: object.transform.x + move[0], y: object.transform.y + move[1] } });
+    event.preventDefault(); const object = host.getProject().objects[selectedObjectId];
+    transformSelected({ x: object.transform.x + move[0], y: object.transform.y + move[1] });
   };
   document.addEventListener('keydown', onKeyDown);
   host.render();
