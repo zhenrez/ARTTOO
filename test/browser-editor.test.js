@@ -14,7 +14,7 @@ class FakeElement {
 
 function fixture() { let project = createProject({ ownerId: 'browser-user', name: 'browser fixture' }); return applyCommand(project, { type: 'artboard.add', artboardId: 'board', widthMm: 100, heightMm: 100 }); }
 function fakeDocument() { const keyListeners = []; globalThis.document = { createElementNS() { return new FakeElement(); }, addEventListener(type, fn) { if (type === 'keydown') keyListeners.push(fn); }, removeEventListener() {} }; return keyListeners; }
-function transformControls() { return { fieldset: new FakeElement(), selection: new FakeElement(), x: new FakeElement(), y: new FakeElement(), rotation: new FakeElement(), apply: new FakeElement(), nudgeLeft: new FakeElement(), nudgeRight: new FakeElement() }; }
+function transformControls() { return { fieldset: new FakeElement(), selection: new FakeElement(), x: new FakeElement(), y: new FakeElement(), rotation: new FakeElement(), scaleX: new FakeElement(), scaleY: new FakeElement(), apply: new FakeElement(), nudgeLeft: new FakeElement(), nudgeRight: new FakeElement(), flipX: new FakeElement(), flipY: new FakeElement() }; }
 
 test('pointer drawing rerenders canonical stroke and controls undo/redo', () => {
   const keyListeners = fakeDocument();
@@ -30,13 +30,23 @@ test('pointer drawing rerenders canonical stroke and controls undo/redo', () => 
   mounted.destroy(); delete globalThis.document;
 });
 
-test('selecting a rendered stroke exposes numeric transform and keyboard movement through canonical commands', () => {
+test('selection exposes numeric transform, scale and flip through reversible canonical commands', () => {
   const keyListeners = fakeDocument(); const svg = new FakeElement(); const controls = transformControls();
   let project = fixture(); project = applyCommand(project, { type: 'stroke.add', artboardId: 'board', objectId: 'stroke-1', points: [{ x: 10, y: 10 }, { x: 20, y: 20 }], style: { preset: 'round', color: '#18151e', width: 1.5, opacity: 1 } });
   const mounted = mountBrowserEditor({ project, artboardId: 'board', svg, undoButton: new FakeElement(), redoButton: new FakeElement(), transformControls: controls });
-  assert.equal(controls.fieldset.disabled, true); svg.emit('pointerdown', { target: svg.children[0] }); assert.equal(mounted.getSelectedObjectId(), 'stroke-1'); assert.equal(controls.fieldset.disabled, false); assert.equal(controls.x.value, 0);
-  controls.x.value = '12'; controls.y.value = '8'; controls.rotation.value = '30'; controls.apply.emit('click');
-  assert.deepEqual(mounted.host.getProject().objects['stroke-1'].transform, { x: 12, y: 8, scaleX: 1, scaleY: 1, rotationDeg: 30 }); assert.match(svg.children[0].attributes.transform, /translate\(12 8\).*rotate\(30\)/);
+  assert.equal(controls.fieldset.disabled, true); svg.emit('pointerdown', { target: svg.children[0] }); assert.equal(mounted.getSelectedObjectId(), 'stroke-1'); assert.equal(controls.fieldset.disabled, false); assert.equal(controls.scaleX.value, 1);
+  controls.x.value = '12'; controls.y.value = '8'; controls.rotation.value = '30'; controls.scaleX.value = '1.5'; controls.scaleY.value = '0.75'; controls.apply.emit('click');
+  assert.deepEqual(mounted.host.getProject().objects['stroke-1'].transform, { x: 12, y: 8, scaleX: 1.5, scaleY: 0.75, rotationDeg: 30 }); assert.match(svg.children[0].attributes.transform, /translate\(12 8\) scale\(1.5 0.75\) rotate\(30\)/);
+  controls.flipX.emit('click'); assert.equal(mounted.host.getProject().objects['stroke-1'].transform.scaleX, -1.5); assert.match(svg.children[0].attributes.transform, /scale\(-1.5 0.75\)/);
+  mounted.host.undo(); assert.equal(mounted.host.getProject().objects['stroke-1'].transform.scaleX, 1.5);
+  controls.flipY.emit('click'); assert.equal(mounted.host.getProject().objects['stroke-1'].transform.scaleY, -0.75);
   const right = { ctrlKey: false, metaKey: false, altKey: false, shiftKey: false, key: 'ArrowRight', preventDefault() { this.prevented = true; } }; keyListeners[0](right); assert.equal(right.prevented, true); assert.equal(mounted.host.getProject().objects['stroke-1'].transform.x, 13);
-  mounted.host.undo(); assert.equal(mounted.host.getProject().objects['stroke-1'].transform.x, 12); mounted.destroy(); delete globalThis.document;
+  mounted.destroy(); delete globalThis.document;
+});
+
+test('canonical transform rejects non-finite, zero scale and unknown transform fields', () => {
+  let project = fixture(); project = applyCommand(project, { type: 'stroke.add', artboardId: 'board', objectId: 'stroke-1', points: [{ x: 1, y: 1 }, { x: 2, y: 2 }] });
+  assert.throws(() => applyCommand(project, { type: 'object.transform', objectId: 'stroke-1', transform: { scaleX: 0 } }), /scaleX must be non-zero/);
+  assert.throws(() => applyCommand(project, { type: 'object.transform', objectId: 'stroke-1', transform: { x: Number.NaN } }), /x must be finite/);
+  assert.throws(() => applyCommand(project, { type: 'object.transform', objectId: 'stroke-1', transform: { skewX: 1 } }), /unsupported transform field/);
 });
