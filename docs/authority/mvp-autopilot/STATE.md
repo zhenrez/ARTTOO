@@ -1,51 +1,52 @@
 # ARTTOO MVP Autopilot State
 
-**Updated:** 2026-09-23T18:01Z
+**Updated:** 2026-09-23T19:27Z
 **Canonical repository:** `zhenrez/ARTTOO`
-**Main head observed:** `b318e068730aa68a3921d6b80c1fa3ac3d4cae87`
-**Last verified main head:** `b318e068730aa68a3921d6b80c1fa3ac3d4cae87` — workflow `35895742597` SUCCESS
-**Working branch:** `mvp/checkpoint-1-semantic-layers`
-**Pull request:** #14
+**Main head observed:** `d8b390e903205c19dd425993a6e1bef0a3d51427`
+**Last verified main head:** `d8b390e903205c19dd425993a6e1bef0a3d51427` — workflow `35902851186` SUCCESS
+**Working branch:** `mvp/checkpoint-1-visible-layers`
+**Pull request:** #15
 
 ## Lease / handoff
-- Driver B verified and merged PR #13; merged main is exact-head green.
-- Driver A completed the bounded canonical semantic-layer projection increment and **RELEASED / HANDOFF TO DRIVER B**.
-- PR #14 does not yet wire a visible Layers UI; it establishes the canonical projection/traversal seam only.
+- PR #14 semantic-layer projection is merged on main and exact-main CI is green.
+- Driver A released PR #15 to Driver B; Driver B accepted the bounded verification/fix lease.
+- Exact PR head `02fe0dd3ab1d75d6ca4a29b79b597c2bf783025e` failed workflow `35906368345` only in `test/layers-panel.test.js`: the fake event helper cloned the supplied keyboard event, so `preventDefault()` mutated the clone and the assertion observed `undefined`.
+- Driver B corrected the test harness on the same PR branch in commit `ebf613b394e80b6ce9c9c8d7000ad9924c164436`; exact-latest-head CI is pending. Do not merge until it is green.
 
 ## Verified completed gates
 - **Checkpoint 0 complete / merged.**
-- **Checkpoint 1 partial.** PRs #3–#13 are merged and verified. PR #14 is pending exact-head verification and does not close the gate.
+- **Checkpoint 1 partial.** PRs #3–#14 are merged and verified. PR #15 remains pending and does not close the gate.
 
 ## Verified repository/application state
-- Main `b318e068730aa68a3921d6b80c1fa3ac3d4cae87` is VERIFIED GREEN in workflow `35895742597`.
-- Visible drawing/history/selection, canonical numeric/direct transforms, and visible canonical save/reopen are merged.
+- Main `d8b390e903205c19dd425993a6e1bef0a3d51427` is VERIFIED GREEN in workflow `35902851186`.
+- Visible drawing/history/selection, canonical numeric/direct transforms, visible canonical save/reopen, and canonical semantic-layer projection are merged.
 - Canonical project/document state remains authoritative; browser/editor state is controller/projection only.
 - No editor SDK/vendor has been selected.
 
 ## Work completed this run
-- Refreshed main, open PRs/issues, recent commits and exact-main CI; re-read authority, automation contract and Checkpoint-1 product/capability requirements.
-- Confirmed PR #13 merged and exact-main push CI is green.
-- Identified accessibility/shared-editor gap: authority requires semantic layers/object lists so canvas content remains operable without precision pointer input.
-- Added `src/semantic-layers.js`: deterministic layer rows derived from canonical artboard order and canonical object metadata, plus keyboard-equivalent next/previous traversal.
-- Added `test/semantic-layers.test.js`: proves canonical order/selection projection, no revision mutation, wraparound traversal, and fail-closed broken references.
-- Opened PR #14. This is deliberately foundation evidence only; visible browser Layers wiring remains open.
+- Refreshed main, open PRs and current handoff; re-read authority and automation contract.
+- Confirmed PR #15 is mergeable but exact-head CI failed rather than inheriting prior green evidence.
+- Inspected the failing Actions job/logs: 38/39 tests passed; the sole failure was the keyboard-event test harness identity bug, not canonical state mutation.
+- Fixed `FakeElement.emit()` to dispatch the supplied event object directly while supplying defaults only when absent; added an explicit ArrowDown `preventDefault` assertion.
+- No product semantics were weakened and no second state model was introduced.
 
 ## Productive fallback
-Not used; primary repository mutation was available.
+Not used; the handed-off PR could be repaired directly.
 
 ## Verification evidence
-- Main `b318e068730aa68a3921d6b80c1fa3ac3d4cae87`: workflow `35895742597` SUCCESS.
-- PR #14 implementation/test head before this handoff: `b36671197b2a795bf4295e05805a94582df22864`.
-- This handoff commit advances the PR head; exact-latest-head CI is PENDING and must not inherit earlier green evidence.
+- Main `d8b390e903205c19dd425993a6e1bef0a3d51427`: workflow `35902851186` SUCCESS.
+- PR #15 head `02fe0dd3ab1d75d6ca4a29b79b597c2bf783025e`: workflow `35906368345` FAILURE, 38/39 tests passed; only `visible semantic layers synchronize selection and keyboard traversal without canonical mutation` failed because the fake emitter cloned the keyboard event before `preventDefault()`.
+- Fix commit: `ebf613b394e80b6ce9c9c8d7000ad9924c164436`.
+- Exact-latest-head CI for the fix has not yet surfaced and is therefore PENDING.
 
 ## Blockers
-- Exact-latest-head PR #14 CI and Driver B independent semantic inspection.
+- Exact-latest-head PR #15 CI after `ebf613b394e80b6ce9c9c8d7000ad9924c164436` and final Driver B browser/accessibility inspection.
 
 ## Owner decisions required
 None.
 
 ## Next highest-leverage task
-Driver B: require exact-head CI for PR #14 and inspect that semantic rows are projection-only and cannot become a second source of truth. If green and sound, merge with expected-head protection and verify merged-main CI. Then wire the semantic projection into a visible keyboard-operable Layers/object list synchronized with canvas selection.
+FIRST require exact-head CI for the latest PR #15 head. If green, independently confirm Layers remains projection/controller-only and merge with expected-head protection; then verify merged-main CI. If CI still fails, diagnose and repair only the evidenced failure. After merge, continue the Checkpoint-1 exit-gap audit before opening Checkpoint 2.
 
 ## Continuation prompt
-Driver B: resume PR #14 `mvp/checkpoint-1-semantic-layers`, based on verified main `b318e068730aa68a3921d6b80c1fa3ac3d4cae87`. FIRST require exact-latest-head GitHub Actions. Driver A added a provider-neutral semantic layer projection derived solely from canonical artboard/object state, selected/visible/locked metadata, keyboard-equivalent next/previous traversal, and fail-closed broken-reference regressions. This PR intentionally does NOT claim the visible Layers accessibility requirement complete. If exact-head CI is green and semantics are sound, merge with expected-head protection and verify merged-main CI; then prioritize visible keyboard-operable Layers wiring synchronized with canvas selection. Do not begin Checkpoint 2 or select an editor/vendor.
+Driver A: FIRST refresh PR #15 and exact-latest-head CI. Driver B found workflow `35906368345` failed 1/39 tests because `FakeElement.emit()` cloned the supplied keyboard event, making the test's `preventDefault` assertion observe the wrong object; product canonical semantics were not implicated. Driver B fixed the harness in `ebf613b394e80b6ce9c9c8d7000ad9924c164436`; CI is pending and PR #15 must not merge until exact-head green. If it becomes green, Driver B/next lane should complete independent projection/accessibility inspection, merge with expected-head protection, verify merged-main CI, then audit remaining Checkpoint-1 gaps. Do not begin Checkpoint 2 or select an editor/vendor.

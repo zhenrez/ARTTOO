@@ -1,5 +1,6 @@
 import { createProject, applyCommand } from '../src/document.js';
 import { mountBrowserEditor } from '../src/browser-editor.js';
+import { mountLayersPanel } from '../src/layers-panel.js';
 import { reopenWorkspace, saveWorkspace } from '../src/workspace-session.js';
 
 const saveStatus = document.querySelector('#save-status');
@@ -14,10 +15,11 @@ if (recovery.status === 'reopened') {
   saveStatus.textContent = recovery.status === 'empty' ? 'Not saved' : 'Recovery unavailable · new project not saved';
 }
 
+const svg = document.querySelector('#artboard');
 const editor = mountBrowserEditor({
   project,
   artboardId: 'primary',
-  svg: document.querySelector('#artboard'),
+  svg,
   undoButton: document.querySelector('#undo'),
   redoButton: document.querySelector('#redo'),
   status: document.querySelector('#status'),
@@ -35,6 +37,21 @@ const editor = mountBrowserEditor({
     flipX: document.querySelector('#flip-x'),
     flipY: document.querySelector('#flip-y'),
   },
+});
+
+const selectCanvasObject = (objectId) => {
+  const target = Array.from(svg.children).find((child) => child.dataset?.objectId === objectId);
+  if (!target) throw new Error(`rendered object not found: ${objectId}`);
+  target.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerId: 9001, clientX: 0, clientY: 0 }));
+  target.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 9001, clientX: 0, clientY: 0 }));
+};
+mountLayersPanel({
+  projectSource: () => editor.host.getProject(),
+  artboardId: 'primary',
+  selectedObjectId: () => editor.getSelectedObjectId(),
+  selectObject: selectCanvasObject,
+  list: document.querySelector('#layers-list'),
+  observe: (render) => { const observer = new MutationObserver(render); observer.observe(svg, { childList: true }); return observer; },
 });
 
 document.querySelector('#save').addEventListener('click', () => {
