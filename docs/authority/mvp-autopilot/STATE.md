@@ -1,57 +1,57 @@
 # ARTTOO MVP Autopilot State
 
-**Updated:** 2026-09-23T11:31Z
+**Updated:** 2026-09-23T12:03Z
 **Canonical repository:** `zhenrez/ARTTOO`
-**Main head observed before state update:** `8145960cd8a4f91dd4f8aea2e0fef86962a01cf0`
-**Working branch:** none
-**Pull request:** none open after PR #7 merge
+**Main head observed before this increment:** `19c8ba022e95fe201377c3120fcf5fd9fb90553e`
+**Working branch:** `mvp/checkpoint-1-visible-transform`
+**Pull request:** #8
 
 ## Lease / handoff
-- Driver A took the bounded Checkpoint-1 visible-browser-artboard lease on `mvp/checkpoint-1-visible-browser-artboard`, implemented PR #7, and released/handoff to Driver B for verification.
-- Driver B refreshed repository/authority/lease evidence, confirmed PR #7 exact head `bc3b22b7ea65fabbdd832c3f37d1d0a47e6f464e` was mergeable and exact-head workflow `35852236843` concluded **SUCCESS**.
-- Driver B independently inspected the browser controller and interaction regression: browser state is projection/controller state only; pointer/stylus commits `stroke.add` through the canonical editor host; rendering derives from canonical projection; visible and keyboard undo/redo call canonical host history; no provider-private serialization or second document model is introduced.
-- Driver B squash-merged PR #7 with expected-head protection as `8145960cd8a4f91dd4f8aea2e0fef86962a01cf0`.
-- Exact merged-main push workflow `35854855907` concluded **SUCCESS** on `8145960cd8a4f91dd4f8aea2e0fef86962a01cf0`.
-- Driver B implementation lease is **RELEASED / HANDOFF TO DRIVER A**. No feature mutation lease remains active.
+- Driver B previously verified and squash-merged PR #7 as `8145960cd8a4f91dd4f8aea2e0fef86962a01cf0`; exact merged-main workflow `35854855907` succeeded and Driver B released the lane to Driver A.
+- `main` subsequently advanced by the state-only handoff commit `19c8ba022e95fe201377c3120fcf5fd9fb90553e`.
+- Driver A refreshed repository/authority/lease evidence and found no open PR/issues or conflicting implementation lease.
+- Driver A took the bounded Checkpoint-1 visible selection + canonical object-transform lease on `mvp/checkpoint-1-visible-transform`.
+- Driver A implemented PR #8 and released the lease for Driver B exact-head CI and independent semantic inspection.
+- Driver A implementation lease is **RELEASED / HANDOFF TO DRIVER B**.
 
 ## Verified completed gates
 - **Checkpoint 0 complete / merged.** PR #2 merged as `e512785c857776e37f71dc17384b17a73189b2ca`.
-- **Checkpoint 1 partial.** PRs #3–#7 are merged. Canonical adapter/conformance, vector stroke, inverse-command undo/redo, and the first visible browser artboard interaction are verified.
+- **Checkpoint 1 partial.** PRs #3–#7 are merged and verified. PR #8 is pending exact-head CI/acceptance.
 
 ## Verified repository/application state
 - Canonical project/document state remains authoritative; editor/browser layers are adapters/controllers rather than persistent product truth.
-- Visible white SVG artboard is now merged. Pointer/stylus input produces canonical `stroke.add` operations in `artboard-mm` coordinates and canonical rerender produces the visible path.
-- Visible Undo/Redo controls and Ctrl/Cmd+Z plus Shift+Ctrl/Cmd+Z are wired to canonical host history; the browser regression proves draw -> rerender -> button undo/redo -> keyboard undo/redo.
-- Existing stable stroke identity, stale-event rejection, canonical transform history, divergent-edit redo invalidation, immutable source lineage and placement-aware object removal protection remain covered by the merged regression suite.
+- PR #7 visible white SVG artboard, pointer/stylus canonical drawing, canonical rerender and visible/keyboard undo-redo are verified on merged main.
+- Stable stroke identity, stale-event rejection, inverse-command history, immutable source lineage and placement separation remain established.
 - No editor SDK/vendor has been selected.
-- Checkpoint 1 remains open. PR #7 is bounded evidence toward Q01/Q11; it does **not** establish full drawing/tool breadth, complete accessibility, save/reopen UI behavior, complete shared editing foundation, or the mandatory golden journey.
+- Checkpoint 1 remains open; full select/transform breadth, drawing/tool breadth, accessibility, save/reopen UI behavior and other required shared-editor families remain incomplete.
 
 ## Work completed this run
-- Inspected current main, open PR/issues, recent commits and exact PR CI.
-- Re-read authority manifest, automation contract, relevant product specification and technology/base-selection authority.
-- Independently inspected `src/browser-editor.js`, `test/browser-editor.test.js`, and the visible shell semantics.
-- Verified PR #7 exact-head CI success and mergeability.
-- Squash-merged PR #7 with expected-head protection.
-- Verified exact merged-main CI success.
+- Inspected current `main`, branches, open PR/issues and recent commits; no active conflicting lease was found.
+- Re-read `AUTHORITY.md`, `STATE.md`, `AUTOMATION_SPEC.md`, relevant shared-editor/golden-journey product specification, technology/base-selection authority, capability contracts/catalogue and zero-dollar architecture doctrine.
+- Added visible stroke selection to the existing browser artboard without introducing a second document model.
+- Added numeric X/Y millimeter and rotation controls, left/right 1 mm buttons, and Arrow-key movement (1 mm; Shift+Arrow 10 mm).
+- Browser transforms dispatch through the existing canonical editor host `object.transform`; SVG transform is reconstructed from canonical projection.
+- Added focused automated interaction evidence for select -> numeric transform -> visible rerender -> keyboard move -> canonical undo.
+- Opened PR #8 against exact current main.
 
 ## Productive fallback
-Not used; the primary verification/integration path was available.
+Not used; the primary implementation path was available.
 
 ## Verification evidence
-- PR #7 exact feature head: `bc3b22b7ea65fabbdd832c3f37d1d0a47e6f464e`.
-- Exact-head PR workflow: `35852236843` — **success**.
-- Squash merge commit: `8145960cd8a4f91dd4f8aea2e0fef86962a01cf0`.
-- Exact merged-main push workflow: `35854855907` — **success**.
-- Independent semantic inspection: pointer/stylus -> canonical host dispatch; render from canonical projection; history controls invoke canonical host; no provider serialization or duplicate document state.
+- Last verified merged feature baseline: PR #7 merge `8145960cd8a4f91dd4f8aea2e0fef86962a01cf0`; exact merged-main workflow `35854855907` — **SUCCESS**.
+- Main observed this run: `19c8ba022e95fe201377c3120fcf5fd9fb90553e` (state-only handoff after PR #7).
+- PR #8 implementation head before this state commit: `78a5aa1f482b8e82721678d0c5f8198b837d3d48`.
+- Workflow `35857812376` for that implementation head was **QUEUED** when checked; the required state update creates a newer exact head, so PR #8 remains **PENDING exact-head CI**, not green.
+- Focused regression added in `test/browser-editor.test.js`; full repository verification must be established by GitHub Actions on the exact latest PR head before acceptance.
 
 ## Blockers
-None for the next bounded Checkpoint-1 increment.
+- Exact-head PR #8 CI and Driver B independent semantic inspection remain before merge/acceptance.
 
 ## Owner decisions required
 None.
 
 ## Next highest-leverage task
-Driver A: FIRST refresh main/branches/PRs/STATE for any newer lease. If clear, continue Checkpoint 1 with the smallest direct shared-editor capability that materially expands real source-editing breadth on the same canonical artboard. Prefer selection + canonical object transform with visible/numeric or keyboard-operable controls and automated interaction evidence, because transform is already supported canonically but not yet exposed in the browser shell. Preserve the white artboard, canonical history, stable identity, save/reopen semantics and one-project model. Do not begin Checkpoint 2 body placement until the shared editing foundation has sufficient direct acceptance evidence, and do not select an editor/vendor without the required comparative runnable bake-off.
+Driver B: FIRST refresh PR #8 latest head and exact-head workflow. If green, independently verify that selection is browser/controller state only, numeric/keyboard transform emits canonical `object.transform`, visible SVG transform derives from canonical projection, and undo restores canonical transform. If sound, merge with expected-head protection and verify merged-main CI. If red, remediate only the evidenced defect. After acceptance, continue Checkpoint 1 with the smallest direct shared-editor capability that materially closes the required foundation contract; do not begin body placement or select a vendor yet.
 
 ## Continuation prompt
-Driver A: resume from merged main `8145960cd8a4f91dd4f8aea2e0fef86962a01cf0`, VERIFIED GREEN in exact merged-main workflow `35854855907`. PR #7 visible canonical browser artboard is merged and independently inspected: pointer/stylus drawing dispatches through the canonical host, rendering derives from canonical projection, and visible/keyboard undo-redo use canonical history without provider-owned document state. FIRST refresh repo/lease state. If clear, take one bounded Checkpoint-1 lease for the smallest visible selection + canonical object-transform interaction (including a keyboard/numeric alternative where feasible) with automated interaction evidence plus the full regression suite. Do not claim Q01/Q11 or Checkpoint 1 complete from the current shell; do not begin Checkpoint 2 or select an editor/vendor yet.
+Driver B: resume open PR #8 `mvp/checkpoint-1-visible-transform`. Driver A started from main `19c8ba022e95fe201377c3120fcf5fd9fb90553e`, added visible stroke selection plus numeric X/Y-mm and rotation controls, 1-mm visible nudge buttons and Arrow/Shift+Arrow movement, all dispatching through the existing canonical `object.transform` host path; SVG rendering reconstructs the canonical transform and focused regression covers select -> numeric transform -> rerender -> keyboard move -> canonical undo. FIRST refresh the exact latest PR head after this STATE commit and require exact-head GitHub Actions. Independently inspect canonical ownership/accessibility semantics. If green and sound, merge with expected-head protection and verify merged-main CI; if red, remediate only the evidenced failure. Do not claim the full select/transform family, Q01/Q11, or Checkpoint 1 complete from this bounded increment; do not begin Checkpoint 2 or select an editor/vendor.
