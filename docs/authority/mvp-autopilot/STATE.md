@@ -1,57 +1,50 @@
 # ARTTOO MVP Autopilot State
 
-**Updated:** 2026-09-23T10:31Z
+**Updated:** 2026-09-23T11:03Z
 **Canonical repository:** `zhenrez/ARTTOO`
-**Main head observed before state update:** `35304a594bb9558d9df9dafc30794367d1a474e5`
-**Working branch:** none
-**Pull request:** none open after PR #6 merge
+**Main head observed:** `c3ebe321108ff26fb0b5ce69c99401dde8860f9b`
+**Working branch:** `mvp/checkpoint-1-visible-browser-artboard`
+**Pull request:** #7
 
 ## Lease / handoff
-- Driver A released the bounded Checkpoint-1 canonical undo/redo increment to Driver B on branch `mvp/checkpoint-1-canonical-undo-redo`.
-- PR #6 had accidentally been created/closed before the feature branch advanced; Driver B reopened it so exact-head CI could run against the actual feature head `cf5fccd7fd1779e9b9b2add254942cdbd7403d6d`.
-- Exact-head pull-request workflow `35849111053` concluded **SUCCESS** on `cf5fccd7...`.
-- Driver B independently inspected the canonical command/host semantics and squash-merged PR #6 with expected-head protection as `35304a594bb9558d9df9dafc30794367d1a474e5`.
-- Exact merged-main push workflow `35849162268` concluded **SUCCESS** on `35304a594bb9558d9df9dafc30794367d1a474e5`.
-- Driver B implementation lease is **RELEASED / HANDOFF TO DRIVER A**. No feature mutation lease remains active.
+- Driver B merged PR #6 canonical undo/redo as `35304a594bb9558d9df9dafc30794367d1a474e5`; exact merged-main workflow `35849162268` succeeded.
+- Driver B then committed state-only handoff `c3ebe321108ff26fb0b5ce69c99401dde8860f9b` and released the lane to Driver A.
+- Driver A took the bounded visible-browser-artboard lease, implemented PR #7, and now **RELEASES / HANDS OFF TO DRIVER B** for exact-head CI and independent inspection. No competing feature lease remains active.
 
 ## Verified completed gates
 - **Checkpoint 0 complete / merged.** PR #2 merged as `e512785c857776e37f71dc17384b17a73189b2ca`.
-- **Checkpoint 1 partial.** PR #3 merged as `304aebe608b2a7eee806059a88a69010ff36af20`; PR #4 merged as `8b90ed4192e1155159eb744af731d29a2b1419d2`; PR #5 merged as `227e67c953363ee841a9ebacbae14952cfa70d45`; PR #6 merged as `35304a594bb9558d9df9dafc30794367d1a474e5`.
+- **Checkpoint 1 partial.** PRs #3–#6 are merged; canonical adapter/conformance, vector stroke and inverse-command undo/redo semantics are verified. Visible-browser increment PR #7 is pending exact-head verification.
 
 ## Verified repository/application state
-- Canonical drawing remains verified on merged main: stable stroke identity, `artboard-mm` geometry, bounded pressure/opacity, restricted current preset/color contracts, stale-event rejection and canonical host rerendering.
-- Canonical undo/redo is now verified for the currently implemented shared-editor operations: `stroke.add` undo removes the canonical object and redo restores the same stable identity/geometry/style; `object.transform` undo restores the exact previous canonical transform and redo restores the post-edit transform; a divergent edit clears redo.
-- `object.remove` is a canonical revision-producing command and fails closed when the object is referenced by a body placement.
-- Undo/redo entries are canonical inverse/redo commands held by the editor host; provider-private snapshots are not introduced and canonical project state remains authoritative.
-- No editor SDK/vendor has been selected.
-- Checkpoint 1 remains open. This increment is bounded evidence toward Q11; it does **not** establish visible browser interaction, keyboard/accessibility acceptance, complete drawing/tool breadth, or Q11/Checkpoint-1 completion.
+- Verified merged behavior remains canonical drawing with stable identity/artboard-mm geometry and canonical undo/redo for stroke.add/object.transform, with divergent-edit redo invalidation and placement-aware object removal protection.
+- No editor SDK/vendor is selected. Canonical project state remains authoritative.
+- Checkpoint 1 remains open; Q01/Q11 are not claimed complete.
 
 ## Work completed this run
-- Recovered current repository/authority/lease state and detected that PR #6 was closed with its original head still equal to main while the feature branch had subsequently advanced.
-- Reopened PR #6 to obtain exact feature-head CI rather than inheriting unrelated main evidence.
-- Verified exact-head CI success and independently inspected `src/document.js`, `src/editor-adapter.js`, and focused regression semantics.
-- Confirmed canonical revision production, stable identity on redo, redo-branch invalidation, and fail-closed placement dependency protection.
-- Squash-merged PR #6 with expected-head protection.
-- Verified the exact merged-main push workflow succeeded.
+- Refreshed main/PR/state/authority and confirmed no conflicting lease.
+- Added `src/browser-editor.js`: SVG projection/controller over `createEditorHost`; pointer/stylus input dispatches canonical `stroke.add`; renderer rebuilds visible paths from canonical projection; visible controls invoke canonical host undo/redo; Ctrl/Cmd+Z and Shift+Ctrl/Cmd+Z are supported.
+- Added `web/index.html`, `web/main.js`, and `web/style.css`: white artboard, persistent revision status, 44px history controls, semantic labels and visible keyboard focus.
+- Added `test/browser-editor.test.js` exercising pointer draw -> canonical rerender -> button undo/redo -> keyboard undo/redo with a dependency-free fake DOM.
+- Added browser module/test syntax checks to `npm run check`.
+- Opened PR #7 from current main.
 
 ## Productive fallback
-Not used; the primary verification/integration path was available.
+Not used; primary repository mutation path was available.
 
 ## Verification evidence
-- PR #6 exact feature head: `cf5fccd7fd1779e9b9b2add254942cdbd7403d6d`.
-- Exact-head PR workflow: `35849111053` — **success**.
-- Squash merge commit: `35304a594bb9558d9df9dafc30794367d1a474e5`.
-- Exact merged-main push workflow: `35849162268` — **success**.
-- Independent semantic inspection: canonical inverse/redo commands only; no provider-private serialized state; revision increments are produced by `applyCommand`; placement-referenced deletion rejects rather than silently corrupting placement lineage.
+- Verified prior merged-main evidence: PR #6 merge `35304a...`, workflow `35849162268` success.
+- PR #7 pre-state implementation head: `eda69b937d643416dd94bac1b3267a00989df85e`.
+- Exact-head CI for the final PR #7 head is **PENDING**; do not inherit older green evidence.
+- Automated browser interaction test is committed but is not counted as passing until repository-native CI succeeds on the exact head.
 
 ## Blockers
-None for the next bounded Checkpoint-1 increment.
+- Exact-head GitHub Actions plus Driver B independent inspection for PR #7.
 
 ## Owner decisions required
 None.
 
 ## Next highest-leverage task
-Driver A: FIRST refresh main/branches/PRs/STATE for any newer lease. If clear, take one bounded Checkpoint-1 lease for the smallest **visible browser artboard/drawing interaction** that exercises the already-verified canonical stroke and undo/redo through the existing editor-host boundary. Produce direct interaction evidence toward Q01/Q11: pointer drawing on a white artboard, visible canonical rerender, usable undo/redo controls, and keyboard-accessible undo/redo where feasible. Keep the browser layer a projection/controller over canonical state; do not introduce a second document model, provider serialization, editor/vendor commitment, or Checkpoint-2 body work. Verify with automated interaction tests plus the existing regression suite.
+Driver B: FIRST refresh PR #7 exact head and CI. If green, inspect that browser state is only projection/controller state, pointer drawing mutates canonical state through the host, undo/redo remains canonical, keyboard shortcuts are correctly bounded, and the shell does not claim full Q01/Q11. If sound, merge with expected-head protection and verify merged-main CI. If red, remediate only the evidenced failure. After acceptance, choose the next smallest Checkpoint-1 visible-tool breadth increment rather than body-placement work.
 
 ## Continuation prompt
-Driver A: resume from merged main `35304a594bb9558d9df9dafc30794367d1a474e5`, VERIFIED GREEN in exact merged-main workflow `35849162268`. PR #6 canonical undo/redo is merged and independently inspected: stroke redo preserves stable identity, transform undo/redo uses canonical commands, divergent edits clear redo, and deletion of a placement-referenced object fails closed. FIRST refresh repo/lease state. If clear, take the smallest visible browser artboard/drawing interaction increment through the existing canonical editor host, with automated interaction evidence for drawing plus undo/redo and keyboard-accessible controls. Do not claim Q11 complete until visible interaction/accessibility acceptance is proven; do not begin Checkpoint 2 or select an editor/vendor without comparative runnable evidence.
+Driver B: resume open PR #7 `mvp/checkpoint-1-visible-browser-artboard`, based on main `c3ebe321108ff26fb0b5ce69c99401dde8860f9b`. Driver A added a dependency-free visible white SVG artboard, pointer/stylus canonical stroke dispatch, canonical rerender, visible Undo/Redo, Ctrl/Cmd+Z and Shift+Ctrl/Cmd+Z, focus-visible controls, and an automated fake-DOM interaction regression. FIRST require exact-head GitHub Actions and independently inspect canonical ownership/accessibility semantics. If green and sound, merge PR #7 with expected-head protection and verify merged-main CI. If red, fix only the evidenced defect. Do not claim Q01/Q11 or Checkpoint 1 complete; do not begin Checkpoint 2 or select an editor/vendor.
