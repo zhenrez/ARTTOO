@@ -1,52 +1,54 @@
 # ARTTOO MVP Autopilot State
 
-**Updated:** 2026-09-23T19:27Z
+**Updated:** 2026-09-23T20:00Z
 **Canonical repository:** `zhenrez/ARTTOO`
-**Main head observed:** `d8b390e903205c19dd425993a6e1bef0a3d51427`
+**Main head observed:** `be2369e33e00fadef1692820dd6916db6a35d16d` (PR #15 merge; merged-main CI pending at observation)
 **Last verified main head:** `d8b390e903205c19dd425993a6e1bef0a3d51427` — workflow `35902851186` SUCCESS
-**Working branch:** `mvp/checkpoint-1-visible-layers`
-**Pull request:** #15
+**Working branch:** none — implementation lease released
+**Pull request:** #15 merged; #16 Governor-only authority artifact remains open and is not an implementation lease
 
 ## Lease / handoff
-- PR #14 semantic-layer projection is merged on main and exact-main CI is green.
-- Driver A released PR #15 to Driver B; Driver B accepted the bounded verification/fix lease.
-- Exact PR head `02fe0dd3ab1d75d6ca4a29b79b597c2bf783025e` failed workflow `35906368345` only in `test/layers-panel.test.js`: the fake event helper cloned the supplied keyboard event, so `preventDefault()` mutated the clone and the assertion observed `undefined`.
-- Driver B corrected the test harness on the same PR branch in commit `ebf613b394e80b6ce9c9c8d7000ad9924c164436`; exact-latest-head CI is pending. Do not merge until it is green.
+- Driver B repaired PR #15's fake-event test harness and handed exact-head verification back to Driver A.
+- Driver A verified exact PR #15 head `1e14ad7cfc0a198c32d89a34026c12eec9fab42e` in workflow `35909582946` SUCCESS, independently checked the projection/controller boundary from the PR diff, and squash-merged with expected-head protection as `be2369e33e00fadef1692820dd6916db6a35d16d`.
+- Driver A **RELEASED / HANDOFF TO DRIVER B**. No product implementation lease is active.
+- PR #16 is a Governor operating-system artifact touching a separate authority path. Drivers must not race or silently absorb Governor ownership; recheck its merge/status before the next increment.
 
 ## Verified completed gates
 - **Checkpoint 0 complete / merged.**
-- **Checkpoint 1 partial.** PRs #3–#14 are merged and verified. PR #15 remains pending and does not close the gate.
+- **Checkpoint 1 partial.** PRs #3–#14 are merged and verified. PR #15 exact PR head is verified green and merged; merged-main push CI remains pending, so do not yet promote it to verified-main evidence.
 
 ## Verified repository/application state
-- Main `d8b390e903205c19dd425993a6e1bef0a3d51427` is VERIFIED GREEN in workflow `35902851186`.
-- Visible drawing/history/selection, canonical numeric/direct transforms, visible canonical save/reopen, and canonical semantic-layer projection are merged.
-- Canonical project/document state remains authoritative; browser/editor state is controller/projection only.
+- Main `d8b390e903205c19dd425993a6e1bef0a3d51427` remains the last exact-main VERIFIED GREEN head (`35902851186`).
+- PR #15 exact head `1e14ad7cfc0a198c32d89a34026c12eec9fab42e` passed `35909582946` and is merged as `be2369e33e00fadef1692820dd6916db6a35d16d`.
+- Visible drawing/history/selection, canonical numeric/direct transforms, visible canonical save/reopen, canonical semantic-layer projection, and the visible keyboard-operable Layers implementation are now in merged source.
+- Canonical project/document state remains authoritative; Layers is projection/controller state only.
 - No editor SDK/vendor has been selected.
 
 ## Work completed this run
-- Refreshed main, open PRs and current handoff; re-read authority and automation contract.
-- Confirmed PR #15 is mergeable but exact-head CI failed rather than inheriting prior green evidence.
-- Inspected the failing Actions job/logs: 38/39 tests passed; the sole failure was the keyboard-event test harness identity bug, not canonical state mutation.
-- Fixed `FakeElement.emit()` to dispatch the supplied event object directly while supplying defaults only when absent; added an explicit ArrowDown `preventDefault` assertion.
-- No product semantics were weakened and no second state model was introduced.
+- Refreshed repository, open PRs, authority and current handoff.
+- Found PR #15 exact latest head green after Driver B's test-harness correction; no product-semantic failure remained.
+- Merged PR #15 with exact expected-head protection.
+- Inspected open Governor PR #16. It adds explicit cross-device/real-browser Checkpoint-1 evidence requirements and is exact-head green, but remains Governor-owned and unmerged; Driver A did not race or merge it.
+- Reconfirmed current CI is Node/fake-DOM only (`npm run check`); no actual-browser route exists yet. This is the highest-value Checkpoint-1 exit gap once Governor state is reconciled.
 
 ## Productive fallback
-Not used; the handed-off PR could be repaired directly.
+No separate fallback artifact was needed beyond the merge/state reconciliation. The next mutation is intentionally deferred until PR #16 Governor ownership/status is rechecked, avoiding competing authority edits while preserving the identified critical path.
 
 ## Verification evidence
-- Main `d8b390e903205c19dd425993a6e1bef0a3d51427`: workflow `35902851186` SUCCESS.
-- PR #15 head `02fe0dd3ab1d75d6ca4a29b79b597c2bf783025e`: workflow `35906368345` FAILURE, 38/39 tests passed; only `visible semantic layers synchronize selection and keyboard traversal without canonical mutation` failed because the fake emitter cloned the keyboard event before `preventDefault()`.
-- Fix commit: `ebf613b394e80b6ce9c9c8d7000ad9924c164436`.
-- Exact-latest-head CI for the fix has not yet surfaced and is therefore PENDING.
+- Last verified main: `d8b390e903205c19dd425993a6e1bef0a3d51427`, workflow `35902851186` SUCCESS.
+- PR #15 exact head: `1e14ad7cfc0a198c32d89a34026c12eec9fab42e`, workflow `35909582946` SUCCESS.
+- PR #15 merged commit: `be2369e33e00fadef1692820dd6916db6a35d16d`; merged-main workflow had not surfaced at observation.
+- Governor PR #16 exact head `70a3de0e2141f12e41397300a7b5d506a42c968d`: workflow `35908436412` SUCCESS; PR remains open.
 
 ## Blockers
-- Exact-latest-head PR #15 CI after `ebf613b394e80b6ce9c9c8d7000ad9924c164436` and final Driver B browser/accessibility inspection.
+- Merged-main CI for `be2369e33e00fadef1692820dd6916db6a35d16d` must become green before PR #15 is promoted to verified-main evidence.
+- Governor PR #16 remains open; next lane must recheck it before taking a potentially overlapping Checkpoint-1 exit-evidence lease.
 
 ## Owner decisions required
 None.
 
 ## Next highest-leverage task
-FIRST require exact-head CI for the latest PR #15 head. If green, independently confirm Layers remains projection/controller-only and merge with expected-head protection; then verify merged-main CI. If CI still fails, diagnose and repair only the evidenced failure. After merge, continue the Checkpoint-1 exit-gap audit before opening Checkpoint 2.
+FIRST verify merged-main CI and recheck Governor PR #16. If PR #16 has landed (or Governor ownership is otherwise released), take a bounded Checkpoint-1 real-browser evidence lease: establish the smallest $0 actual-browser smoke/e2e route that loads the production HTML/CSS/module graph and proves canonical drawing/selection/Layers plus save/reopen without relying solely on fake DOM. Keep browser automation an evidence adapter, not product truth, and avoid selecting an editor/vendor.
 
 ## Continuation prompt
-Driver A: FIRST refresh PR #15 and exact-latest-head CI. Driver B found workflow `35906368345` failed 1/39 tests because `FakeElement.emit()` cloned the supplied keyboard event, making the test's `preventDefault` assertion observe the wrong object; product canonical semantics were not implicated. Driver B fixed the harness in `ebf613b394e80b6ce9c9c8d7000ad9924c164436`; CI is pending and PR #15 must not merge until exact-head green. If it becomes green, Driver B/next lane should complete independent projection/accessibility inspection, merge with expected-head protection, verify merged-main CI, then audit remaining Checkpoint-1 gaps. Do not begin Checkpoint 2 or select an editor/vendor.
+Driver B: FIRST refresh main CI for merged PR #15 and recheck open Governor PR #16. PR #15 exact head `1e14ad7cfc0a198c32d89a34026c12eec9fab42e` is green in workflow `35909582946` and Driver A merged it with expected-head protection as `be2369e33e00fadef1692820dd6916db6a35d16d`; merged-main CI was still pending. Governor PR #16 is exact-head green but remains Governor-owned/open, so do not race its authority path. Once merged-main is green and Governor ownership is clear, prioritize the smallest $0 real-browser Checkpoint-1 smoke/e2e fixture loading the production web graph and exercising canonical interaction plus persistence/reopen. Do not begin Checkpoint 2 or select an editor/vendor.
