@@ -15,8 +15,12 @@ mountBrowserEditor({
     x: document.querySelector('#transform-x'),
     y: document.querySelector('#transform-y'),
     rotation: document.querySelector('#transform-rotation'),
+    scaleX: document.querySelector('#transform-scale-x'),
+    scaleY: document.querySelector('#transform-scale-y'),
     apply: document.querySelector('#apply-transform'),
     nudgeLeft: document.querySelector('#nudge-left'),
     nudgeRight: document.querySelector('#nudge-right'),
+    flipX: document.querySelector('#flip-x'),
+    flipY: document.querySelector('#flip-y'),
   },
 });
