@@ -20,6 +20,7 @@ Before planning, coding, auditing, or fallback work, every automation must:
 4. Read the current product/technology authority documents relevant to the open gate.
 5. Prefer verified repository/runtime evidence over prose or remembered state.
 6. Treat historical sources as evidence only; they may not silently override later confirmed corrections.
+7. At every checkpoint transition, before declaring a checkpoint complete, and after a material architecture/canonical-state/persistence/platform/provider/entitlement change, perform a **full authority recalibration** rather than relying on STATE.md or prior summaries. Re-read the current specification, technology/base-options report, capability catalogue/contracts/traceability, bootstrap-company doctrine, and reconcile them against repository/runtime evidence and the remaining golden journey. Record conflicts, supersessions, exposed gaps, and whether task order remains optimal in STATE.md.
 
 ## Driver A / Driver B normal execution loop
 
@@ -112,6 +113,19 @@ Every Governor run:
 7. Issue a concrete next-cycle directive and make only narrow safe process/test/state corrections.
 
 The Governor must prefer useful preparation over idle commentary when it cannot perform a repository-side correction itself.
+
+## Cross-device continuity invariant
+
+ARTTOO is one product and one canonical project/document model across desktop/laptop, tablet/iPad, Android tablet/phone, and iPhone. Platform/input adapters may differ; product truth may not.
+
+Workflow emphasis is expected to differ by device without forking the model:
+- tablet/iPad-class: artist-primary full-canvas creation, stylus/touch, placement, masks, wrap/seam and stencil work;
+- desktop/laptop: the same full project/editor with mouse, keyboard and pen-tablet affordances;
+- phone: client-primary generation, cover-up planning, TVTO, catalogue/profile discovery, consultation, scheduling and approvals, with touch-appropriate canvas access where entitled.
+
+Entitlements gate commands/capabilities/quotas/service quality, not document format. Unsupported or premium objects must survive intact on lower-capability devices/tiers.
+
+Before Checkpoint 1 closes, require an actual-browser route plus a device/browser evidence matrix distinguishing **tested**, **emulated**, **documented-only**, and **not yet tested**. Before MVP completion, cross-device evidence must cover same-project save/reopen, stale-device writes, offline/reconnect, suspension/recovery, orientation/viewport changes, mouse/touch/stylus semantics, low-memory behavior, and revision-bound approval/export continuity. Viewport emulation is not evidence of physical iOS/iPadOS/Android hardware behavior.
 
 ## Owner-reserved boundaries
 
