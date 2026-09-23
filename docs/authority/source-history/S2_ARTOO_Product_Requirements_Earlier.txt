@@ -1,0 +1,268 @@
+# ARTOO Product Requirements Document
+
+## Project Overview
+ARTOO is an innovative AR-powered tattoo visualization and marketplace platform designed to revolutionize the tattoo industry. The platform connects artists, studios, and clients through advanced visualization technology, allowing users to see how tattoos will look on their bodies before committing to permanent ink. The platform includes a comprehensive marketplace for artists and studios, with features like commission management, POD temporary tattoos, educational content, and community features.
+
+## Core Features and Functionality
+
+### AR Visualization Technology (HIGHEST PRIORITY)
+- **Static Image Visualization**: Overlay tattoos on uploaded photos with precise placement
+- **Skin Contour Mapping**: Ensure tattoos precisely follow natural body curves and skin textures
+- **Realistic Relighting**: Tattoo adapts to match lighting conditions in the original image
+- **Angle Warping**: Tattoo perspective adjusts to match viewing angle for natural appearance
+- **Live AR Visualization**: Real-time camera feed tattoo placement
+- **Recorded Video AR**: Capture and save AR visualization sessions
+- **Ink Representation**: Accurate rendering across all skin types and tones
+- **Image Size Standardization**: Normalize tattoo designs regardless of source dimensions
+- **Background Removal Solution**: Either automated processing or clear user guidance
+- **Segmentation and Color Variation**: Allow users to modify design segments and colors
+- **Capture/Save Functionality**: Save and export final designs once ideal placement is achieved
+- **Avatar-based Visualization**: Place tattoos on digital body models
+- **Multi-angle Visualization**: View designs from different perspectives
+- **Skin Tone Adaptation**: Design adjusts to match various skin colors
+- **Texture Simulation**: Show tattoos on different skin textures (scarred, stretch marks)
+- **Seasonal Appearance Changes**: Visualization of summer tanning vs. winter paleness
+- **Lighting Condition Simulation**: See tattoos under different lighting conditions
+- **Dynamic Lighting Studio**: Test designs under various lighting situations
+- **Size Comparison Tools**: Visualize scale against common objects
+- **Pain Meter Visualization**: Heat-map overlay showing relative pain levels
+- **Edge Handling**: Natural falloff at skin edges to prevent floating appearance
+- **Body Movement Simulation**: View designs during muscle flex or skin stretch
+
+### AI Tattoo Generation (HIGH PRIORITY)
+- **Style-based Generation**: Create unique tattoo designs based on user preferences
+- **Text-to-Tattoo**: Generate designs from textual descriptions
+- **Style Transfer**: Apply artistic styles to basic design concepts
+- **Custom Modifications**: Allow refinement of AI-generated designs
+- **Artist-specific Training**: Learn and replicate specific artist styles (with permission)
+
+### Progressive Avatar System
+- **Parametric Avatars**: Adjustable body parameters (MVP)
+- **Photogrammetric Models**: 3D scans of real body parts (Native)
+- **MetaHuman Integration**: Ultra-realistic avatars for professional visualization (Advanced)
+- **Universal Body Map**: Standardized UV mapping for consistent tattoo placement
+- **Body Type Diversity**: Range of body shapes, sizes, and types for accurate visualization
+
+## Advanced Visualization Features
+- **Aging Simulation**: Projects how tattoos will appear over time as ink fades
+- **Cover-up Visualization**: Tools for transforming existing tattoos into new designs
+- **Ink Type Rendering**: Different ink styles and color technologies
+- **Healing Process Preview**: Show healing stages from fresh to settled
+- **Realistic Blending Modes**: Simulates how ink sits on skin with proper opacity
+- **Color Customization Studio**: Advanced color picker with skin tone harmonization
+- **Recovery Calculator**: Estimate healing time based on tattoo size, location, and complexity
+- **Design Evolution Timeline**: Record iterations showing concept evolution
+
+## User Interaction
+- **Drag-and-Drop Placement**: Intuitive positioning on body canvas
+- **Multi-touch Gestures**: Pinch-zoom, two-finger rotation, tap-to-place
+- **Keyboard Shortcuts**: Arrow keys for fine adjustment, modifier keys for transformations
+- **Mouse Controls**: Wheel scaling, shift-drag rotation, direct manipulation
+- **Motion Controls**: Device positioning for 3D perspective
+- **Voice Commands**: Hands-free adjustments (Native)
+- **Voice-to-Design**: Describe tattoo ideas verbally for AI-generated concepts
+- **AR Anchoring**: Lock designs to body position during movement
+- **Real-time Adjustment**: Dynamic size, position, opacity controls
+
+## User Management
+- **Multiple Profiles**: Up to 3 profiles per account (different user types)
+- **Public/Private Sharing**: Control over design visibility
+- **Backup & Restore**: Design library preservation (Native only)
+- **Design Organization**: Categorization and collection management
+- **Import from Other Platforms**: Support for designs from Procreate, Adobe Fresco, etc.
+- **Granular Permission System**: Control visibility of designs and profile elements
+- **Tattoo Story Feature**: Documentation of meaning and story behind tattoos
+- **Style Match Quiz**: Interactive questionnaire for tattoo style discovery
+- **Skin Type Analysis**: Personalized recommendations based on skin characteristics
+
+## ST/AT Organizational Structure
+- **Studio Tiers (ST Levels)**: Different studio membership levels affecting commission rates and visibility
+- **Artist Tiers (AT Levels)**: Various artist classifications within studios with different privileges
+- **Non-Compete Clauses**: Implementation between ST2 organizations
+- **Cross-Studio Collaboration**: System for artists from different studios to work together
+- **Organizational Hierarchy**: ST (studios) can establish rules for AT (artists)
+- **Policy Customization**: Terms for commissions, revisions based on organization
+- **Studio Virtual Tours**: 360° views of participating tattoo studios
+
+## Marketplace Features
+- **Design Browsing**: Searchable library with filtering options
+- **Artist Profiles**: Detailed portfolios with past work, ratings, certifications
+- **Custom Commissions**: Request system with negotiation capabilities
+- **AI Recommendations**: Style-based suggestions based on user preferences
+- **Wishlist Functionality**: Save designs for future consideration
+- **Seasonal Design Recommendations**: Suggestions based on upcoming seasons/events
+- **Limited Edition Drops**: Timed exclusive design releases from popular artists
+- **Design Auction System**: Bid on one-of-a-kind tattoo designs
+- **Custom Flash Sheet Creator**: Tools for artists to create and sell digital flash sheets
+
+## Licensing & Rights Management
+- **Design Ownership Rules**: Who retains rights to commissioned works
+- **Usage Limitations**: How purchased designs can be used by clients
+- **Commercial vs. Personal Licenses**: Different rights for business use
+- **Artist Copyright Protection**: Measures against unauthorized copying
+- **Watermarking Options**: Protect designs from unauthorized use
+- **Rights Management**: Digital licensing and usage tracking
+
+## POD Temporary Tattoos
+- **Material Options**: Standard (1-3 days), Premium (3-7 days), Waterproof (5-10 days)
+- **Size Calibration**: Tools to ensure accurate reproduction
+- **Shipping Options**: Standard, Express, and International delivery
+- **Differential Pricing**: Member discounts, bundle pricing
+- **Artist Commissions**: Revenue sharing on POD sales
+- **Gift Cards**: Purchase app credits or POD tattoos for friends
+
+## Artist Tools
+- **Scheduling System**: Calendar with manual and automated availability
+- **Portfolio Management**: Showcase work with categorization
+- **Commission Settings**: Customizable rates and terms
+- **Export Package**: Multi-format export (PNG, PDF stencil, SVG) with coordinates
+- **Rating System**: Feedback from clients (members only)
+- **Deposit Requirement Options**: Studio-definable booking requirements
+- **Cancellation Policy Management**: Custom no-show and late cancellation rules
+- **Waitlist Functionality**: Automated filling of cancelled appointments
+- **Consultation Booking**: Pre-design meeting scheduling
+- **Timelapse Recording**: Document creation process for portfolio enhancement
+- **Client Brief Templates**: Standardized formats for gathering design requirements
+- **Health Screening Forms**: Digital integration of required health/consent forms
+- **Anonymous Portfolio Reviews**: Unbiased feedback without revealing identity
+
+## Communication
+- **Asynchronous Messaging** (MVP): Email-style communication
+- **Real-time Chat** (Native): Instant messaging capabilities
+- **Media Attachments**: Send designs and reference images
+- **Message Templates**: Quick responses for common interactions
+- **Response Indicators**: Shows typical artist response times
+- **End-to-end Encryption** (Native): Secure messaging and design sharing
+- **Aftercare Buddy System**: Connect users getting tattoos around the same time
+
+## Payments Platform
+- **Multi-directional Payment System**: Transactions between all parties (users, artists, shops, ARTOO)
+- **Commission Splitting**: Automated revenue distribution between artists and studios
+- **Variable Fee Structure**: Adjustable platform percentage based on membership tier
+- **Escrow System**: Secure payment holding during commission process
+- **Deposit Management**: Partial payments with milestone-based releases
+- **Installment Plans**: Customizable payment schedules for larger pieces
+- **Multiple Withdrawal Options**: Instant payout (fee) or standard bank transfer (3-5 days)
+- **Tax Documentation**: Automated earnings reports for artists and studios
+- **Currency Conversion**: Support for international transactions
+- **Payment Method Diversity**: Credit/debit, PayPal, Venmo, CashApp, GPay, Revolut (MVP), with Stripe, Apple Pay, and Crypto (Native)
+- **Loyalty Programs**: Rewards for returning clients with exclusive designs or discounts
+- **Charity Flash Events**: Digital events where proceeds go to selected causes
+
+## Business Model
+- **Tiered Subscriptions**: Multiple membership levels with increasing benefits
+- **Free Tier**: Basic AR visualization with daily credit limitations
+- **Credit System**: Usage-based allocation that scales with tier level
+- **One-time Purchases**: POD tattoos available without subscription
+- **Member-Only Features**: Certain capabilities restricted to subscribers
+
+## Educational Content
+- **Tattoo History**: Cultural and historical context for styles
+- **Interactive World Map**: Regional style exploration
+- **Style Discovery**: Browse different techniques and approaches
+- **AI Style Matcher**: Upload images to find similar designs (Native only)
+- **Artist-Style Connections**: Find creators specializing in specific styles
+- **Expert Contributors**: Industry professionals providing educational material
+- **Certification Programs**: Educational tracks for artists to gain credentials
+- **Live Webinar Integration**: Real-time educational events
+- **Community Knowledge Base**: User-contributed tips and techniques
+- **Ink Events Calendar**: Listing of tattoo conventions, guest artist appearances, and flash events
+
+## E-commerce Features
+- **Shopping Cart**: Support for multiple design purchases
+- **AR Preview**: Visualize designs before checkout
+- **Auto-save Cart**: 48-hour retention (Native only)
+- **Discount System**: Promotional codes and bundle pricing
+- **Gift Options**: Send designs to others
+
+## Order Management
+- **Commission Tracking**: Status updates on custom work
+- **Completion Estimates**: Timeframe projections
+- **Revision System**: Request changes based on artist policies
+- **Refund Policies**: Cancellation terms per ST/AT rules
+- **Messaging Integration**: Communication tied to specific orders
+
+## Community Features
+- **Forums and Discussion Boards**: User-to-user information sharing
+- **Design Feedback System**: Community input on works-in-progress
+- **Artist Mentorship Programs**: Established artists guiding newcomers
+- **Contest/Challenge System**: Regular design competitions
+- **Apprenticeship Marketplace**: Platform for connecting aspiring artists with mentors
+
+## Tattoo Recognition & Analysis
+- **Style Identification**: Analyze existing tattoos to identify styles
+- **Artist Recognition**: Find artists based on style similarities
+- **Tattoo Recognition**: Upload photos of existing tattoos to find similar styles or artists
+- **Cover-up Potential Analysis**: Assess existing tattoos for cover-up options
+
+## Extras Features
+- **Plugin Architecture**: Support for third-party design tools
+- **API Integration**: Connection with external booking systems
+- **Custom Script Support**: Artist-defined visualization rules
+- **Style Pack System**: Downloadable specialized art styles
+- **Custom UI Themes**: Personalized interface appearance (Native)
+- **Language Localization Framework**: Extensible translation system
+- **Analytics Integration**: Performance tracking for artists and studios
+- **Social Platform Connectors**: Share designs across networks
+- **Calendar Synchronization**: Connect with external scheduling tools
+- **CRM Integration**: Connect with studio management software
+
+## Privacy & Security
+- **GDPR Compliance**: Comprehensive data protection measures
+- **Identity Verification**: Artist and studio validation process
+
+
+## Extensible Platform Features
+
+
+### Extended Reality & Visualization
+- **Projection Mapping Tool**: For artists to project designs directly onto clients' skin during consultations
+- **Motion Visualization**: Show how tattoos look during specific movements (dancing, sports, etc.)
+- **Scarification Preview**: Visualize how designs would appear as scarification instead of ink
+- **White Ink Simulator**: Specialized visualization for white ink tattoos on different skin tones
+- **Time-of-Day Simulation**: View how tattoos will appear in morning light vs. evening light
+- **Environment-Based Preview**: See tattoos in different contexts (beach, office, formal event)
+
+### Social & Community
+- **Artist Residency Program**: Featured artists get platform promotion for limited periods
+- **Tattoo Tinder**: Swipe-based design discovery that learns preferences over time
+- **Geographic Heat Map**: Visual representation of popular styles by region
+- **Tattoo Tourism Guide**: Resources for traveling to get work from specific artists
+- **Design Crowdsourcing**: Submit design briefs for multiple artists to propose concepts
+- **Memory Vault**: Private space for users to document meanings behind personal tattoos
+- **Genealogy of Style**: Interactive maps showing artistic influence connections between artists
+
+### Client Experience
+- **Sonic Design Experience**: Music pairings that complement tattoo styles during visualization
+- **AR Studio Mirror**: Use tablet/smart mirror in studio for real-time client consultation
+- **Session Endurance Tools**: Timers and tracking for long session planning
+- **Accessibility Features**: Tools for users with disabilities to better communicate design needs
+- **Cultural Sensitivity Checker**: Flag designs that might be inappropriate cultural appropriation
+- **Tattoo Translator**: Tool to ensure accuracy of text in different languages
+- **Mood Board Generator**: AI-assisted creation of aesthetic references
+
+### Artist Tools
+- **Real-time Collaborative Design**: Multiple artists can work on a design simultaneously
+- **Voice-to-Adjustment**: Make design changes via voice commands during tattooing
+- **Client History Timeline**: Visual record of each client's journey with the artist
+- **Material Calculator**: Estimate ink and supply needs based on design specifications
+- **Style Evolution Analysis**: Track how an artist's style develops over time
+- **Earnings Forecaster**: Project income based on booked appointments
+- **Assistant AI**: Helps with administrative tasks and client communications
+
+### Business Innovations
+- **Collective Funding**: Users pool resources for artist travel/guest spots
+- **Micro-commissions**: Affordable 15-minute design consultations
+- **NFT Integration**: Digital certificates of authenticity for custom designs
+- **Heritage Preservation**: Program for documenting and preserving traditional tattooing techniques
+- **Archive Service**: Long-term storage of tattoo designs for future generations
+- **Design Subscription**: Monthly access to exclusive artist flash
+- **Carbon Offset Integration**: Calculate and offset environmental impact of tattoo supplies
+
+### Technical Advancements
+- **Haptic Feedback**: Feel simulated tattooing sensation on mobile devices
+- **Dermatological Consultation**: AI-assisted skin analysis for optimal healing predictions
+- **Ink Chemistry Education**: Information about how different pigments interact with skin
+- **Interactive Tattoo Tech**: Preview how tattoos might integrate with emerging "smart tattoo" technology
+- **Medical Alert Features**: Tools for designing medically necessary tattoos (allergies, conditions)
+- **Scent-based Experience**: Pair visualization with realistic studio scents via app-controlled diffuser
