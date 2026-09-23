@@ -1,15 +1,12 @@
 # ARTTOO
 
-ARTTOO is an AI-powered tattoo digital design canvas and tattoo-try-on visualization platform that blends tattoo craft workflows with modern design and body-visualization technology.
+ARTTOO is an AI-powered tattoo design canvas and tattoo try-on visualization platform built around one canonical project/document lineage from design through placement, revision, approval, stencil and Go-time export.
 
-## Start here
+## Repository map
 
-The canonical product and implementation authority is:
+- [Documentation map](docs/README.md) — where current authority, operating state and historical evidence live.
+- [Authority manifest](docs/authority/AUTHORITY.md) — controlling precedence, MVP boundary and product invariants.
+- [Current authority navigation](docs/authority/README.md) — task-oriented index of the canonical documents.
+- [MVP autopilot](docs/authority/mvp-autopilot/README.md) — Driver/Governor contract and current handoff.
 
-- [ARTTOO Authority Manifest](docs/authority/AUTHORITY.md)
-- [Modern Product Design Specification](docs/authority/ARTOO_Modern_Product_Design_Specification.md)
-- [Technology and Base Options](docs/authority/ARTOO_Current_Technology_and_Base_Options.md)
-- [Explicit Capability Catalogue](docs/authority/ARTOO_Explicit_Capability_Catalogue.md)
-- [MVP Autopilot State](docs/authority/mvp-autopilot/STATE.md)
-
-Implementation agents must read `docs/authority/AUTHORITY.md` before reconstructing requirements from historical files or prior prose.
+Implementation agents must read the authority manifest and current autopilot state before reconstructing requirements from historical files or prior prose.
