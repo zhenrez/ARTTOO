@@ -1,45 +1,46 @@
 # ARTTOO MVP Autopilot State
 
-**Updated:** 2026-09-23T04:32Z
+**Updated:** 2026-09-23T05:30Z
 **Canonical repository:** `zhenrez/ARTTOO`
-**Main head observed:** `5c47fa4d5100a19165607e80e8413423dd27c008`
-**Working branch:** `mvp/checkpoint-0-document-core`
-**Pull request:** #2 — `MVP checkpoint 0: bootstrap canonical document core`
+**Main head observed:** `e512785c857776e37f71dc17384b17a73189b2ca`
+**Working branch:** `mvp/checkpoint-1-editor-adapter-seam`
 
 ## Lease / handoff
-- Driver B's bounded transaction-order verification lease is **RELEASED / HANDOFF TO DRIVER A**.
-- Driver B lease commits: state acquisition `454a54dbde7bc6921a5bfe0a79a0c2e675903188`; transaction-order regression `a8729ab616e3df56f8d0d0dc8b43ba3f9e02606f`.
-- No worker should begin Checkpoint 1 until exact-head CI for the regression/handoff is green and Driver A independently accepts Checkpoint 0.
+- Driver B owns an **ACTIVE bounded lease** for Checkpoint 1: establish a provider-neutral editor adapter seam over the canonical document/command model, with tests proving adapters cannot replace canonical project state.
+- Expected evidence: adapter contract tests + full `npm run check` CI on the branch.
+- Driver A should not modify this same adapter scope until Driver B releases the lease.
 
 ## Verified completed gates
-- None yet. Checkpoint 0 remains open pending exact-head CI and baseline acceptance.
+- **Checkpoint 0 complete / merged.** PR #2 merged to `main` as `e512785c857776e37f71dc17384b17a73189b2ca`.
 
 ## Verified repository/application state
-- `main` remains at authority bootstrap `5c47fa4d5100a19165607e80e8413423dd27c008`.
-- PR #2 is newly created bootstrap code; no prior application implementation is claimed as recovered.
-- Starting PR head `441d6f48301a57df5283a8582c6a05e0d7982238` had GitHub Actions run `35816452874`, conclusion **success**.
-- Driver B independently inspected `src/asset-store.js`: `put` and `delete` await `transact`; `transact` captures request success but resolves only from `transaction.oncomplete`; `get` receives the captured request result only after transaction completion.
+- `main` is `e512785c857776e37f71dc17384b17a73189b2ca`.
+- GitHub Actions push run `35820511774` tested that exact `main` head and concluded **success**.
+- Checkpoint 0 provides the canonical versioned document/command seam, immutable checksum-addressed source storage, local draft persistence, IndexedDB transaction durability, placement/source-transform separation, revision-bound approvals, and regression coverage.
+- No creative-editor SDK is selected yet; authority requires candidate editors to remain replaceable adapters and the technology report requires a common golden-journey evaluation before selection.
+
+## Current open gate
+- **Checkpoint 1 — shared editing foundation.**
+
+## Current bottleneck
+- There is no explicit editor adapter boundary yet. Integrating Fabric, IMG.LY, vue-fabric-editor, or another candidate directly now could allow provider serialization/event semantics to become canonical product truth before the required bake-off.
 
 ## Changes this run
-- Added `test/asset-store.test.js` with a dependency-free injected fake IndexedDB event harness.
-- Regression asserts `put` and `delete` remain pending after request success and settle only after transaction completion.
-- Regression asserts `get` does not expose its captured request result until transaction completion.
-- No production dependency, provider, state model, framework, paid service, or product semantic was added.
+- Created `mvp/checkpoint-1-editor-adapter-seam` from the verified Checkpoint-0 main head.
+- Acquired this bounded lease before implementation.
 
 ## Verification evidence
-- VERIFIED: starting exact head `441d6f48301a57df5283a8582c6a05e0d7982238` — workflow run `35816452874` succeeded.
-- VERIFIED: lease-acquisition commit `454a54dbde7bc6921a5bfe0a79a0c2e675903188` — workflow run `35818601446` succeeded.
-- PENDING: regression commit `a8729ab616e3df56f8d0d0dc8b43ba3f9e02606f` and this state-only handoff commit require exact-head CI. At handoff time GitHub had not yet surfaced a workflow run whose `head_sha` was the regression commit, so the regression is not claimed green.
+- VERIFIED: `main` exact head `e512785c857776e37f71dc17384b17a73189b2ca` — GitHub Actions run `35820511774`, conclusion **success**.
+- PENDING: editor-adapter seam implementation and branch CI.
 
 ## Blockers
-- Exact-head GitHub Actions must execute and pass with `test/asset-store.test.js` included.
-- Driver A must independently accept Checkpoint 0 after that evidence is green.
+- None for this bounded seam increment.
 
 ## Owner decisions required
-None currently.
+None currently. This increment deliberately does not select or purchase an editor SDK.
 
 ## Next highest-leverage task
-Driver A: inspect the current PR head and require a workflow run whose tested head includes `a8729ab616e3df56f8d0d0dc8b43ba3f9e02606f` and this handoff state. If CI fails, take a narrow remediation lease. If CI is green, independently inspect the new transaction-order regression and existing Checkpoint-0 invariants, then accept/merge Checkpoint 0 through the repository's accepted PR workflow if evidence holds. Do not begin Checkpoint 1 before baseline acceptance.
+Implement and test a minimal provider-neutral editor adapter contract that translates editor-originated operations into canonical ARTTOO commands and projects canonical state outward for rendering, without accepting provider-private serialized state as the project source of truth.
 
 ## Continuation prompt
-Driver A: resume PR #2 from latest `mvp/checkpoint-0-document-core`. Read AUTHORITY.md and this state first; confirm Driver B lease is released. Require exact-head green CI including `test/asset-store.test.js`. Independently verify that the fake IndexedDB regression proves request success cannot settle `put`/`delete`/`get` before transaction completion. Preserve Web Crypto portability, immutable source identity, fail-closed source verification, placement separation, and revision-bound approval semantics. If all Checkpoint-0 evidence is green, accept/merge the baseline through the repository's established PR workflow; otherwise remediate only the evidenced defect. Do not start Checkpoint 1 prematurely.
+Driver B: implement the bounded editor-adapter seam and tests on `mvp/checkpoint-1-editor-adapter-seam`; verify with exact-head CI; release the lease to Driver A with evidence. Do not select a vendor/editor foundation or broaden into UI implementation in this increment.
