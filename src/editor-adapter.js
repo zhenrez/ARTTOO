@@ -21,9 +21,59 @@ export function applyEditorOperation(project, operation) {
   }
 }
 
+function reversibleCommands(project, operation) {
+  switch (operation.type) {
+    case 'stroke.add': {
+      const next = applyEditorOperation(project, operation);
+      const objectId = operation.objectId ?? next.history.at(-1).detail.objectId;
+      const stroke = clone(next.objects[objectId]);
+      return { next, undo: { type: 'object.remove', objectId }, redo: { type: 'stroke.add', artboardId: operation.artboardId, objectId, points: stroke.points, style: stroke.style } };
+    }
+    case 'object.transform': {
+      const object = project.objects[operation.objectId];
+      if (!object) throw new Error('object not found');
+      const previousTransform = clone(object.transform);
+      const next = applyEditorOperation(project, operation);
+      return { next, undo: { type: 'object.transform', objectId: operation.objectId, transform: previousTransform }, redo: { type: 'object.transform', objectId: operation.objectId, transform: clone(next.objects[operation.objectId].transform) } };
+    }
+    default: throw new Error(`unsupported reversible editor operation: ${operation.type}`);
+  }
+}
+
 export function createEditorHost({ project, artboardId, adapter }) {
   assertAdapter(adapter);
   let canonicalProject = project;
+  const undoStack = [];
+  const redoStack = [];
   const render = () => adapter.render(projectEditorView(canonicalProject, artboardId));
-  return { getProject() { return canonicalProject; }, render, dispatch(operation) { canonicalProject = applyEditorOperation(canonicalProject, operation); render(); return canonicalProject; } };
+  return {
+    getProject() { return canonicalProject; },
+    canUndo() { return undoStack.length > 0; },
+    canRedo() { return redoStack.length > 0; },
+    render,
+    dispatch(operation) {
+      const reversible = reversibleCommands(canonicalProject, operation);
+      canonicalProject = reversible.next;
+      undoStack.push({ undo: reversible.undo, redo: reversible.redo });
+      redoStack.length = 0;
+      render();
+      return canonicalProject;
+    },
+    undo() {
+      const entry = undoStack.pop();
+      if (!entry) return canonicalProject;
+      canonicalProject = applyCommand(canonicalProject, entry.undo);
+      redoStack.push(entry);
+      render();
+      return canonicalProject;
+    },
+    redo() {
+      const entry = redoStack.pop();
+      if (!entry) return canonicalProject;
+      canonicalProject = applyCommand(canonicalProject, entry.redo);
+      undoStack.push(entry);
+      render();
+      return canonicalProject;
+    },
+  };
 }
