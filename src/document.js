@@ -28,6 +28,30 @@ function assertAssetStore(assetStore) {
   }
 }
 
+const STROKE_PRESETS = new Set(['round']);
+const HEX_COLOR = /^#[0-9a-fA-F]{6}$/;
+function unitInterval(value, label) {
+  if (!Number.isFinite(value) || value < 0 || value > 1) throw new Error(`${label} must be between 0 and 1`);
+  return value;
+}
+function normalizeStrokePoints(points) {
+  if (!Array.isArray(points) || points.length < 2) throw new Error('stroke requires at least two points');
+  return points.map((point) => {
+    if (!point || !Number.isFinite(point.x) || !Number.isFinite(point.y)) throw new Error('stroke points require finite x/y');
+    return { x: point.x, y: point.y, pressure: unitInterval(point.pressure ?? 1, 'stroke pressure') };
+  });
+}
+function normalizeStrokeStyle(style = {}) {
+  const width = style.width ?? 2;
+  const opacity = style.opacity ?? 1;
+  const preset = style.preset ?? 'round';
+  const color = style.color ?? '#000000';
+  if (!Number.isFinite(width) || width <= 0) throw new Error('stroke width must be positive');
+  if (!STROKE_PRESETS.has(preset)) throw new Error('unsupported stroke preset');
+  if (typeof color !== 'string' || !HEX_COLOR.test(color)) throw new Error('stroke color must be #RRGGBB');
+  return { preset, color: color.toLowerCase(), width, opacity: unitInterval(opacity, 'stroke opacity') };
+}
+
 export function createProject({ ownerId, name = 'Untitled project' }) {
   if (!ownerId) throw new Error('ownerId is required');
   const timestamp = now();
@@ -74,6 +98,15 @@ export function applyCommand(project, command) {
       if (!artboard) throw new Error('artboard not found');
       const objectId = command.objectId ?? id('object');
       next.objects[objectId] = { objectId, type: command.objectType ?? 'image', sourceAssetId: command.assetId, transform: { x: 0, y: 0, scaleX: 1, scaleY: 1, rotationDeg: 0 }, masks: [], visible: true, locked: false };
+      artboard.objectIds.push(objectId);
+      return commit(next, project, command.type, { objectId, artboardId: artboard.artboardId });
+    }
+    case 'stroke.add': {
+      const artboard = next.artboards.find((item) => item.artboardId === command.artboardId);
+      if (!artboard) throw new Error('artboard not found');
+      const objectId = command.objectId ?? id('stroke');
+      if (next.objects[objectId]) throw new Error('object already exists');
+      next.objects[objectId] = { objectId, type: 'stroke', sourceAssetId: null, coordinateSpace: 'artboard-mm', points: normalizeStrokePoints(command.points), style: normalizeStrokeStyle(command.style), transform: { x: 0, y: 0, scaleX: 1, scaleY: 1, rotationDeg: 0 }, masks: [], visible: true, locked: false };
       artboard.objectIds.push(objectId);
       return commit(next, project, command.type, { objectId, artboardId: artboard.artboardId });
     }
