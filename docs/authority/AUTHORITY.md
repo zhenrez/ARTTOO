@@ -12,6 +12,9 @@
 `NOT RETRIEVED` does not mean false, removed, or unknown. Retrieve before reconstructing when a source exists.
 
 ## Canonical current documents
+
+Navigation aid: [README.md](README.md). The navigation page does not add authority; this manifest remains controlling.
+
 - `ARTOO_Modern_Product_Design_Specification.md` — primary product/UX/architecture contract; strengthened copy containing the mandatory end-to-end foundation bake-off.
 - `ARTOO_Current_Technology_and_Base_Options.md` — current technology/base-selection evidence and golden-journey evaluation protocol.
 - `ARTOO_Explicit_Capability_Catalogue.md` — complete capability contract catalogue.
@@ -53,6 +56,12 @@ No export/re-import bridge, manual file shuttling, copy/paste reconstruction, or
 
 ## Historical source role
 `source-history/` preserves original evidence. Historical material may not silently override later direct corrections or current approved specifications.
+
+## Documentation hygiene
+- Keep durable current contracts in `docs/authority/`.
+- Keep only `AUTOMATION_SPEC.md`, `STATE.md`, and its navigation README in `mvp-autopilot/`.
+- Archive superseded plans, PR-specific audits, and historical evidence under `source-history/`; Git history remains the record of prior current versions.
+- Do not duplicate a rule into a new standalone authority document when it can be cleanly incorporated into the existing controlling contract.
 
 ## Update rule
 Any future authority change must identify the superseded statement, record the new decision, preserve traceability, and update this manifest when canonical authority changes.
