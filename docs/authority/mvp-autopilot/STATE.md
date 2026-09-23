@@ -1,6 +1,6 @@
 # ARTTOO MVP Autopilot State
 
-**Updated:** 2026-09-23T21:00Z
+**Updated:** 2026-09-23T21:27Z
 **Canonical repository:** `zhenrez/ARTTOO`
 **Main head observed:** `1c46dd0c51b8afb52b50a44637af61406425abe4`
 **Last verified main head:** `1c46dd0c51b8afb52b50a44637af61406425abe4` — workflow `35913212401` SUCCESS
@@ -8,14 +8,15 @@
 **Pull request:** #17 open
 
 ## Lease / handoff
-- Driver A completed the bounded Checkpoint-1 actual-browser smoke/e2e increment and **RELEASED / HANDOFF TO DRIVER B**.
-- PR #17 implementation head before this state handoff: `5daa45055a86c9755fb83975599ddeb1bb3d1bab`; workflow `35919565864` queued at observation.
-- This state handoff advances the branch head; Driver B must require CI on the exact latest PR head rather than inheriting the earlier queued run.
+- Driver A completed the bounded Checkpoint-1 actual-browser smoke/e2e increment and released it to Driver B.
+- Driver B accepted the PR #17 verification/repair lease after exact head `00c2e4fa699080352ad10783705df008c0bd3b38` failed workflow `35919606112`.
+- Failure diagnosis: `browser-smoke` passed; the `node` job failed only because bare `node --test` auto-discovered `test/e2e/workspace.spec.js`, where `@playwright/test` is intentionally not installed in the dependency-free Node job.
+- Driver B repaired test discovery in commit `f0b237db4bfc743cb5046e98cd7746b97f02be0b`: Node verification now explicitly targets `test/*.test.js`, keeping Playwright specs owned by the separate `test:e2e`/browser-smoke job.
 - Governor PR #16 remains open and separately owned. PR #17 does not modify its authority artifact.
 
 ## Verified completed gates
 - **Checkpoint 0 complete / merged.**
-- **Checkpoint 1 partial.** PRs #3–#15 are merged and verified on main. PR #17 is proposed/pending verification.
+- **Checkpoint 1 partial.** PRs #3–#15 are merged and verified on main. PR #17 is proposed/pending exact-latest-head verification.
 
 ## Verified repository/application state
 - Current main `1c46dd0c51b8afb52b50a44637af61406425abe4` is VERIFIED GREEN in workflow `35913212401`.
@@ -24,29 +25,27 @@
 - No editor SDK/vendor has been selected.
 
 ## Work completed this run
-- Reconciled merged-main CI: PR #15 and the state-only handoff are now exact-main green.
-- Rechecked Governor PR #16: still open, mergeable, exact-head green, authority-only; no implementation lease conflict.
-- Opened PR #17 adding `@playwright/test` as a test-only dependency, Chromium Playwright configuration, an actual-browser production-workspace continuity fixture, and a separate CI `browser-smoke` job.
-- The browser fixture loads `web/index.html`, draws through real browser Pointer Events, verifies visible Layers/selection, saves via browser localStorage, reloads, and asserts identical project ID, revision, object identity and object payload after reopen.
-- Existing Node verification remains a separate job.
+- Refreshed repository, authority, state, open PRs, and PR #17 exact-head CI.
+- Inspected failed workflow `35919606112`: actual Chromium `browser-smoke` succeeded end-to-end; Node job had 39 passing canonical/unit tests plus one erroneous Playwright auto-discovery failure.
+- Repaired Node/Playwright suite isolation without changing product behavior: `npm test` and `npm run check` now target top-level Node tests only; `npm run test:e2e` remains the Playwright route.
 
 ## Productive fallback
-Not used; primary implementation path was available.
+Not used; the handed-off critical-path PR was directly repairable.
 
 ## Verification evidence
 - Main `1c46dd0c51b8afb52b50a44637af61406425abe4`: workflow `35913212401` SUCCESS.
-- PR #17 pre-handoff implementation head `5daa45055a86c9755fb83975599ddeb1bb3d1bab`: workflow `35919565864` queued at observation; no green claim.
-- Exact latest PR head after this state-only handoff requires fresh CI.
+- PR #17 prior exact head `00c2e4fa699080352ad10783705df008c0bd3b38`: workflow `35919606112` FAILURE overall; `browser-smoke` SUCCESS, `node` FAILURE solely from unintended Playwright spec discovery.
+- Repair commit `f0b237db4bfc743cb5046e98cd7746b97f02be0b`; exact latest head after this state update requires fresh CI before merge.
 
 ## Blockers
-- Exact-latest-head PR #17 CI and independent Driver B inspection are required before merge.
+- Exact-latest-head PR #17 Node + browser-smoke success and final Driver B inspection are required before merge.
 - Governor PR #16 remains open but non-conflicting; continue to respect its separate ownership.
 
 ## Owner decisions required
 None.
 
 ## Next highest-leverage task
-Driver B should require exact-head Node + browser-smoke success, inspect that the fixture truly loads production modules and browser persistence rather than mocking them, and merge only if sound. After merge, continue the Checkpoint-1 exit audit; viewport/touch-device matrix and responsive/orientation evidence remain distinct from this single Chromium desktop smoke.
+FIRST require exact-latest-head PR #17 CI. If both Node and browser-smoke pass, confirm the browser fixture loads production modules and real localStorage without product-state ownership, then merge with expected-head protection and verify merged-main CI. After merge, continue the Checkpoint-1 exit audit; viewport/touch-device matrix and responsive/orientation evidence remain distinct from this desktop Chromium smoke.
 
 ## Continuation prompt
-Driver B: resume PR #17 `mvp/checkpoint-1-real-browser-smoke`. FIRST require GitHub Actions success on the exact latest PR head after this handoff. Driver A added a test-only Playwright/Chromium route that serves and loads the production `web/index.html` module graph, draws via real browser Pointer Events, verifies Layers/selection, saves through real localStorage, reloads, and asserts same canonical project ID/revision/object payload. Independently inspect that browser automation owns no product state and that the Node suite remains green. If exact-head CI is green and semantics are sound, merge with expected-head protection and verify merged-main CI. Recheck Governor PR #16 separately; do not race or merge its authority path. Afterward continue Checkpoint-1 exit evidence, especially tablet/phone viewport/touch and orientation/reflow coverage; do not begin Checkpoint 2 or select an editor/vendor.
+Driver A: PR #17's prior exact head `00c2e4fa699080352ad10783705df008c0bd3b38` ran workflow `35919606112`: browser-smoke PASSED, while Node failed only because bare `node --test` auto-discovered the Playwright spec without Playwright installed in that intentionally dependency-free job. Driver B repaired suite isolation in `f0b237db4bfc743cb5046e98cd7746b97f02be0b`, explicitly limiting Node verification to `test/*.test.js` while leaving Playwright under `test:e2e`. FIRST require CI success on the exact latest PR head after this state commit. If green and semantics remain sound, merge with expected-head protection and verify merged-main CI. Recheck Governor PR #16 separately and do not race its authority path. Do not begin Checkpoint 2 or select an editor/vendor.
