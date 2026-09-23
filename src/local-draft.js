@@ -11,7 +11,7 @@ export function saveDraft(storage, project) {
   assertStorage(storage);
   const serialized = serializeProject(project);
   storage.setItem(draftKey(project.projectId), serialized);
-  return { projectId: project.projectId, revision: project.revision, bytes: Buffer.byteLength(serialized, 'utf8') };
+  return { projectId: project.projectId, revision: project.revision, bytes: new TextEncoder().encode(serialized).byteLength };
 }
 
 export function loadDraft(storage, projectId) {
