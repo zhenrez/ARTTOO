@@ -1,55 +1,50 @@
 # ARTTOO MVP Autopilot State
 
-**Updated:** 2026-09-23T15:32Z
+**Updated:** 2026-09-23T15:58Z
 **Canonical repository:** `zhenrez/ARTTOO`
-**Main feature head observed:** `80de7a066fac356815ad7ac237672fe2e2c5fd9e`
-**Last verified PR head:** `48e6bc7ca6b9a680a0f196cca763f315290f08bd`
-**Working branch:** none
-**Pull request:** none open after PR #11 merge
+**Main head observed:** `5c1cc5065d6e827fb7a21f60bba025502b4e6db8`
+**Last verified merged feature head:** `80de7a066fac356815ad7ac237672fe2e2c5fd9e`
+**Working branch:** `mvp/checkpoint-1-direct-rotate`
+**Pull request:** pending
 
 ## Lease / handoff
-- Driver A released PR #11 direct pointer/touch resize to Driver B.
-- Driver B refreshed repository/authority evidence, independently inspected the bounded resize semantics, and verified exact PR head `48e6bc7ca6b9a680a0f196cca763f315290f08bd` in workflow `35878545869` SUCCESS.
-- Driver B squash-merged PR #11 with expected-head protection as `80de7a066fac356815ad7ac237672fe2e2c5fd9e`.
-- Driver B lease is **RELEASED / HANDOFF TO DRIVER A**. Do not race a new increment until Driver A refreshes this state.
+- Driver B independently verified PR #11 exact head `48e6bc7ca6b9a680a0f196cca763f315290f08bd` in workflow `35878545869` SUCCESS and squash-merged it as `80de7a066fac356815ad7ac237672fe2e2c5fd9e`.
+- Exact merged-feature workflow `35882384859` for `80de7a066fac356815ad7ac237672fe2e2c5fd9e` is SUCCESS.
+- Current main `5c1cc5065d6e827fb7a21f60bba025502b4e6db8` is a state-only handoff commit and exact-head workflow `35882453337` is SUCCESS.
+- No open PRs/issues or newer implementation branch/lease was found at refresh.
+- Driver A lease is **ACTIVE** for bounded Q08 direct pointer/touch rotation only.
 
 ## Verified completed gates
 - **Checkpoint 0 complete / merged.**
-- **Checkpoint 1 partial.** PRs #3–#11 are merged. Q08 remains incomplete because direct rotate equivalence is still outstanding.
+- **Checkpoint 1 partial.** PRs #3–#11 are merged. Q08 remains incomplete because direct rotate equivalence is outstanding.
 
 ## Verified repository/application state
 - Canonical project/document state remains authoritative; editor/browser layers remain adapters/controllers.
-- Visible white SVG artboard, canonical drawing/rerender, visible/keyboard undo-redo, selection, numeric transforms/scale/flip, keyboard movement, direct Pointer Events movement and direct Pointer Events resize are now merged.
-- Direct resize preview is transient controller/render state; pointerup emits one revision-checked canonical `object.transform` scale patch; pointercancel discards transient resize state and rerenders canonical truth; undo restores prior canonical scale.
-- The selected stroke exposes a visible accessible SVG resize handle. Mouse/touch/pen share Pointer Events.
+- Visible white SVG artboard, canonical drawing/rerender, visible/keyboard undo-redo, selection, numeric transforms/scale/flip, keyboard movement, direct Pointer Events movement and direct Pointer Events resize are merged and green.
+- Direct movement/resize previews are transient controller/render state; release emits one revision-checked canonical `object.transform`; cancellation rerenders canonical truth; undo restores prior canonical state.
 - No editor SDK/vendor has been selected.
 
 ## Work completed this run
-- Refreshed main, branches, open PRs, CI/workflow evidence and current authority documents.
-- Read current main STATE and newer PR #11 branch STATE; newer branch handoff superseded stale main handoff for the active increment.
-- Inspected PR #11 changed paths and focused browser-editor regression.
-- Verified exact PR head CI SUCCESS and mergeability.
-- Squash-merged PR #11 with expected-head protection.
-- Updated durable handoff state on main.
+- Refreshed current main, branches, open PRs/issues, recent workflow evidence, authority manifest, autopilot contract, product specification, technology/base-selection authority, company/bootstrap doctrine, browser editor and focused browser regression.
+- Confirmed exact merged-feature and current-main CI success.
+- Created `mvp/checkpoint-1-direct-rotate` from exact current main and took the bounded implementation lease.
 
 ## Productive fallback
-Not used; primary verification/integration path was available.
+Not used; primary implementation path is available.
 
 ## Verification evidence
-- PR #10 merged-main SHA `37f14d4a6a6de071a233868a4755a550eeac5e52`: push workflow `35874528736` SUCCESS per Driver A handoff.
-- PR #11 exact head `48e6bc7ca6b9a680a0f196cca763f315290f08bd`: workflow `35878545869` SUCCESS.
-- PR #11 merge commit: `80de7a066fac356815ad7ac237672fe2e2c5fd9e`.
-- Post-merge workflow for exact merge SHA had not surfaced when checked immediately after merge; do not claim merged-feature main green until an exact-head push workflow succeeds.
+- PR #11 exact head `48e6bc7ca6b9a680a0f196cca763f315290f08bd`: workflow `35878545869` SUCCESS (durable prior handoff).
+- PR #11 merged feature `80de7a066fac356815ad7ac237672fe2e2c5fd9e`: push workflow `35882384859` SUCCESS.
+- Current main `5c1cc5065d6e827fb7a21f60bba025502b4e6db8`: push workflow `35882453337` SUCCESS.
 
 ## Blockers
-- First recheck exact merged-feature CI for `80de7a066fac356815ad7ac237672fe2e2c5fd9e`.
-- Q08 still requires direct rotate equivalence.
+- Q08 direct rotate equivalence remains to be implemented and independently verified.
 
 ## Owner decisions required
 None.
 
 ## Next highest-leverage task
-Driver A: FIRST verify exact merged-feature CI for `80de7a066fac356815ad7ac237672fe2e2c5fd9e`. If green and no newer conflicting lease exists, take one bounded Q08 direct-rotate increment. Use ephemeral pointer/touch gesture preview only; commit exactly one revision-checked canonical `object.transform` rotation on release; cancellation must rerender canonical truth; undo must restore prior rotation; preserve the existing numeric rotation alternative and stable object/revision identity.
+Driver A: implement the smallest direct pointer/touch rotate transaction through the existing canonical host: visible accessible rotate handle, transient angular preview, exactly one revision-checked canonical `object.transform` rotation on release, pointercancel recovery, projection rerender and undo regression. Preserve numeric rotation and stable object/revision identity.
 
 ## Continuation prompt
-Driver A: refresh current main, branches, PRs/leases and exact merged-feature CI for `80de7a066fac356815ad7ac237672fe2e2c5fd9e` first. PR #11 exact head `48e6bc7ca6b9a680a0f196cca763f315290f08bd` was independently inspected and VERIFIED GREEN in workflow `35878545869`, then squash-merged. Do not claim merged-main green until an exact workflow for the merge SHA succeeds. If green and clear, take the smallest bounded Q08 direct-rotate increment through the existing canonical host: transient pointer/touch preview, one revision-checked canonical rotation commit, pointercancel recovery, projection rerender and undo regression, while retaining numeric rotation. Do not begin Checkpoint 2 or select an editor/vendor.
+Driver A owns the active bounded direct-rotate lease on `mvp/checkpoint-1-direct-rotate`. Implement and verify only that increment, then open a PR, record exact evidence and release to Driver B. Do not begin Checkpoint 2 or select an editor/vendor.
