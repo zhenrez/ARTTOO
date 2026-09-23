@@ -1,7 +1,6 @@
 import { createHash, randomUUID } from 'node:crypto';
 
 export const SCHEMA_VERSION = 1;
-
 const clone = (value) => structuredClone(value);
 const now = () => new Date().toISOString();
 const id = (prefix) => `${prefix}_${randomUUID()}`;
@@ -9,23 +8,7 @@ const id = (prefix) => `${prefix}_${randomUUID()}`;
 export function createProject({ ownerId, name = 'Untitled project' }) {
   if (!ownerId) throw new Error('ownerId is required');
   const timestamp = now();
-  return {
-    schemaVersion: SCHEMA_VERSION,
-    projectId: id('project'),
-    ownerId,
-    name,
-    revision: 0,
-    createdAt: timestamp,
-    updatedAt: timestamp,
-    artboards: [],
-    assets: {},
-    objects: {},
-    bodyTargets: {},
-    placements: {},
-    reviews: {},
-    exports: {},
-    history: []
-  };
+  return { schemaVersion: SCHEMA_VERSION, projectId: id('project'), ownerId, name, revision: 0, createdAt: timestamp, updatedAt: timestamp, artboards: [], assets: {}, objects: {}, bodyTargets: {}, placements: {}, reviews: {}, exports: {}, history: [] };
 }
 
 export function importAsset(project, { bytes, mimeType, width, height, provenance, licenseRef = null }) {
@@ -33,9 +16,8 @@ export function importAsset(project, { bytes, mimeType, width, height, provenanc
   const existing = Object.values(project.assets).find((asset) => asset.checksum === checksum);
   if (existing) return { project, assetId: existing.assetId, deduplicated: true };
   const assetId = id('asset');
-  const asset = Object.freeze({ assetId, checksum, mimeType, width, height, provenance, licenseRef, immutable: true });
   const next = clone(project);
-  next.assets[assetId] = asset;
+  next.assets[assetId] = { assetId, checksum, mimeType, width, height, provenance, licenseRef, immutable: true };
   return { project: commit(next, project, 'asset.import', { assetId, checksum }), assetId, deduplicated: false };
 }
 
@@ -52,15 +34,7 @@ export function applyCommand(project, command) {
       const artboard = next.artboards.find((item) => item.artboardId === command.artboardId);
       if (!artboard) throw new Error('artboard not found');
       const objectId = command.objectId ?? id('object');
-      next.objects[objectId] = {
-        objectId,
-        type: command.objectType ?? 'image',
-        sourceAssetId: command.assetId,
-        transform: { x: 0, y: 0, scaleX: 1, scaleY: 1, rotationDeg: 0 },
-        masks: [],
-        visible: true,
-        locked: false
-      };
+      next.objects[objectId] = { objectId, type: command.objectType ?? 'image', sourceAssetId: command.assetId, transform: { x: 0, y: 0, scaleX: 1, scaleY: 1, rotationDeg: 0 }, masks: [], visible: true, locked: false };
       artboard.objectIds.push(objectId);
       return commit(next, project, command.type, { objectId, artboardId: artboard.artboardId });
     }
@@ -72,38 +46,23 @@ export function applyCommand(project, command) {
     }
     case 'body.add': {
       const bodyTargetId = command.bodyTargetId ?? id('body');
-      next.bodyTargets[bodyTargetId] = {
-        bodyTargetId,
-        kind: command.kind,
-        sourceAssetId: command.sourceAssetId ?? null,
-        coordinateFrame: command.coordinateFrame,
-        calibration: command.calibration ?? null,
-        uncertainty: command.uncertainty ?? 'unmeasured'
-      };
+      next.bodyTargets[bodyTargetId] = { bodyTargetId, kind: command.kind, sourceAssetId: command.sourceAssetId ?? null, coordinateFrame: command.coordinateFrame, calibration: command.calibration ?? null, uncertainty: command.uncertainty ?? 'unmeasured' };
       return commit(next, project, command.type, { bodyTargetId });
     }
     case 'placement.set': {
       if (!next.objects[command.objectId]) throw new Error('object not found');
       if (!next.bodyTargets[command.bodyTargetId]) throw new Error('body target not found');
       const placementId = command.placementId ?? id('placement');
-      next.placements[placementId] = {
-        placementId,
-        objectId: command.objectId,
-        designRevision: project.revision,
-        bodyTargetId: command.bodyTargetId,
-        frame: command.frame,
-        physicalSizeMm: command.physicalSizeMm ?? null,
-        deformation: command.deformation ?? null
-      };
+      next.placements[placementId] = { placementId, objectId: command.objectId, designRevision: project.revision, bodyTargetId: command.bodyTargetId, frame: command.frame, physicalSizeMm: command.physicalSizeMm ?? null, deformation: command.deformation ?? null };
       return commit(next, project, command.type, { placementId });
     }
     case 'review.approve': {
       const reviewId = command.reviewId ?? id('review');
-      next.reviews[reviewId] = { reviewId, revision: project.revision, authorId: command.authorId, status: 'approved', createdAt: now() };
-      return commit(next, project, command.type, { reviewId });
+      const approvedRevision = project.revision + 1;
+      next.reviews[reviewId] = { reviewId, revision: approvedRevision, authorId: command.authorId, status: 'approved', createdAt: now() };
+      return commit(next, project, command.type, { reviewId, approvedRevision });
     }
-    default:
-      throw new Error(`unsupported command: ${command.type}`);
+    default: throw new Error(`unsupported command: ${command.type}`);
   }
 }
 
@@ -111,17 +70,12 @@ export function isApprovalCurrent(project, reviewId) {
   const review = project.reviews[reviewId];
   return Boolean(review && review.status === 'approved' && review.revision === project.revision);
 }
-
-export function serializeProject(project) {
-  return JSON.stringify(project);
-}
-
+export function serializeProject(project) { return JSON.stringify(project); }
 export function reopenProject(serialized) {
   const project = JSON.parse(serialized);
   if (project.schemaVersion !== SCHEMA_VERSION) throw new Error(`unsupported schemaVersion: ${project.schemaVersion}`);
   return project;
 }
-
 function commit(next, previous, type, detail) {
   next.revision = previous.revision + 1;
   next.updatedAt = now();
