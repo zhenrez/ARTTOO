@@ -1,58 +1,57 @@
 # ARTTOO MVP Autopilot State
 
-**Updated:** 2026-09-23T01:03Z
+**Updated:** 2026-09-23T02:01Z
 **Canonical repository:** `zhenrez/ARTTOO`
 **Main head observed:** `5c47fa4d5100a19165607e80e8413423dd27c008`
 **Working branch:** `mvp/checkpoint-0-document-core`
-**Working head before this state update:** `d7c18cb439afb5432ab6dc2fd838c5c87cad5479`
+**Working implementation head before this state update:** `f31fb498001ef469078966a6686c4baebb507c77`
 **Pull request:** #2 — `MVP checkpoint 0: bootstrap canonical document core`
 
 ## Verified completed gates
-- None yet. Checkpoint 0 remains open until executable verification is green and the scaffold is accepted on `main`.
+- None yet. Checkpoint 0 remains open until the current PR head has green executable verification and the baseline is accepted on `main`.
 
 ## Current open gate
 - **Checkpoint 0 — establish/recover and baseline the real application.**
 
 ## Verified repository/application state
-- `main` authority bootstrap is verified at `5c47fa4d5100a19165607e80e8413423dd27c008`.
-- Before this increment, no application scaffold existed in the canonical repository.
-- No prior implementation was claimed as recovered; this increment is explicitly **new bootstrap code**.
+- `main` remains the authority bootstrap at `5c47fa4d5100a19165607e80e8413423dd27c008`.
+- No prior application implementation is claimed as recovered; PR #2 is explicitly new bootstrap code.
+- PR #2 was open and mergeable when inspected.
+- GitHub Actions workflow `verify` run `35804674631` completed **success** against prior PR head `d79f5978a0bc23e3f429750fb53aff2c1995b402`.
+- The branch has since advanced; success on the prior head does not prove the current head.
 
 ## Work in PR #2
-- Added zero-runtime-dependency Node package scaffold.
-- Added schema-versioned canonical Project state and command-only mutation seam.
-- Added checksum-addressed immutable source assets with deduplication.
-- Added stable artboard/design/body/placement/review identities.
-- Kept body placement separate from source-art transforms.
-- Added exact-revision approval semantics and stale-after-edit check.
-- Added JSON save/reopen round-trip.
-- Added four regression tests and GitHub Actions verification.
+- Existing: zero-runtime-dependency Node scaffold; schema-versioned canonical Project state; command-only mutation; checksum-addressed immutable assets; stable identities; placement separated from art transforms; exact-revision approval; JSON save/reopen; regression tests and CI.
+- This run: added `src/local-draft.js`, a renderer/editor-independent Web Storage-compatible persistence adapter.
+- This run: added regression tests proving semantic save/reopen of source identity, body calibration and placement, plus explicit absent/removed-draft behavior.
+- Corrected the adapter to use `TextEncoder` rather than Node `Buffer` for browser portability.
 
 ## Verification evidence
-- Static repository evidence: branch head `d7c18cb439afb5432ab6dc2fd838c5c87cad5479` contains package, core, tests and workflow; PR #2 targets `main`.
-- Local execution attempt was blocked because the automation container could not resolve `github.com`; this is an environment/network limitation, not a passing test.
-- GitHub Actions run was not yet visible immediately after PR creation. **Do not claim tests green until a workflow run reports success.**
+- Prior head `d79f5978a0bc23e3f429750fb53aff2c1995b402`: GitHub Actions `verify` run `35804674631`, conclusion `success`.
+- Current implementation head before state update: `f31fb498001ef469078966a6686c4baebb507c77`.
+- No workflow run was yet visible for `f31fb498...` immediately after the push. Therefore current-head tests are **pending**, not green.
 
 ## First-order checkpoint answers
-1. Last verified state: authority-only `main` at `5c47fa4...`; scaffold exists only on PR #2 branch pending executable verification.
+1. Last verified executable state: PR #2 head `d79f5978...` passed repository-native CI; current branch has newer unverified persistence commits.
 2. Open gate: Checkpoint 0.
-3. Bottleneck: obtain executable proof that the new canonical document seam passes its regression suite.
-4. Critical path: yes; every later editor/body/approval adapter depends on canonical state and lineage.
-5. Closing evidence: green `npm run check` in repository-native CI plus review of PR #2 diff.
-6. Smallest reversible implementation: the zero-dependency document core already proposed in PR #2.
-7. Cost: $0 using Node standard library and GitHub Actions allowance.
-8. Duplicate state/export-reimport/provider lock-in: none introduced; editor/provider serialization is deliberately excluded.
-9. Reuse: defer editor SDK choice until this seam is verified; candidate editor must adapt to it rather than own state.
-10. Owner authority: none required for branch/PR/test work; do not merge until verified.
+3. Bottleneck: green executable evidence for the current branch head, then acceptance of the baseline on `main`.
+4. Critical path: yes; semantic persistence is required before editor adapters can safely own UI without owning project truth.
+5. Closing evidence: green `npm run check` on the current PR head, followed by invariant review/merge under repository policy.
+6. Smallest reversible implementation: Web Storage-compatible adapter over canonical serialization; completed this run.
+7. Cost: $0; standard Web APIs/Node test runner/GitHub Actions.
+8. Duplicate state/export-reimport/provider lock-in: none introduced; storage contains canonical serialization only.
+9. Reuse: native Web Storage seam is sufficient for checkpoint-0 draft proof; editor SDK selection remains deferred.
+10. Owner authority: none for branch/test work. Do not autonomously merge consequential changes.
 
 ## Blockers
-- CI result for PR #2 not yet available at this update.
+- Current-head CI result is pending.
+- Checkpoint 0 cannot be called complete while implementation remains only on the PR branch.
 
 ## Owner decisions required
-- None.
+- None currently.
 
 ## Next highest-leverage task
-Inspect PR #2 workflow result. If green, review the diff for invariant violations and then advance Checkpoint 0 toward a minimal browser shell/persistence adapter without selecting a heavyweight editor yet. If red, fix the failing test/core behavior first.
+Inspect CI for the latest PR #2 head. If red, repair immediately. If green, audit the full PR against canonical invariants and Q26 save/reload semantics. Then prepare the baseline for acceptance/merge; only after baseline acceptance should Checkpoint 1 begin with the smallest browser editing shell that dispatches canonical commands rather than storing renderer state.
 
 ## Continuation prompt
-Resume from PR #2 on `mvp/checkpoint-0-document-core`. Read `AUTHORITY.md` and this state file, verify current `main` and PR head, then inspect GitHub Actions for the latest PR commit. Do not claim Checkpoint 0 complete without green executable evidence. Fix any CI failure before adding features. If green, audit the document seam against immutable source identity, save/reopen fidelity, placement separation and exact-revision approval, then implement the smallest browser/local-draft adapter needed to exercise the same commands without introducing editor-owned canonical state.
+Resume PR #2 on `mvp/checkpoint-0-document-core`. Read `AUTHORITY.md` and this state first. Verify current `main`, PR head and GitHub Actions. Treat the successful run on `d79f5978...` as evidence only for that older head. Require green CI for the latest head. If green, audit immutable source identity, semantic save/reopen, body-placement separation and exact-revision approval semantics, then prepare Checkpoint 0 baseline acceptance without introducing an editor SDK or second source of truth. If red, fix the failure before any feature work.
