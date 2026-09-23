@@ -1,0 +1,3191 @@
+[
+  {
+    "id": "CAP-001",
+    "domain": "Body visualization",
+    "names": [
+      "Static Image Visualization"
+    ],
+    "phase": "F",
+    "behavior": "Upload a body image, choose the target region, add a transparent design and manipulate it on a locked photo; show fit, mask and calibration controls beside the result.",
+    "boundary": "Preserve the original photo; label manual/assisted fit and uncalibrated size.",
+    "acceptance": "Save and reopen two placements with identical orientation, scale, masks and source revision.",
+    "source_refs": [
+      "S1:11",
+      "S2:9"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-002",
+    "domain": "Body visualization",
+    "names": [
+      "Skin Contour Mapping",
+      "Angle Warping"
+    ],
+    "phase": "F/R",
+    "behavior": "Propose a region surface/warp, preview control mesh and allow anchor correction; update projection as the user changes design orientation, including wrap-around layouts.",
+    "boundary": "A planar transform is not sufficient for arbitrary curved skin; flag unsupported/unseen surfaces and self-intersections.",
+    "acceptance": "A sleeve fixture stays continuous across supported views and seams; anchor edits change geometry rather than only overlay position.",
+    "source_refs": [
+      "S1:12",
+      "S1:14",
+      "S2:10",
+      "S2:12",
+      "S3:2618"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-003",
+    "domain": "Body visualization",
+    "names": [
+      "Realistic Relighting",
+      "Lighting Condition Simulation",
+      "Dynamic Lighting Studio",
+      "Time-of-Day Simulation"
+    ],
+    "phase": "X",
+    "behavior": "Choose original lighting or named light rigs; adjust direction, strength, warmth and contrast with original/preview comparison and saved settings.",
+    "boundary": "Camera exposure and material assumptions remain visible; avoid modifying the source artwork palette silently.",
+    "acceptance": "Switching light presets alters shading consistently while preserving design shape, selected ink values and repeatable scenario parameters.",
+    "source_refs": [
+      "S1:13",
+      "S1:27",
+      "S1:28",
+      "S1:260",
+      "S2:11",
+      "S2:25",
+      "S2:26",
+      "S2:223"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-004",
+    "domain": "Body visualization",
+    "names": [
+      "Live AR Visualization",
+      "AR Anchoring"
+    ],
+    "phase": "X",
+    "behavior": "Select camera/body region, acquire tracking, attach placement, show confidence, lock/unlock, pause for editing and capture; retain full shared tool access.",
+    "boundary": "Denial, unsupported camera, occlusion and track loss produce recoverable states; remote processing requires consent.",
+    "acceptance": "Camera denial recovers to photo/avatar; controlled motion and occlusion meet the supported-device tracking gate without floating artwork.",
+    "source_refs": [
+      "S1:15",
+      "S1:70",
+      "S2:13",
+      "S2:64"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-005",
+    "domain": "Body visualization",
+    "names": [
+      "Recorded Video AR"
+    ],
+    "phase": "X",
+    "behavior": "Record or import video, trim a range, track the chosen region, inspect frame failures, correct keyframes, compare versions and export a timestamped clip.",
+    "boundary": "Detect scene cuts and variable frame rate; unsupported frames remain marked, not interpolated as reliable observations.",
+    "acceptance": "A clip with occlusion/cut retains edits and timestamps; exporting and reopening never applies a later-frame correction to the wrong frame.",
+    "source_refs": [
+      "S1:16",
+      "S2:14"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-006",
+    "domain": "Body visualization",
+    "names": [
+      "Ink Representation",
+      "Skin Tone Adaptation"
+    ],
+    "phase": "F/R",
+    "behavior": "Display tattoo colors over a diverse skin reference set using explicit blend/material parameters; keep selected ink palette separate from display adaptation.",
+    "boundary": "Do not infer ethnicity or claim calibrated real-ink response from a screen preview.",
+    "acceptance": "Review color/contrast preservation across consented skin-tone and lighting fixtures; record per-group failure rates and uncertainty.",
+    "source_refs": [
+      "S1:17",
+      "S1:24",
+      "S2:15",
+      "S2:22"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-007",
+    "domain": "Body visualization",
+    "names": [
+      "Image Size Standardization"
+    ],
+    "phase": "F",
+    "behavior": "Read decoded pixel dimensions, orientation, profile and alpha; create optimized preview assets while retaining original resolution and aspect ratio.",
+    "boundary": "Normalization changes working representation, not silently the requested physical tattoo size.",
+    "acceptance": "Portrait EXIF images, huge transparent PNGs and mixed-DPI imports retain correct orientation, proportions and source originals.",
+    "source_refs": [
+      "S1:18",
+      "S2:16"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-008",
+    "domain": "Body visualization",
+    "names": [
+      "Background Removal Solution"
+    ],
+    "phase": "F",
+    "behavior": "Inspect transparency on upload; run chosen remover when needed; show checkerboard and body preview with add/subtract mask refinement and restore original.",
+    "boundary": "Preserve intentional white ink and partial alpha; never treat a PNG extension or success toast as proof of removal.",
+    "acceptance": "White-background JPEG, white-ink PNG and feathered strokes export with correct alpha and survive re-import.",
+    "source_refs": [
+      "S1:19",
+      "S2:17",
+      "S3:1008"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-009",
+    "domain": "Body visualization",
+    "names": [
+      "Segmentation and Color Variation"
+    ],
+    "phase": "F/X",
+    "behavior": "Select a component by click, box, brush or optional description; refine/invert/feather its mask, recolor or move it into an independent layer.",
+    "boundary": "Model output is an editable proposal; show no-result/ambiguous selection and preserve all unselected art.",
+    "acceptance": "Select one petal in a multicolor design, recolor only that petal, undo, save and reopen with the mask intact.",
+    "source_refs": [
+      "S1:20",
+      "S2:18"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-010",
+    "domain": "Body visualization",
+    "names": [
+      "Capture/Save Functionality"
+    ],
+    "phase": "F",
+    "behavior": "Save the editable document and independently capture current-view image/video with resolution, background and privacy options; show local/cloud status.",
+    "boundary": "Screenshot/export and editable Save are distinct; quota/offline failures never erase the active document.",
+    "acceptance": "Capture excludes handles/tool overlays; reopen retains editable objects and placements after interrupted synchronization.",
+    "source_refs": [
+      "S1:21",
+      "S2:19"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-011",
+    "domain": "Body visualization",
+    "names": [
+      "Avatar-based Visualization"
+    ],
+    "phase": "F",
+    "behavior": "Open the same project on a generic or personal avatar, orbit/pan/zoom, choose body side and pose, place and edit artwork directly on its surface.",
+    "boundary": "Keep camera navigation distinct from placement transforms; unavailable model/texture assets have retry/fallback.",
+    "acceptance": "Orbiting changes the view only; modifying design updates the avatar while source layers remain editable.",
+    "source_refs": [
+      "S1:22",
+      "S2:20"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-012",
+    "domain": "Body visualization",
+    "names": [
+      "Multi-angle Visualization"
+    ],
+    "phase": "F/X",
+    "behavior": "Compare registered photos or synchronized avatar cameras showing one placement; annotate occluded/unmatched regions and save camera presets.",
+    "boundary": "Independent unregistered photos cannot be represented as a verified common coordinate system.",
+    "acceptance": "A selected motif retains region/side across views; an unmatched photo is visibly excluded from confident fit comparisons.",
+    "source_refs": [
+      "S1:23",
+      "S2:21"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-013",
+    "domain": "Body visualization",
+    "names": [
+      "Texture Simulation",
+      "Seasonal Appearance Changes"
+    ],
+    "phase": "X/R",
+    "behavior": "Create reversible skin-display scenarios for texture, hair/scars/stretch marks and tanning/paleness; show original beside the scenario.",
+    "boundary": "Scenarios illustrate appearance, not predict biological change; do not alter saved personal identity attributes automatically.",
+    "acceptance": "Reset restores the original image/skin material; scenario exports include changed parameters and illustrative label.",
+    "source_refs": [
+      "S1:25",
+      "S1:26",
+      "S2:23",
+      "S2:24"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-014",
+    "domain": "Body visualization",
+    "names": [
+      "Size Comparison Tools",
+      "Size Calibration"
+    ],
+    "phase": "F",
+    "behavior": "Enter physical dimensions or calibrate against a known reference, compare sizes/common objects and print a scale ruler; keep mm/inch conversion visible.",
+    "boundary": "Reference perspective and uncertainty must be recorded; no known scale means no precise physical claim.",
+    "acceptance": "Round-trip unit conversion and exact-size export preserve dimensions; missing calibration produces a visible unresolved field.",
+    "source_refs": [
+      "S1:29",
+      "S1:120",
+      "S2:27",
+      "S2:108"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-015",
+    "domain": "Body visualization",
+    "names": [
+      "Pain Meter Visualization"
+    ],
+    "phase": "R",
+    "behavior": "Toggle an educational region heat map, inspect sources/variation and record personal notes or practitioner advice separately.",
+    "boundary": "No personal pain score inferred as fact; release only with reviewed content and limits.",
+    "acceptance": "Legend explains variability; disabling the map removes it from exports and never changes placement or booking eligibility.",
+    "source_refs": [
+      "S1:30",
+      "S2:28"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-016",
+    "domain": "Body visualization",
+    "names": [
+      "Edge Handling"
+    ],
+    "phase": "F",
+    "behavior": "Show skin and ink masks separately; adjust feathering, spill suppression and occlusion boundaries using a zoomed edge preview.",
+    "boundary": "Avoid deleting fine linework or clipping foreground white ink to remove a background.",
+    "acceptance": "Hair/skin edge and fine-line fixtures retain intended foreground while suppressing outside-region ink; undo restores mask.",
+    "source_refs": [
+      "S1:31",
+      "S2:29"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-017",
+    "domain": "Body visualization",
+    "names": [
+      "Body Movement Simulation",
+      "Motion Visualization"
+    ],
+    "phase": "X/R",
+    "behavior": "Select a pose/movement sequence, scrub or play, inspect stretch/compression and compare neutral pose with movement.",
+    "boundary": "Rig simulation is illustrative unless fitted to validated personal motion; flag severe distortion.",
+    "acceptance": "Joint-flex sequence retains placement identity and shows distortion/seam warnings; source art remains unchanged.",
+    "source_refs": [
+      "S1:32",
+      "S1:257",
+      "S2:30",
+      "S2:220"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-018",
+    "domain": "Body visualization",
+    "names": [
+      "Parametric Avatars",
+      "Body Type Diversity"
+    ],
+    "phase": "F",
+    "behavior": "Provide editable height/proportion/limb/circumference controls, region presets, neutral view and texture choices; allow custom rather than only stereotyped bodies.",
+    "boundary": "Label the result as generalized; do not infer exact geometry from weight alone.",
+    "acceptance": "Extreme supported proportions retain valid mesh and placement; changing shape prompts whether physical size or relative coverage should be preserved.",
+    "source_refs": [
+      "S1:44",
+      "S1:48",
+      "S2:40",
+      "S2:44",
+      "S4:9026"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-019",
+    "domain": "Body visualization",
+    "names": [
+      "Photogrammetric Models"
+    ],
+    "phase": "R",
+    "behavior": "Guided region capture checks overlap, blur, lighting and coverage; reconstruct asynchronously, review defects and explicitly accept a retargeted version.",
+    "boundary": "Scans can fail; preserve previous target. Separate measured surfaces from inferred holes and require consent for processing.",
+    "acceptance": "A known measured object/body-region fixture passes scale/seam tests; poor capture is rejected with actionable recapture guidance.",
+    "source_refs": [
+      "S1:45",
+      "S2:41"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-020",
+    "domain": "Body visualization",
+    "names": [
+      "MetaHuman Integration"
+    ],
+    "phase": "R",
+    "behavior": "Import or generate an eligible compatible target through an isolated adapter; map anatomy/UVs and preserve project placements on reviewed retargeting.",
+    "boundary": "Licensing, runtime size and accurate personal fit are separate gates; photorealism alone is insufficient.",
+    "acceptance": "Representative project opens on both base avatar and candidate model with measured placement differences and documented unsupported regions.",
+    "source_refs": [
+      "S1:46",
+      "S2:42"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-021",
+    "domain": "Body visualization",
+    "names": [
+      "Universal Body Map"
+    ],
+    "phase": "F",
+    "behavior": "Maintain versioned region/side UV maps linked to 3D targets, editable source textures, seam markers and placement anchors.",
+    "boundary": "Retarget new topology explicitly; one UV convention is not universal compatibility.",
+    "acceptance": "Known landmarks map 2D→3D→2D within tolerance; seam-crossing artwork remains continuous on supported models.",
+    "source_refs": [
+      "S1:47",
+      "S2:43",
+      "S4:8247"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-022",
+    "domain": "Body visualization",
+    "names": [
+      "Aging Simulation"
+    ],
+    "phase": "R",
+    "behavior": "Offer named illustrative aging scenarios with editable assumptions, preserved original, side-by-side views and saved artist notes.",
+    "boundary": "No personal year-by-year forecast until longitudinal evidence exists; never infer a guaranteed outcome from age slider position.",
+    "acceptance": "Every shared scenario retains assumptions and label; artist can reject it without changing the source tattoo plan.",
+    "source_refs": [
+      "S1:52",
+      "S2:47"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-023",
+    "domain": "Body visualization",
+    "names": [
+      "Cover-up Visualization",
+      "Cover-up Potential Analysis"
+    ],
+    "phase": "F/R",
+    "behavior": "Lock the existing-tattoo reference, layer proposals with coverage/contrast comparison and allow artist annotations, alternatives and original/retouched views.",
+    "boundary": "Cover-up feasibility is a professional judgment; preview does not guarantee concealment or require removal.",
+    "acceptance": "Original evidence remains recoverable; exported plan distinguishes proposed new ink from existing tattoo and retouched-only scenarios.",
+    "source_refs": [
+      "S1:53",
+      "S1:239",
+      "S2:48",
+      "S2:196"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-024",
+    "domain": "Body visualization",
+    "names": [
+      "Ink Type Rendering",
+      "White Ink Simulator"
+    ],
+    "phase": "X/R",
+    "behavior": "Select labeled conventional, white, UV-reactive or specialty-ink display modes, palette/intensity and light conditions; compare on chosen skin references.",
+    "boundary": "Material behavior and safety are unverified unless supported by a validated library; UV mode is not ordinary-light appearance.",
+    "acceptance": "Ink/light mode combinations are retained in exports and cannot be mistaken for a measured physical prediction.",
+    "source_refs": [
+      "S1:54",
+      "S1:259",
+      "S2:49",
+      "S2:222"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-025",
+    "domain": "Body visualization",
+    "names": [
+      "Healing Process Preview",
+      "Recovery Calculator"
+    ],
+    "phase": "R",
+    "behavior": "Show reviewed educational healing stages and a planning range with stated inputs, sources and practitioner notes; keep booking separate.",
+    "boundary": "No diagnosis, treatment recommendation or individualized healing assurance from images.",
+    "acceptance": "Incomplete/unsupported inputs yield no precise estimate; final display names assumptions and route to professional review.",
+    "source_refs": [
+      "S1:55",
+      "S1:58",
+      "S2:50",
+      "S2:53"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-026",
+    "domain": "Body visualization",
+    "names": [
+      "Realistic Blending Modes"
+    ],
+    "phase": "F",
+    "behavior": "Provide Normal, Multiply, Screen, Overlay and tested advanced modes with opacity preview, explanation and reversible per-layer state.",
+    "boundary": "Artistic blend names do not imply physical ink accuracy; preserve source colors.",
+    "acceptance": "Saved/reopened and exported reference patches match the chosen blend implementation; white/colored inks do not disappear unexpectedly.",
+    "source_refs": [
+      "S1:56",
+      "S2:51"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-027",
+    "domain": "Body visualization",
+    "names": [
+      "Color Customization Studio"
+    ],
+    "phase": "F",
+    "behavior": "Separate fill, stroke and ink palette; provide picker, hex/RGB/alpha, eyedropper, gradients, saved/recent palettes and side-by-side skin preview.",
+    "boundary": "Out-of-gamut or uncalibrated print/display differences remain visible; no automatic recoloring without preview.",
+    "acceptance": "Typing a color, using a swatch and sampling converge on identical stored values and undo behavior.",
+    "source_refs": [
+      "S1:57",
+      "S2:52"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-028",
+    "domain": "Body visualization",
+    "names": [
+      "Design Evolution Timeline"
+    ],
+    "phase": "F",
+    "behavior": "Name revisions, preview differences, branch alternatives, compare body scenarios and restore a copy; annotate why decisions changed.",
+    "boundary": "Restoring does not rewrite prior approvals, payments or other users' work.",
+    "acceptance": "Restored document matches its selected revision and dependent approvals clearly refer to the older version.",
+    "source_refs": [
+      "S1:59",
+      "S2:54"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-029",
+    "domain": "Input and identity",
+    "names": [
+      "Drag-and-Drop Placement",
+      "Mouse Controls",
+      "Real-time Adjustment"
+    ],
+    "phase": "F",
+    "behavior": "Drag from asset tray or move selection; show resize/rotate/pivot handles plus numeric controls and immediate projection updates. Wheel zooms viewport; modifier behavior is displayed.",
+    "boundary": "Distinguish viewport zoom from artwork scale; preserve aspect ratio by default and prevent accidental off-canvas loss.",
+    "acceptance": "Pointer and numeric placement produce the same result; one gesture creates one undo step.",
+    "source_refs": [
+      "S1:63",
+      "S1:66",
+      "S1:71",
+      "S2:57",
+      "S2:60",
+      "S2:65"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-030",
+    "domain": "Input and identity",
+    "names": [
+      "Multi-touch Gestures"
+    ],
+    "phase": "F",
+    "behavior": "Pinch zoom/scale, two-finger rotate, pan and tap-to-place with a clear active target; provide touch-size handles and cancel.",
+    "boundary": "Do not capture page scroll outside stage or silently transform art during two-finger navigation.",
+    "acceptance": "Gesture changes can be reproduced by accessible controls; interrupted touches leave valid geometry.",
+    "source_refs": [
+      "S1:64",
+      "S2:58"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-031",
+    "domain": "Input and identity",
+    "names": [
+      "Keyboard Shortcuts"
+    ],
+    "phase": "F",
+    "behavior": "Provide searchable/remappable action shortcuts, arrow nudges, shift increments, undo/redo, selection and command search.",
+    "boundary": "Text-entry fields keep normal typing shortcuts; shortcuts must not trap focus.",
+    "acceptance": "Keyboard-only user selects, transforms, orders layers, saves and exports without pointer dependence.",
+    "source_refs": [
+      "S1:65",
+      "S2:59"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-032",
+    "domain": "Input and identity",
+    "names": [
+      "Motion Controls"
+    ],
+    "phase": "X",
+    "behavior": "Offer device-orientation camera orbit or sensor-supported perspective only after permission; include recenter, sensitivity and off switch.",
+    "boundary": "Sensor motion is not proof of body tracking and may be unavailable.",
+    "acceptance": "Permission denial preserves ordinary touch controls; orientation drift can be reset without moving artwork.",
+    "source_refs": [
+      "S1:67",
+      "S2:61"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-033",
+    "domain": "Input and identity",
+    "names": [
+      "Voice Commands",
+      "Voice-to-Adjustment"
+    ],
+    "phase": "X",
+    "behavior": "Activate push-to-talk, show transcript and recognized action/target; adjust numeric or named properties with undo and optional confirmations.",
+    "boundary": "Never leave mic on implicitly; ambiguous, destructive or financial instructions require explicit review.",
+    "acceptance": "Misheard target is corrected before application; canceled command changes nothing and no recording persists without permission.",
+    "source_refs": [
+      "S1:68",
+      "S1:286",
+      "S2:62",
+      "S2:246"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-034",
+    "domain": "Input and identity",
+    "names": [
+      "Voice-to-Design"
+    ],
+    "phase": "X",
+    "behavior": "Dictate into the editable design brief, choose style/placement constraints, review recognized text, generate alternatives and insert one as a new asset.",
+    "boundary": "Voice input does not bypass rights, cost disclosure or generation consent.",
+    "acceptance": "Dictation errors can be corrected before charging; selected result retains prompt and source provenance.",
+    "source_refs": [
+      "S1:69",
+      "S2:63"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-035",
+    "domain": "Input and identity",
+    "names": [
+      "Multiple Profiles"
+    ],
+    "phase": "F",
+    "behavior": "One account switches among up to one client, one artist and one studio profile; show active context on uploads, messages, orders and settings.",
+    "boundary": "Authentication identity differs from organization membership and paid plan; prevent creation of a fourth role profile.",
+    "acceptance": "Switching role never grants private-project access or changes an order's recorded legal/economic party.",
+    "source_refs": [
+      "S1:75",
+      "S2:68"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-036",
+    "domain": "Input and identity",
+    "names": [
+      "Public/Private Sharing",
+      "Granular Permission System"
+    ],
+    "phase": "F",
+    "behavior": "Set private, named participants, restricted link or public per project/asset; choose view/comment/edit/download and revoke access.",
+    "boundary": "Default body media private; permission inheritance and derived export rights explicit.",
+    "acceptance": "A viewer cannot edit/export without permission, expired links fail, and public portfolio does not reveal private capture metadata.",
+    "source_refs": [
+      "S1:76",
+      "S1:80",
+      "S2:69",
+      "S2:73",
+      "S3:11752"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-037",
+    "domain": "Input and identity",
+    "names": [
+      "Backup & Restore"
+    ],
+    "phase": "F",
+    "behavior": "Local recoverable drafts, optional synchronized backups, version restore and portable export; show timestamp, scope and storage state.",
+    "boundary": "Moving this from Native-only to cross-platform is a recommendation; restoration of encrypted messages requires a separate key plan.",
+    "acceptance": "Recover a known revision after crash/deletion; partial restore reports missing assets instead of claiming success.",
+    "source_refs": [
+      "S1:77",
+      "S2:70"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-038",
+    "domain": "Input and identity",
+    "names": [
+      "Design Organization"
+    ],
+    "phase": "F",
+    "behavior": "Folders, collections, tags, search, favorites, recent files, archive and trash with restore; support multi-select move and stable references.",
+    "boundary": "Moving an asset does not break projects that reference it or transfer ownership.",
+    "acceptance": "Rename/move/archive keeps linked placements intact and search permissions correct.",
+    "source_refs": [
+      "S1:78",
+      "S2:71"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-039",
+    "domain": "Input and identity",
+    "names": [
+      "Import from Other Platforms"
+    ],
+    "phase": "F/X",
+    "behavior": "Accept documented PNG/JPEG/WebP/SVG/PDF exports from Procreate, Fresco and other tools; preview supported layers/fonts/effects and conversion loss.",
+    "boundary": "Native proprietary formats require an explicit tested importer; do not claim fidelity for unsupported project files.",
+    "acceptance": "A mixed import reports unsupported features, preserves originals and yields editable supported content with correct alpha.",
+    "source_refs": [
+      "S1:79",
+      "S2:72"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-040",
+    "domain": "Input and identity",
+    "names": [
+      "Tattoo Story Feature",
+      "Memory Vault"
+    ],
+    "phase": "C",
+    "behavior": "Attach optional meaning, milestones, photos and private journal entries to a tattoo/project with per-entry audience and export choices.",
+    "boundary": "Stories never become public from portfolio sharing or training consent by implication.",
+    "acceptance": "Export/share includes only selected entries; revoked recipient cannot retrieve later private notes.",
+    "source_refs": [
+      "S1:81",
+      "S1:270",
+      "S2:74",
+      "S2:232"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-041",
+    "domain": "Input and identity",
+    "names": [
+      "Style Match Quiz"
+    ],
+    "phase": "C",
+    "behavior": "Offer visual comparisons, skip/unsure/multiple choices and a revisable preference profile; show why recommendations match.",
+    "boundary": "Aesthetic preference is not psychological diagnosis or permanent identity.",
+    "acceptance": "Changing or deleting answers changes recommendations and removes associated personalization state as specified.",
+    "source_refs": [
+      "S1:82",
+      "S2:75"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-042",
+    "domain": "Input and identity",
+    "names": [
+      "Skin Type Analysis"
+    ],
+    "phase": "R",
+    "behavior": "Let users record skin concerns voluntarily and seek practitioner guidance; any image-assisted analysis needs a defined validated purpose.",
+    "boundary": "Do not diagnose conditions or infer treatment eligibility from a photo.",
+    "acceptance": "Unknown or unreliable analysis abstains; sensitive inputs remain separate from public profile and ads.",
+    "source_refs": [
+      "S1:83",
+      "S2:76"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-043",
+    "domain": "Marketplace and organization",
+    "names": [
+      "Studio Tiers (ST Levels)",
+      "Studio Tiers (ST)",
+      "ST1",
+      "ST2"
+    ],
+    "phase": "C",
+    "behavior": "Configure studio plans for team/branch management, POD/merchandise, marketing, branding, reports and support; show actual entitlements and effective prices.",
+    "boundary": "Historical ST1/ST2 names retained; exact benefits/pricing require reconciliation. Plan level cannot override client privacy.",
+    "acceptance": "Upgrade/downgrade preserves existing contracts and exposes a clear entitlement diff before confirmation.",
+    "source_refs": [
+      "S1:87",
+      "S1:178",
+      "S1:179",
+      "S1:180",
+      "S2:79"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-044",
+    "domain": "Marketplace and organization",
+    "names": [
+      "Artist Tiers (AT Levels)",
+      "Artist Tiers (AT)",
+      "AT1",
+      "AT2"
+    ],
+    "phase": "C",
+    "behavior": "Configure selling, scheduling, portfolio analytics, promotion, advanced exports and support by artist plan; show fee breakdown per offer.",
+    "boundary": "Historical 75% vs 90% artist shares are unresolved commercial terms, not silently adopted rates.",
+    "acceptance": "A plan change affects future quotes only; accepted split and payout records remain unchanged.",
+    "source_refs": [
+      "S1:88",
+      "S1:175",
+      "S1:176",
+      "S1:177",
+      "S2:80"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-045",
+    "domain": "Marketplace and organization",
+    "names": [
+      "User Tiers (UT Levels)",
+      "User Tiers (UT)",
+      "Free Tier",
+      "UT1",
+      "UT2"
+    ],
+    "phase": "C",
+    "behavior": "Display free and paid client benefits, compute credits, avatar/simulation access, discounts and storage/export limits before purchase.",
+    "boundary": "S3 also lists Basic/Premium/Elite; preserve that alternative. Recommend recovery drafts for all, explicitly challenging no-save history.",
+    "acceptance": "Exhausted entitlement explains alternatives and preserves work; a downgrade does not destroy prior files.",
+    "source_refs": [
+      "S1:89",
+      "S1:171",
+      "S1:172",
+      "S1:173",
+      "S1:174",
+      "S2:154"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-046",
+    "domain": "Marketplace and organization",
+    "names": [
+      "Non-Compete Clauses"
+    ],
+    "phase": "R",
+    "behavior": "Preserve requested ST2 affiliation-rule capability as versioned terms displayed before artist acceptance, with duration/scope and exit/dispute record.",
+    "boundary": "Do not implement automatic cross-studio work bans without jurisdiction/provider review; this is a business/legal gate.",
+    "acceptance": "No rule can silently alter already accepted work; affected artist sees applicable policy source and an appeal/contact route.",
+    "source_refs": [
+      "S1:90",
+      "S2:81"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-047",
+    "domain": "Marketplace and organization",
+    "names": [
+      "Cross-Studio Collaboration"
+    ],
+    "phase": "C",
+    "behavior": "Invite artists from different organizations to a project, assign scoped roles, contribution/license terms and allocation of proceeds.",
+    "boundary": "Each studio controls only its scoped membership/offering; cross-organization private data stays isolated.",
+    "acceptance": "Collaborators can edit agreed art and review allocation without reading another studio's unrelated client records.",
+    "source_refs": [
+      "S1:91",
+      "S2:82"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-048",
+    "domain": "Marketplace and organization",
+    "names": [
+      "Organizational Hierarchy",
+      "Policy Customization"
+    ],
+    "phase": "C",
+    "behavior": "Manage organizations, branches, staff roles, offer templates, commissions, revisions, deposits and cancellation policies with effective dates.",
+    "boundary": "Resolve platform obligations, accepted agreement and organization policy explicitly; no retroactive policy change.",
+    "acceptance": "Checkout and booking reproduce the exact accepted policy version after subsequent studio edits.",
+    "source_refs": [
+      "S1:92",
+      "S1:93",
+      "S2:83",
+      "S2:84",
+      "S4:738"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-049",
+    "domain": "Marketplace and organization",
+    "names": [
+      "Studio Virtual Tours"
+    ],
+    "phase": "X",
+    "behavior": "Publish consented panoramic/360-degree images with accessible room descriptions, controls, branch address and booking link.",
+    "boundary": "Never imply current sanitation/credentials from a tour; remove private people or sensitive areas.",
+    "acceptance": "Tour loads progressively, works without motion controls and routes to the correct branch's availability.",
+    "source_refs": [
+      "S1:94",
+      "S2:85"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-050",
+    "domain": "Marketplace and organization",
+    "names": [
+      "Design Browsing"
+    ],
+    "phase": "C",
+    "behavior": "Search/filter by style, artist, placement, dimensions, palette, license, price, availability and mature-content preference; open reusable preview into workspace.",
+    "boundary": "Distinguish sponsored results, sold/exclusive designs and algorithmic suggestions.",
+    "acceptance": "Combining filters yields accurate available licenses; opening preview retains attribution and correct download restrictions.",
+    "source_refs": [
+      "S1:98",
+      "S2:88"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-051",
+    "domain": "Marketplace and organization",
+    "names": [
+      "Artist Profiles",
+      "Portfolio Management"
+    ],
+    "phase": "C",
+    "behavior": "Public portfolio with organized work, healed/fresh labels, styles, location, services, rates, availability and verified-credential scope; manage media and privacy.",
+    "boundary": "Verification badges name what was checked; sample work ownership and client consent required.",
+    "acceptance": "A client finds relevant work and starts brief/booking; hidden or revoked media disappears from public access.",
+    "source_refs": [
+      "S1:99",
+      "S1:129",
+      "S2:89",
+      "S2:116"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-052",
+    "domain": "Marketplace and organization",
+    "names": [
+      "Custom Commissions",
+      "Commission Settings"
+    ],
+    "phase": "C",
+    "behavior": "Brief→proposal→quote with scope, price/currency, rights, milestones, included revisions and dates; negotiate changes as versioned offers.",
+    "boundary": "Accepting new terms requires both relevant parties; revision requests do not automatically change price.",
+    "acceptance": "Approved offer becomes an immutable agreement; declined/replaced proposals cannot initiate the wrong charge.",
+    "source_refs": [
+      "S1:100",
+      "S1:130",
+      "S2:90",
+      "S2:117"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-053",
+    "domain": "Marketplace and organization",
+    "names": [
+      "AI Recommendations",
+      "Seasonal Design Recommendations"
+    ],
+    "phase": "C/X",
+    "behavior": "Recommend designs/artists using explicit preferences and optional interactions; explain signals, reset preferences, mark seasonal/promoted content.",
+    "boundary": "No sensitive-body/health data used for targeting by default; cold start has manual filters.",
+    "acceptance": "Reset removes personalized ranking state; unavailable/blocked designs never reappear through recommendations.",
+    "source_refs": [
+      "S1:101",
+      "S1:103",
+      "S2:91",
+      "S2:93"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-054",
+    "domain": "Marketplace and organization",
+    "names": [
+      "Wishlist Functionality"
+    ],
+    "phase": "C",
+    "behavior": "Save designs, artists and collections with notes, availability alerts and optional shared lists.",
+    "boundary": "Saving does not reserve an exclusive license or permission to reproduce it.",
+    "acceptance": "Sold/deleted design stays visibly unavailable in a list without broken links or false purchase availability.",
+    "source_refs": [
+      "S1:102",
+      "S2:92"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-055",
+    "domain": "Marketplace and organization",
+    "names": [
+      "Limited Edition Drops"
+    ],
+    "phase": "X",
+    "behavior": "Schedule a release, display edition inventory, eligibility/time-zone and purchase limit, reserve briefly at checkout and issue a license record.",
+    "boundary": "Define what exclusivity covers; prevent bots/duplicate allocation and disclose reservation expiry.",
+    "acceptance": "Simultaneous purchases cannot allocate the same exclusive/numbered entitlement twice.",
+    "source_refs": [
+      "S1:104",
+      "S2:94"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-056",
+    "domain": "Marketplace and organization",
+    "names": [
+      "Design Auction System"
+    ],
+    "phase": "X/R",
+    "behavior": "Define eligible listing/license, opening/reserve terms, bid increments, end-time and anti-sniping policy; show bid/settlement history.",
+    "boundary": "Jurisdiction/provider eligibility and bidder obligations gate launch; failed settlement has a documented fallback.",
+    "acceptance": "Concurrent/end-boundary bids produce a deterministic winner; refunds and seller payout reconcile to the winning agreement.",
+    "source_refs": [
+      "S1:105",
+      "S2:95"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-057",
+    "domain": "Marketplace and organization",
+    "names": [
+      "Custom Flash Sheet Creator"
+    ],
+    "phase": "F/C",
+    "behavior": "Arrange motifs across physical artboards with labels, margins and prices/licenses, then export print/PDF or publish individual/bundle listings.",
+    "boundary": "A sheet can reference differently licensed designs; publishing requires each license to allow it.",
+    "acceptance": "Reordering sheet items preserves independent asset IDs and sale availability; print scale and attribution are correct.",
+    "source_refs": [
+      "S1:106",
+      "S2:96"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-058",
+    "domain": "Marketplace and organization",
+    "names": [
+      "Design Ownership Rules",
+      "Usage Limitations",
+      "Commercial vs. Personal Licenses"
+    ],
+    "phase": "C",
+    "behavior": "Offer readable license choices with rights to edit, apply to skin, print/POD, resell, promote and train separated; attach exact terms to purchase and derivatives.",
+    "boundary": "Copyright ownership and usage permission are distinct; commissioning does not silently transfer all rights.",
+    "acceptance": "Export/POD checks the relevant permitted use and records the accepted license version in the manifest.",
+    "source_refs": [
+      "S1:110",
+      "S1:111",
+      "S1:112",
+      "S2:99",
+      "S2:100",
+      "S2:101"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-059",
+    "domain": "Marketplace and organization",
+    "names": [
+      "Artist Copyright Protection",
+      "Watermarking Options",
+      "Rights Management"
+    ],
+    "phase": "C",
+    "behavior": "Preview watermarks, attribution, access controls, license receipts, provenance, reporting and a documented takedown/dispute workflow.",
+    "boundary": "Watermarking is deterrence, not absolute protection; never strip attribution from an export requiring it.",
+    "acceptance": "Removing a listing preserves existing valid license receipts; unauthorized original download is denied and audited.",
+    "source_refs": [
+      "S1:113",
+      "S1:114",
+      "S1:115",
+      "S2:102",
+      "S2:103",
+      "S2:104"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-060",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Material Options"
+    ],
+    "phase": "C",
+    "behavior": "Show supplier-verified temporary-tattoo materials, finish, wear guidance, supported colors, skin-use instructions, cost and production constraints.",
+    "boundary": "Historical Standard 1–3, Premium 3–7 and Waterproof 5–10 days are unverified supplier claims until validated; preserve them as candidate categories.",
+    "acceptance": "Out-of-stock/unsupported materials cannot be ordered; checkout snapshots the selected supplier specifications and artwork revision.",
+    "source_refs": [
+      "S1:119",
+      "S2:107"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-061",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Shipping Options"
+    ],
+    "phase": "C",
+    "behavior": "Quote standard/express/international shipping with destination, tracking, taxes/duties assumptions and dispatch/delivery estimates.",
+    "boundary": "Delivery estimate is not a guarantee; partial shipments, lost parcels and unsupported destinations are explicit states.",
+    "acceptance": "Address/rate changes recalculate before charge; tracking updates the correct fulfillment item and exception workflow.",
+    "source_refs": [
+      "S1:121",
+      "S2:109"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-062",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Differential Pricing",
+      "Discount System"
+    ],
+    "phase": "C",
+    "behavior": "Calculate member pricing, quantity/bundles and promotional codes with eligibility, expiry, stacking rules and full subtotal breakdown.",
+    "boundary": "Discounts cannot silently change artist royalty basis; define rounding and refund allocation.",
+    "acceptance": "Same cart/rules yield deterministic totals; expired/ineligible codes explain failure and partial refunds reverse the correct discount allocation.",
+    "source_refs": [
+      "S1:122",
+      "S1:215",
+      "S2:110",
+      "S2:175"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-063",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Artist Commissions"
+    ],
+    "phase": "C",
+    "behavior": "Attach artist/studio/platform royalty schedule to licensed POD or design sale, show amount/basis at checkout and accrue on eligible fulfillment.",
+    "boundary": "Distinguish royalty, commission fee and payout; returns and license cancellations follow snapshot rules.",
+    "acceptance": "One fulfilled order creates one allocation; a reprint or duplicate webhook cannot pay twice.",
+    "source_refs": [
+      "S1:123",
+      "S2:111"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-064",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Gift Cards",
+      "Gift Options"
+    ],
+    "phase": "C",
+    "behavior": "Buy a monetary voucher, usage-credit gift, design entitlement or POD delivery as distinct gift types; choose recipient message, scheduling and redemption.",
+    "boundary": "Currency, expiration, transferability, geography and unused-balance rules are explicit; never reveal a recipient's private body data.",
+    "acceptance": "Duplicate redemption fails safely; refunded original purchase has deterministic effect on remaining entitlement.",
+    "source_refs": [
+      "S1:124",
+      "S1:216",
+      "S2:112",
+      "S2:176"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-065",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Scheduling System",
+      "Consultation Booking"
+    ],
+    "phase": "C",
+    "behavior": "Configure studio hours, branch/artist availability, service duration, buffers, time zones and exceptions; request or reserve a consultation/session.",
+    "boundary": "Travel, overlapping calendars, DST, deposit windows and multi-session work must be handled.",
+    "acceptance": "Concurrent clients cannot double-book; a DST transition displays correct local time and reminders reference the accepted appointment.",
+    "source_refs": [
+      "S1:128",
+      "S1:136",
+      "S2:115",
+      "S2:123"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-066",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Export Package"
+    ],
+    "phase": "F",
+    "behavior": "Export the Go-time package in main §14: brief, art, stencil, coordinates, dimensions, calibration, approvals, rights, revision manifest and selected notes.",
+    "boundary": "Health data/messages excluded by default; raster-in-SVG is not true vector output; preserve unresolved-fit notes.",
+    "acceptance": "Recipient can identify exact revision, print measured ruler and distinguish source artwork, placement preview and unresolved assumptions.",
+    "source_refs": [
+      "S1:131",
+      "S2:118",
+      "S5:115"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-067",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Rating System"
+    ],
+    "phase": "C",
+    "behavior": "Eligible members submit verified-interaction ratings with category, text and optional consented media; support artist reply/report/appeal.",
+    "boundary": "Membership-only review policy retained; payment dispute and rating moderation remain distinct.",
+    "acceptance": "Nonmembers cannot submit if that rule is retained; deleted/flagged content follows visible moderation status without changing commerce records.",
+    "source_refs": [
+      "S1:132",
+      "S2:119"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-068",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Deposit Requirement Options",
+      "Deposit Management"
+    ],
+    "phase": "C",
+    "behavior": "Quote deposit amount/percentage, due date, refundability and balance schedule; collect via supported provider and show paid/pending/failed state.",
+    "boundary": "Authorization, capture and transfer are distinct; deposits are not cash held by an unimplemented escrow service.",
+    "acceptance": "Retried deposit action cannot double-charge; expiry releases booking according to accepted policy and reconciles money.",
+    "source_refs": [
+      "S1:133",
+      "S1:159",
+      "S2:120",
+      "S2:143"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-069",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Cancellation Policy Management",
+      "Refund Policies"
+    ],
+    "phase": "C",
+    "behavior": "Present no-show/late-cancel/refund rules before acceptance; record request, eligible amount, review and provider execution.",
+    "boundary": "Organization terms do not silently override applicable platform/transaction obligations; partial fulfilled items need separate disposition.",
+    "acceptance": "Refund shown complete only after provider evidence; old orders retain their accepted policy despite later edits.",
+    "source_refs": [
+      "S1:134",
+      "S1:223",
+      "S2:121",
+      "S2:182"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-070",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Waitlist Functionality"
+    ],
+    "phase": "C",
+    "behavior": "Let client specify acceptable dates/services and contact choices; offer canceled slot to eligible waitlist entries with hold expiry and opt-out.",
+    "boundary": "Do not book or charge without the specified authorization; avoid multiple accepted offers for one slot.",
+    "acceptance": "Two recipients accepting concurrently result in one valid booking and a clear alternative for the other.",
+    "source_refs": [
+      "S1:135",
+      "S2:122"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-071",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Timelapse Recording"
+    ],
+    "phase": "X",
+    "behavior": "Record design-operation playback or canvas frames with pause, private-layer exclusion, playback speed and export consent.",
+    "boundary": "Body captures, messages and off-canvas content are excluded unless explicitly included.",
+    "acceptance": "Replay reproduces intended creation sequence without revealing hidden private assets or transient notifications.",
+    "source_refs": [
+      "S1:137",
+      "S2:124"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-072",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Client Brief Templates"
+    ],
+    "phase": "F/C",
+    "behavior": "Structured, editable brief for references, meaning, placement, scale, color, budget, dates, constraints and multiple/unsure answers; reusable studio templates.",
+    "boundary": "Required fields are purpose-specific; health information lives in a separately permissioned form.",
+    "acceptance": "Client can submit an incomplete creative idea with explicit unknowns; artist sees references and missing decisions without invented answers.",
+    "source_refs": [
+      "S1:138",
+      "S2:125"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-073",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Health Screening Forms"
+    ],
+    "phase": "C/R",
+    "behavior": "Versioned practice-specific questionnaires, consent/release signing, signer identity, timestamps and restricted staff access; export a signed copy to authorized parties.",
+    "boundary": "Forms do not replace professional assessment; data-retention and legally valid signature requirements need jurisdiction-specific review.",
+    "acceptance": "Changed form requires a new signature; public sharing/ordinary design export cannot include responses accidentally.",
+    "source_refs": [
+      "S1:139",
+      "S2:126"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-074",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Anonymous Portfolio Reviews"
+    ],
+    "phase": "X",
+    "behavior": "Submit consented portfolio subset, remove identity metadata, collect structured critique and reveal identity only by choice.",
+    "boundary": "Anonymity may be imperfect if art is recognizable; reviewer conflict/report mechanisms required.",
+    "acceptance": "Downloaded review pack omits identifying metadata and hidden client material; reviewer can decline a conflict.",
+    "source_refs": [
+      "S1:140",
+      "S2:127"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-075",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Artist-User Collaborative Sketchbook",
+      "Real-time Collaborative Design"
+    ],
+    "phase": "C/X",
+    "behavior": "Shared references, drawing, annotations and live cursors in the same project; object-level operations with roles, version history and conflict handling.",
+    "boundary": "Observer/commenter/editor roles differ; offline conflicts and simultaneous edits never silently overwrite.",
+    "acceptance": "Two editors change separate objects, reconnect and converge; read-only guest cannot mutate document via UI or direct request.",
+    "source_refs": [
+      "S1:141",
+      "S1:285",
+      "S2:245",
+      "S4:726"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-076",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Asynchronous Messaging (MVP)",
+      "Messaging Integration"
+    ],
+    "phase": "C",
+    "behavior": "Persistent project/order-linked threads with unread state, attachments, delivery status and reference to design revision; configurable notifications.",
+    "boundary": "Message send failure retains a draft; orders and chat history are distinct records.",
+    "acceptance": "Opening a revision comment goes to its original revision; retry does not create duplicate messages.",
+    "source_refs": [
+      "S1:145",
+      "S1:224",
+      "S2:130",
+      "S2:183"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-077",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Real-time Chat (Native)"
+    ],
+    "phase": "X",
+    "behavior": "Add live delivery, presence and optional typing/read indicators to the same threads, with offline catch-up and notification controls.",
+    "boundary": "Recommend capability-based web/mobile support instead of Native-only gate; presence is best-effort, not proof of availability.",
+    "acceptance": "Disconnect/reconnect delivers each message once in stable order and preserves privacy settings.",
+    "source_refs": [
+      "S1:146",
+      "S2:131"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-078",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Media Attachments"
+    ],
+    "phase": "C",
+    "behavior": "Attach images/files/preview references with progress, cancellation, malware/type validation, size limits and participant-scoped access.",
+    "boundary": "Full-resolution body photos require separate audience awareness; thumbnail must not bypass permissions.",
+    "acceptance": "Removed participant cannot fetch attachment URL; failed upload leaves recoverable local file and no falsely sent message.",
+    "source_refs": [
+      "S1:147",
+      "S2:132"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-079",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Message Templates"
+    ],
+    "phase": "C",
+    "behavior": "Personal/studio replies with named variables, preview and editable content for quotes, aftercare, reminders and common answers.",
+    "boundary": "Never auto-send AI/template content or financial promises without configured authorization.",
+    "acceptance": "Missing variables block send or remain clearly marked; recipient/context preview prevents wrong-client messages.",
+    "source_refs": [
+      "S1:148",
+      "S2:133"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-080",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Response Indicators"
+    ],
+    "phase": "C",
+    "behavior": "Show aggregated typical response range and last-updated context; allow away status and office hours.",
+    "boundary": "Do not expose exact personal activity or guarantee a response deadline from an average.",
+    "acceptance": "Insufficient history shows unavailable rather than invented hours; paused profiles show the correct status.",
+    "source_refs": [
+      "S1:149",
+      "S2:134"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-081",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "End-to-end Encryption (Native)"
+    ],
+    "phase": "R",
+    "behavior": "Define endpoint keys, participant changes, encrypted attachments, local storage, device transfer, recovery and authorized reporting in a reviewed threat model.",
+    "boundary": "Server AI/search cannot read E2EE content without a separate consented design; key loss behavior must be explicit.",
+    "acceptance": "Server-side storage cannot decrypt a test thread; removed members lack new keys; recovery works only under the declared policy.",
+    "source_refs": [
+      "S1:150",
+      "S2:135"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-082",
+    "domain": "Orders, studio work and communication",
+    "names": [
+      "Aftercare Buddy System"
+    ],
+    "phase": "X/R",
+    "behavior": "Opt-in peer matching by broad timing/interests, private group conversation, boundaries, blocking and reviewed educational links.",
+    "boundary": "No automatic health-data sharing or peer diagnosis; users can participate without revealing body images/location.",
+    "acceptance": "Opt-out removes future matching; block stops interaction; health questions route to professional-care resources rather than model diagnosis.",
+    "source_refs": [
+      "S1:151",
+      "S2:136"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-083",
+    "domain": "Payments and business",
+    "names": [
+      "Multi-directional Payment System"
+    ],
+    "phase": "C/R",
+    "behavior": "Define supported client/artist/studio/platform transfers plus requested user-to-user and collaborator payments; present purpose, sender/recipient, fees, status and receipt.",
+    "boundary": "General P2P and cross-border rails require explicit provider eligibility; internal credits are not a cash wallet.",
+    "acceptance": "Each enabled route has tested debit/credit, rejection, reversal and statement reconciliation; unsupported routes stay clearly unavailable.",
+    "source_refs": [
+      "S1:155",
+      "S2:139"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-084",
+    "domain": "Payments and business",
+    "names": [
+      "Commission Splitting",
+      "Variable Fee Structure"
+    ],
+    "phase": "C",
+    "behavior": "Calculate versioned platform, studio and artist allocations per accepted offer with amount basis, currency, tax/processing-fee responsibility and rounding.",
+    "boundary": "Changes to membership do not alter accepted allocation; percentages alone are insufficient without defining gross/net basis.",
+    "acceptance": "Minor-unit allocations balance for ordinary, discounted, partial-refund and FX cases; duplicate events do not duplicate earnings.",
+    "source_refs": [
+      "S1:156",
+      "S1:157",
+      "S2:140",
+      "S2:141"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-085",
+    "domain": "Payments and business",
+    "names": [
+      "Escrow System"
+    ],
+    "phase": "R",
+    "behavior": "Preserve secure milestone payment intent; offer provider-supported holding/release with explicit conditions, duration, dispute route and beneficiary.",
+    "boundary": "Do not call delayed payout escrow unless actual qualified arrangement exists; no product promise of indefinite custody.",
+    "acceptance": "Gate includes provider contract and end-to-end held/released/refunded/expired states; absent support shows an honest alternative.",
+    "source_refs": [
+      "S1:158",
+      "S2:142"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-086",
+    "domain": "Payments and business",
+    "names": [
+      "Installment Plans"
+    ],
+    "phase": "C/R",
+    "behavior": "Present total price, installment amounts/dates, fees/interest if any, failure handling and consent; separate payment schedule from lending offer.",
+    "boundary": "Regional/provider eligibility required; do not create unqualified credit underwriting.",
+    "acceptance": "Failed installment updates balance and appointment policy without duplicate fees or unintended artist payout.",
+    "source_refs": [
+      "S1:160",
+      "S2:144"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-087",
+    "domain": "Payments and business",
+    "names": [
+      "Multiple Withdrawal Options"
+    ],
+    "phase": "C",
+    "behavior": "Show eligible standard/instant payout options, fees, estimated arrival and linked account verification; track pending/paid/failed/returned states.",
+    "boundary": "Historical 3–5 day schedule is not universally promised; availability/currency depend on provider.",
+    "acceptance": "Failed/returned payout reconciles balance; selecting instant exposes fee before confirmation.",
+    "source_refs": [
+      "S1:161",
+      "S2:145"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-088",
+    "domain": "Payments and business",
+    "names": [
+      "Tax Documentation"
+    ],
+    "phase": "C/R",
+    "behavior": "Statements summarize gross sales, fees, refunds, taxes, allocations and payouts by period; eligible provider-generated tax forms appear with corrections.",
+    "boundary": "Tax-form obligations depend on jurisdiction/party; do not imply ARTOO determines every person's filing duty.",
+    "acceptance": "Statement totals reconcile to ledger and provider events; corrected records produce a versioned statement rather than silent overwrite.",
+    "source_refs": [
+      "S1:162",
+      "S2:146"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-089",
+    "domain": "Payments and business",
+    "names": [
+      "Currency Conversion"
+    ],
+    "phase": "C/R",
+    "behavior": "Show presentment/settlement currencies, quoted rate/time, conversion fee and expiry before acceptance.",
+    "boundary": "No silent currency mixing; refunds may differ due to FX and must disclose policy.",
+    "acceptance": "Currency exponents and rounding remain correct; an expired rate triggers review before payment.",
+    "source_refs": [
+      "S1:163",
+      "S2:147"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-090",
+    "domain": "Payments and business",
+    "names": [
+      "Payment Method Diversity"
+    ],
+    "phase": "C/X/R",
+    "behavior": "Retain card, PayPal, Venmo, Cash App, Google Pay, Revolut, Stripe-supported methods, Apple Pay and crypto in the capability matrix; display only eligible routes.",
+    "boundary": "None is assumed universally available or free; crypto is separately gated and not required for normal checkout.",
+    "acceptance": "Unsupported device/region never yields a dead payment button; accepted methods have tested failure/refund/receipt paths.",
+    "source_refs": [
+      "S1:164",
+      "S2:148"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-091",
+    "domain": "Payments and business",
+    "names": [
+      "Loyalty Programs"
+    ],
+    "phase": "X",
+    "behavior": "Earn/redeem defined points or discounts for eligible repeat activity; show balance, expiry, rules and reversal effects.",
+    "boundary": "Loyalty units differ from cash and generation credits; refunded activity cannot silently retain unearned value.",
+    "acceptance": "Accrual/reversal/redemption is idempotent and presents the correct discount in a multi-seller cart.",
+    "source_refs": [
+      "S1:165",
+      "S2:149"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-092",
+    "domain": "Payments and business",
+    "names": [
+      "Charity Flash Events"
+    ],
+    "phase": "X/R",
+    "behavior": "Create beneficiary-linked event, eligible designs, allocation percentage/basis, schedule and public accounting summary with artist consent.",
+    "boundary": "Beneficiary verification and payment eligibility required; distinguish donation from artist revenue and fees.",
+    "acceptance": "Final report reconciles proceeds and transfers; cancellation/refund updates beneficiary allocation transparently.",
+    "source_refs": [
+      "S1:166",
+      "S2:150"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-093",
+    "domain": "Payments and business",
+    "names": [
+      "Tiered Subscriptions",
+      "Member-Only Features"
+    ],
+    "phase": "C",
+    "behavior": "Central entitlement catalogue powers pricing, tool availability, quota messages and account settings; show upgrade/downgrade effective date and billing terms.",
+    "boundary": "Do not hide unsupported features behind payment; permission, plan and hardware availability are separate reasons.",
+    "acceptance": "Identical entitlement policy governs UI, export, API and background jobs; cancellation preserves documented access until effective expiry.",
+    "source_refs": [
+      "S1:170",
+      "S1:187",
+      "S2:153",
+      "S2:157"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-094",
+    "domain": "Payments and business",
+    "names": [
+      "Early Adoption Pricing",
+      "Free for first 100 users",
+      "50% discount for next 1,000 users",
+      "Full pricing thereafter"
+    ],
+    "phase": "C",
+    "behavior": "Retain historical cohort proposal as an explicit campaign with eligibility counter, benefit duration, included plan, abuse controls and receipt.",
+    "boundary": "Current approval and economics unresolved; cannot imply perpetual free access or discount without terms.",
+    "acceptance": "Concurrent signups allocate the last cohort slot once; users see the benefit duration and post-promotion price before accepting.",
+    "source_refs": [
+      "S1:181",
+      "S1:182",
+      "S1:183",
+      "S1:184"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-095",
+    "domain": "Payments and business",
+    "names": [
+      "Credit System"
+    ],
+    "phase": "C",
+    "behavior": "Meter named expensive actions with per-action cost, remaining/renewal/rollover, reservations, completed charges and failure refunds; optional one-time top-ups.",
+    "boundary": "Historical 8/day versus 2/day/20/day quotas conflict; ordinary editing and failed jobs should not silently consume credits.",
+    "acceptance": "Job retry, cancellation and provider failure reconcile reserved/consumed credits exactly once.",
+    "source_refs": [
+      "S1:185",
+      "S2:155"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-096",
+    "domain": "Payments and business",
+    "names": [
+      "One-time Purchases"
+    ],
+    "phase": "C",
+    "behavior": "Permit eligible design licenses, POD, services or credit packs without a subscription; present rights, total and guest/account recovery route.",
+    "boundary": "Product availability depends on studio/artist offer; gift/return rules vary by item type.",
+    "acceptance": "Non-subscriber can complete an eligible POD purchase and recover receipt/order without gaining unrelated premium access.",
+    "source_refs": [
+      "S1:186",
+      "S2:156"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-097",
+    "domain": "Payments and business",
+    "names": [
+      "Studio Partnerships",
+      "Artist Promotion System",
+      "Brand Alliances",
+      "Promotional Tools",
+      "Sponsorship Infrastructure"
+    ],
+    "phase": "X",
+    "behavior": "Partner dashboard manages agreed campaigns, featured artists, brand placements, asset approvals, dates, attribution and revenue share with performance reports.",
+    "boundary": "Label paid placement; do not let sponsorship change quality badges or expose private client activity.",
+    "acceptance": "Expired campaign stops placement; organic and paid metrics are separated and allocated revenue reconciles.",
+    "source_refs": [
+      "S1:191",
+      "S1:192",
+      "S1:193",
+      "S1:194",
+      "S1:195"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-098",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "Tattoo History",
+      "Heritage Preservation"
+    ],
+    "phase": "X",
+    "behavior": "Curated, attributed histories with sources, community/practitioner contributions, dates, region context and optional multimedia/oral-history records.",
+    "boundary": "Consent and cultural stewardship govern publication; uncertain or contested accounts are labeled.",
+    "acceptance": "Reader can inspect provenance/corrections; restricted traditional knowledge is not republished through automatic recommendations.",
+    "source_refs": [
+      "S1:199",
+      "S1:298",
+      "S2:160",
+      "S2:257"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-099",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "Interactive World Map",
+      "Geographic Heat Map"
+    ],
+    "phase": "X",
+    "behavior": "Explore styles, events and contributing artists by region; optionally show aggregated popularity with sample period and minimum aggregation threshold.",
+    "boundary": "Popularity is not cultural origin; private client coordinates never appear as points.",
+    "acceptance": "Sparse data yields no heat claim; map has accessible list alternative and every geography links to source/context.",
+    "source_refs": [
+      "S1:200",
+      "S1:267",
+      "S2:161",
+      "S2:229"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-100",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "Style Discovery",
+      "Artist-Style Connections"
+    ],
+    "phase": "C",
+    "behavior": "Browse a style taxonomy with examples, related techniques and artists who self-identify/are reviewed for it; combine location/license filters.",
+    "boundary": "Styles overlap; support multi-label/uncertain classifications and cultural context.",
+    "acceptance": "User can follow a style and find suitable artists without forced single-style assignment.",
+    "source_refs": [
+      "S1:201",
+      "S1:203",
+      "S2:162",
+      "S2:164"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-101",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "AI Style Matcher",
+      "Style Identification",
+      "Artist Recognition",
+      "Tattoo Recognition"
+    ],
+    "phase": "X",
+    "behavior": "Upload a permissioned reference to retrieve similar styles/designs/artists with scores and explanations, plus manual taxonomy refinement.",
+    "boundary": "Similarity does not prove authorship or identify a person; images stay private unless shared.",
+    "acceptance": "Known/unknown-style test set includes abstention; no result asserts a specific tattoo creator without supporting provenance.",
+    "source_refs": [
+      "S1:202",
+      "S1:236",
+      "S1:237",
+      "S1:238",
+      "S2:163",
+      "S2:193",
+      "S2:194",
+      "S2:195"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-102",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "Expert Contributors",
+      "Certification Programs"
+    ],
+    "phase": "X/R",
+    "behavior": "Contributor profiles, reviewed lessons and assessment tracks with issuer, prerequisites, learning objectives and completion records.",
+    "boundary": "A course completion badge is not automatically professional licensure or accreditation.",
+    "acceptance": "Issued credential states exactly who certifies what and supports correction/revocation.",
+    "source_refs": [
+      "S1:204",
+      "S1:205",
+      "S2:165",
+      "S2:166"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-103",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "Live Webinar Integration"
+    ],
+    "phase": "X",
+    "behavior": "Publish sessions with timezone, accessibility features, registration, reminders, participation and consented replay/transcript.",
+    "boundary": "External attendance/video providers need scoped permission; recording is disclosed.",
+    "acceptance": "Timezone conversion is correct, keyboard registration works, and replay access follows the purchased/granted entitlement.",
+    "source_refs": [
+      "S1:206",
+      "S2:167"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-104",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "Community Knowledge Base"
+    ],
+    "phase": "X",
+    "behavior": "Searchable articles, edits, sources, contributor attribution, moderation and version history for techniques and practical guidance.",
+    "boundary": "Separate professional advice, personal experience and unverified claims; no automatic acceptance of medical claims.",
+    "acceptance": "A corrected article shows revision/source and reported content can be reviewed without losing prior record.",
+    "source_refs": [
+      "S1:207",
+      "S2:168"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-105",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "Ink Events Calendar"
+    ],
+    "phase": "X",
+    "behavior": "List conventions, guest spots, flash events and studio sessions with dates, venues, accessibility info and interested/follow actions.",
+    "boundary": "Dates are source-linked and refreshable; a listed event is not a booked appointment.",
+    "acceptance": "Canceled/rescheduled event propagates to subscribers and linked listings without changing paid bookings silently.",
+    "source_refs": [
+      "S1:208",
+      "S2:169"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-106",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "Shopping Cart",
+      "AR Preview"
+    ],
+    "phase": "C",
+    "behavior": "Multi-item/multi-seller cart supports optional preview in workspace, quantities/licenses, split fulfillment and full price summary.",
+    "boundary": "Cart preview does not grant export rights; exclusive inventory can expire.",
+    "acceptance": "Mixed digital/POD/service items retain correct taxes, rights and separate fulfillment states; preview edits do not change purchased artwork without confirmation.",
+    "source_refs": [
+      "S1:212",
+      "S1:213",
+      "S2:172",
+      "S2:173"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-107",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "Auto-save Cart"
+    ],
+    "phase": "C",
+    "behavior": "Restore signed-in cart across sessions/devices with visible unavailable items and expiry policy; retain historical 48-hour rule as configurable proposal.",
+    "boundary": "Restored cart reprices and revalidates inventory, shipping, discounts and licenses before checkout.",
+    "acceptance": "Returning after price/license change requires explicit review and never charges the stale total.",
+    "source_refs": [
+      "S1:214",
+      "S2:174"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-108",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "Commission Tracking"
+    ],
+    "phase": "C",
+    "behavior": "Timeline of quote, deposit, draft, revision, approval, delivery, balance, payout and exceptions; each status identifies actor and timestamp.",
+    "boundary": "Status transitions require actual evidence; an assistant-generated message cannot mark payment complete.",
+    "acceptance": "Client/artist see the same accepted revision and can inspect reason for delay/dispute.",
+    "source_refs": [
+      "S1:220",
+      "S2:179"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-109",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "Completion Estimates"
+    ],
+    "phase": "C",
+    "behavior": "Artist sets a date or range from workload/milestones, updates with reason and notifies affected participants.",
+    "boundary": "Forecast is not guaranteed; no invented estimate when availability is unknown.",
+    "acceptance": "Changed estimate preserves earlier promise/history and distinguishes blocked inputs from artist work time.",
+    "source_refs": [
+      "S1:221",
+      "S2:180"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-110",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "Revision System"
+    ],
+    "phase": "C",
+    "behavior": "Request changes against a specific revision, categorize included/out-of-scope, annotate objects/regions and accept a versioned change order if needed.",
+    "boundary": "Unlimited revisions are not inferred; new cost needs acceptance before charging.",
+    "acceptance": "Requests cannot silently modify approved art or consume allowance twice on retry.",
+    "source_refs": [
+      "S1:222",
+      "S2:181"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-111",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "Forums and Discussion Boards"
+    ],
+    "phase": "X",
+    "behavior": "Topic spaces, search, threads, media permissions, subscriptions, reporting, blocks and moderator actions with appeals.",
+    "boundary": "Separate public discussion from private project messages; mature preferences apply.",
+    "acceptance": "A private attachment cannot be posted by URL leakage; moderation status is clear and accessible.",
+    "source_refs": [
+      "S1:228",
+      "S2:186"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-112",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "Design Feedback System"
+    ],
+    "phase": "C/X",
+    "behavior": "Invite chosen reviewers/community to comment on a revision with criteria such as composition/readability/placement and a choice of anonymous/public feedback.",
+    "boundary": "Comments are suggestions; applying one creates an editable change and preserves authorship/rights.",
+    "acceptance": "Review resolution records which revision changed; a new revision does not pretend earlier reviewers approved it.",
+    "source_refs": [
+      "S1:229",
+      "S2:187"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-113",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "Artist Mentorship Programs",
+      "Apprenticeship Marketplace"
+    ],
+    "phase": "X/R",
+    "behavior": "Mentor/apprentice profiles, goals, availability, eligibility, applications, agreed program and progress record; optional fees use supported commerce.",
+    "boundary": "Qualifications, safeguarding and employment/training terms need review; platform match is not credential endorsement.",
+    "acceptance": "Applicant controls shared information and can withdraw; acceptance creates explicit terms rather than silent account access.",
+    "source_refs": [
+      "S1:230",
+      "S1:232",
+      "S2:188",
+      "S2:190"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-114",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "Contest/Challenge System"
+    ],
+    "phase": "X",
+    "behavior": "Publish brief, rules, rights, judging criteria, dates, prize/funding and submission workflow with results/appeals.",
+    "boundary": "Entry does not silently assign all copyright or training permission; eligibility/payment law gate where applicable.",
+    "acceptance": "Late/duplicate entries are handled consistently and judges see only authorized material under declared anonymity rules.",
+    "source_refs": [
+      "S1:231",
+      "S2:189"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-115",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "Artist Residency Program"
+    ],
+    "phase": "X",
+    "behavior": "Schedule featured-artist periods with editorial assets, availability, events, commercial terms and disclosure.",
+    "boundary": "Promotion does not imply verified superiority; end-date and cancellation visible.",
+    "acceptance": "Residency expires automatically and linked booking/artist pages stay valid.",
+    "source_refs": [
+      "S1:265",
+      "S2:227"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-116",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "Tattoo Tinder"
+    ],
+    "phase": "X",
+    "behavior": "Swipe or use accessible buttons to save, skip, dislike or request similar designs; give preference reset and exploration controls.",
+    "boundary": "Working title only; avoid making compulsive engagement the success metric or hiding creator/rights information.",
+    "acceptance": "Disliked designs respect preferences; keyboard/buttons provide equivalent actions and saved art opens correctly in workspace.",
+    "source_refs": [
+      "S1:266",
+      "S2:228"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-117",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "Tattoo Tourism Guide"
+    ],
+    "phase": "X",
+    "behavior": "Combine artist/guest availability, travel destination references, consultation preparation and event information with links to current sources.",
+    "boundary": "No invented travel/legal/medical guarantees; booking and travel purchases are distinct.",
+    "acceptance": "Guide flags stale dates and routes to the actual studio branch and current booking availability.",
+    "source_refs": [
+      "S1:268",
+      "S2:230"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-118",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "Design Crowdsourcing"
+    ],
+    "phase": "X/R",
+    "behavior": "Publish a brief to eligible artists, define compensation, confidentiality, selection criteria, submission rights and proposal comparison.",
+    "boundary": "Unselected proposals remain the creator's property unless explicit agreed terms say otherwise.",
+    "acceptance": "Client cannot export/use unlicensed losing proposals; selected work becomes a normal commission agreement.",
+    "source_refs": [
+      "S1:269",
+      "S2:231"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-119",
+    "domain": "Education, discovery and communities",
+    "names": [
+      "Genealogy of Style"
+    ],
+    "phase": "X/R",
+    "behavior": "Explore attributed influence relationships with direction, source, date and disputed/uncertain status; allow corrections and artist participation.",
+    "boundary": "Similar appearance is not proof of influence or lineage.",
+    "acceptance": "Every asserted connection has a source/status; removing an unsupported link does not erase unrelated contributors.",
+    "source_refs": [
+      "S1:271",
+      "S2:233"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-120",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Plugin Architecture"
+    ],
+    "phase": "X",
+    "behavior": "Versioned extension registry with declared capabilities, scopes, compatible document schema, UI placement, installation/disable/update and owner review.",
+    "boundary": "Extensions cannot read private projects/payment data by default or corrupt documents; isolate execution and preserve export portability.",
+    "acceptance": "Disabled/crashing plugin leaves project openable; permission denial is enforced outside its UI and unsupported data is retained safely.",
+    "source_refs": [
+      "S1:243",
+      "S2:199"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-121",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "API Integration",
+      "Calendar Synchronization",
+      "CRM Integration"
+    ],
+    "phase": "C/X",
+    "behavior": "Scoped connectors for external booking, calendars and studio CRM with field mapping, ownership/source-of-truth, consent, retry and sync history.",
+    "boundary": "Handle revoked tokens, rate limits, timezones, conflict and duplicate events; do not import health fields by default.",
+    "acceptance": "Replayed webhook yields one appointment/client update; conflict presents both values rather than silently overwriting.",
+    "source_refs": [
+      "S1:244",
+      "S1:251",
+      "S1:252",
+      "S2:200",
+      "S2:207",
+      "S2:208"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-122",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Custom Script Support"
+    ],
+    "phase": "X",
+    "behavior": "Let artists save validated actions for transforms, naming, batch export and visualization rules; preview affected objects and run with limits.",
+    "boundary": "Sandbox with no default network/secrets/payment access; command transactions enable rollback.",
+    "acceptance": "A script that exceeds time/memory stops without partial corrupt state; user can undo the full accepted change.",
+    "source_refs": [
+      "S1:245",
+      "S2:201"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-123",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Style Pack System"
+    ],
+    "phase": "X",
+    "behavior": "Install licensed brushes, templates, palettes, textures and example presets with preview, provenance, compatibility and updates.",
+    "boundary": "A style pack grants only listed rights; dependency fonts/assets and versions remain tracked.",
+    "acceptance": "Uninstall leaves existing work reproducible or reports missing dependencies with embedded/permitted fallback.",
+    "source_refs": [
+      "S1:246",
+      "S2:202"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-124",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Custom UI Themes"
+    ],
+    "phase": "F/X",
+    "behavior": "Light/dark/high-contrast plus custom tokens and density; preview before apply, reset and retain per-device preference.",
+    "boundary": "Interface theme never changes white artboard, print background or actual artwork color.",
+    "acceptance": "Theme switch preserves source art and contrast/focus checks; invalid custom contrast produces a useful warning.",
+    "source_refs": [
+      "S1:247",
+      "S2:203"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-125",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Language Localization Framework"
+    ],
+    "phase": "F/X",
+    "behavior": "Externalized strings, locale-aware numbers/currency/dates, RTL layouts, font shaping and translation review; choose language independent of location.",
+    "boundary": "User text is not automatically translated; names/licenses retain exact approved wording.",
+    "acceptance": "Arabic/long-text/large-font fixtures fit panels and exports without clipped or reversed art labels.",
+    "source_refs": [
+      "S1:248",
+      "S2:204"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-126",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Analytics Integration"
+    ],
+    "phase": "C",
+    "behavior": "Private artist/studio dashboards for inquiries, accepted briefs, sales, fulfillment, fees and repeat usage with time range and consented event definitions.",
+    "boundary": "Separate organic/paid and previews/successful outcomes; exclude body media, message contents and health data from events.",
+    "acceptance": "Dashboard totals reconcile to orders/ledger and respect organization/branch access; low sample size is visible.",
+    "source_refs": [
+      "S1:249",
+      "S2:205"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-127",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Social Platform Connectors"
+    ],
+    "phase": "C/X",
+    "behavior": "Export permissioned previews to Facebook, Instagram, Pinterest and eligible networks; choose crop/caption/attribution/audience and preview before publish.",
+    "boundary": "Platform APIs may limit direct posting; offer downloadable/share-sheet fallback and never auto-publish private body imagery.",
+    "acceptance": "Revoked connector retains draft; exported image has intended attribution and no hidden private metadata.",
+    "source_refs": [
+      "S1:250",
+      "S2:206"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-128",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Projection Mapping Tool",
+      "AR Studio Mirror"
+    ],
+    "phase": "R",
+    "behavior": "Calibrate camera/display/projector to region, select client-approved placement, provide operator controls, alignment cues and safe session reset.",
+    "boundary": "Device integration and accuracy/safety proof required; not automatically equivalent to a stencil or autonomous tattooing guide.",
+    "acceptance": "Calibration drift is detected and display stops presenting precision until corrected; ending consultation clears private media.",
+    "source_refs": [
+      "S1:256",
+      "S1:276",
+      "S2:219",
+      "S2:237"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-129",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Scarification Preview"
+    ],
+    "phase": "R",
+    "behavior": "Optional labeled concept rendering with references and professional consultation notes, using the shared placement/scenario system.",
+    "boundary": "No procedural instruction or prediction of scarring outcome; release requires practitioner review and appropriate context.",
+    "acceptance": "Preview cannot be exported as a validated expected result and never replaces original body imagery.",
+    "source_refs": [
+      "S1:258",
+      "S2:221"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-130",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Environment-Based Preview"
+    ],
+    "phase": "X",
+    "behavior": "Compare design in user-selected beach, office or formal-event context, retaining body/placement revision and changed lighting/clothing assumptions.",
+    "boundary": "Generated environments may change appearance; do not present them as observed photos or geometrically calibrated references.",
+    "acceptance": "Scenario metadata identifies generated content and the original placement remains available for exact export.",
+    "source_refs": [
+      "S1:261",
+      "S2:224"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-131",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Sonic Design Experience"
+    ],
+    "phase": "X",
+    "behavior": "Optional music/mood pairing with volume, mute, licensing/source and individual preference; never start audio without choice.",
+    "boundary": "Music is atmospheric, not evidence of design suitability; accessible silent workflow remains complete.",
+    "acceptance": "Muting persists; exports omit audio unless licensed and selected.",
+    "source_refs": [
+      "S1:275",
+      "S2:236"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-132",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Session Endurance Tools"
+    ],
+    "phase": "X",
+    "behavior": "Voluntary session plans, breaks, timer, comfort notes and practitioner-agreed milestones; pause/resume and accessible reminders.",
+    "boundary": "No health or pain-tolerance score, and no pressure to continue a session.",
+    "acceptance": "Pausing updates planned duration without automatically charging or sharing sensitive notes.",
+    "source_refs": [
+      "S1:277",
+      "S2:238"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-133",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Accessibility Features"
+    ],
+    "phase": "F",
+    "behavior": "Keyboard and numeric editing, object list, readable labels, high contrast, reduced motion, captions, text size, voice option and visual brief choices.",
+    "boundary": "Canvas exceptions are documented narrowly; absence of pointer/voice capability must not block ordinary project completion.",
+    "acceptance": "Complete the core journey with keyboard and assistive technology; publish observed failures instead of a compliance claim without audit.",
+    "source_refs": [
+      "S1:278",
+      "S2:239"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-134",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Cultural Sensitivity Checker"
+    ],
+    "phase": "R",
+    "behavior": "Offer opt-in, source-attributed cultural/context notes for motifs, terminology and restricted traditions; allow expert review and correction.",
+    "boundary": "Not an automated universal approval/rejection of culture; avoid conflating style similarity with cultural provenance.",
+    "acceptance": "Uncertain motif returns uncertainty and references; user can inspect and contest a flag without an unexplained content ban.",
+    "source_refs": [
+      "S1:279",
+      "S2:240"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-135",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Tattoo Translator"
+    ],
+    "phase": "C/R",
+    "behavior": "Identify text/script, offer translation/transliteration candidates, literal meaning, typography direction and native-speaker review request before freezing.",
+    "boundary": "Translation is high-consequence in permanent art; no guaranteed correctness or single forced answer.",
+    "acceptance": "Approved wording is locked to revision; mirrored/changed glyphs trigger re-review and handoff includes original and translated text.",
+    "source_refs": [
+      "S1:280",
+      "S2:241"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-136",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Mood Board Generator"
+    ],
+    "phase": "F/X",
+    "behavior": "Gather user references, palette, style choices and optional generated suggestions into an editable board with labels, source links and license notes.",
+    "boundary": "Generated references do not become licensed final art automatically; user can mix, remove or replace every suggestion.",
+    "acceptance": "Reordering/changing palette is reversible; importing a board into a project preserves citations and private-source restrictions.",
+    "source_refs": [
+      "S1:281",
+      "S2:242"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-137",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Client History Timeline"
+    ],
+    "phase": "C",
+    "behavior": "Practitioner-scoped timeline of briefs, approvals, sessions, consented photos, orders and follow-ups; filter by branch/project and export subset.",
+    "boundary": "Historical health records remain in restricted domain; affiliation change does not expose all clients to a new organization.",
+    "acceptance": "A staff role sees only permitted clients/fields and a deleted photo is not re-exposed through timeline thumbnails.",
+    "source_refs": [
+      "S1:287",
+      "S2:247"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-138",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Material Calculator"
+    ],
+    "phase": "X/R",
+    "behavior": "Estimate supplies from artist-entered coverage, palette, technique, sessions and configurable usage assumptions; output a range with editable quantities.",
+    "boundary": "No universal ink-consumption formula; artist validates and no procurement occurs automatically.",
+    "acceptance": "Changing technique assumptions changes the visible estimate; missing inputs remain unknown and can be manually entered.",
+    "source_refs": [
+      "S1:288",
+      "S2:248"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-139",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Style Evolution Analysis"
+    ],
+    "phase": "X/R",
+    "behavior": "Compare consented portfolio periods by self-chosen tags, techniques and compositions; show examples and editable observations.",
+    "boundary": "Inference is not a ranking of artistic worth; no unauthorized artist-style training.",
+    "acceptance": "Removing a portfolio item removes it from future analysis and observations link back to supporting examples.",
+    "source_refs": [
+      "S1:289",
+      "S2:249"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-140",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Earnings Forecaster"
+    ],
+    "phase": "X",
+    "behavior": "Forecast from booked/quoted work, conversion assumptions, cancellations, fees and payout timing; show scenarios and realized versus forecast totals.",
+    "boundary": "A booked amount is not cash received; forecast is not a guarantee or tax advice.",
+    "acceptance": "Canceling a booking changes future forecast only; historical realized earnings reconcile to ledger.",
+    "source_refs": [
+      "S1:290",
+      "S2:250"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-141",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Assistant AI"
+    ],
+    "phase": "X",
+    "behavior": "Context-aware help proposes document edits, brief summaries, admin drafts and suggested scheduling/actions; show scope, before/after and undo.",
+    "boundary": "It cannot autonomously send messages, publish, sign, charge or change rights without the configured user's authorization.",
+    "acceptance": "Prompt involving an unselected/private object cannot access it; accepted edit is one undoable transaction and rejected proposal changes nothing.",
+    "source_refs": [
+      "S1:291",
+      "S2:251"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-142",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Collective Funding"
+    ],
+    "phase": "R",
+    "behavior": "Create funded guest-artist/travel proposal with goal, eligible contributors, deadline, benefit, allocation and failure/refund terms.",
+    "boundary": "Payment/fundraising eligibility and fulfillment risk need a supported route; no informal untracked custody.",
+    "acceptance": "Unmet goal returns or retains money only under accepted terms and all contributions reconcile.",
+    "source_refs": [
+      "S1:295",
+      "S2:254"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-143",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Micro-commissions"
+    ],
+    "phase": "C",
+    "behavior": "Sell a bounded short consultation, historically suggested as 15 minutes, with deliverable, availability, fee and no-show rules.",
+    "boundary": "Duration is an offer attribute, not universal promise; design/IP rights remain explicit.",
+    "acceptance": "Purchased slot links to deliverable and receipt; extending session requires a new accepted charge.",
+    "source_refs": [
+      "S1:296",
+      "S2:255"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-144",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "NFT Integration"
+    ],
+    "phase": "R",
+    "behavior": "Optional token-linked authenticity/collectibility flow references off-chain license, artist identity, artwork hash and transaction record.",
+    "boundary": "NFT ownership does not itself transfer copyright; chain/provider/cost and recovery choices unresolved.",
+    "acceptance": "Standard non-token license remains usable; token transfer cannot silently change design rights or reveal private source art.",
+    "source_refs": [
+      "S1:297",
+      "S2:256"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-145",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Archive Service"
+    ],
+    "phase": "X",
+    "behavior": "Long-term opt-in preservation with portable formats, checksums, retention promise, restore checks and successor/closure export route.",
+    "boundary": "Do not promise perpetual storage without funded operational terms; encrypted content requires key recovery plan.",
+    "acceptance": "Restore a sampled archived project and verify assets/checksums; service closure plan yields a usable export.",
+    "source_refs": [
+      "S1:299",
+      "S2:258"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-146",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Design Subscription"
+    ],
+    "phase": "X",
+    "behavior": "Artist offers periodic flash access with release cadence, available catalog, renewal terms and rights during/after subscription.",
+    "boundary": "Viewing access and permanent usage licenses differ; cancellation must explain which acquired rights survive.",
+    "acceptance": "Canceled member can retrieve surviving licenses but cannot acquire newly released paid content without entitlement.",
+    "source_refs": [
+      "S1:300",
+      "S2:259"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-147",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Carbon Offset Integration"
+    ],
+    "phase": "R",
+    "behavior": "Optional per-order environmental estimate and offset purchase with source, method, date, uncertainty and provider receipt.",
+    "boundary": "Avoid unsupported precise footprint or carbon-neutral claims; no mandatory added charge.",
+    "acceptance": "User can decline without changing art/order function; receipt separates estimate from actual offset transaction.",
+    "source_refs": [
+      "S1:301",
+      "S2:260"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-148",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Haptic Feedback"
+    ],
+    "phase": "X/R",
+    "behavior": "Optional supported-device feedback for tool/selection actions or clearly labeled sensory demo with strength/mute controls.",
+    "boundary": "A phone vibration does not simulate real tattoo pain faithfully; do not claim validated pain preview.",
+    "acceptance": "Reduced-motion/sensory preference disables feedback; unsupported hardware leaves controls functional.",
+    "source_refs": [
+      "S1:305",
+      "S2:263"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-149",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Dermatological Consultation"
+    ],
+    "phase": "R",
+    "behavior": "Connect users to eligible professionals or reviewed educational guidance, with consented sharing of specified media and appointment workflow.",
+    "boundary": "AI-assisted triage or prediction requires separate defined purpose, validation and applicable review; no unvalidated diagnosis from image.",
+    "acceptance": "User selects each shared item and recipient; unavailable professional service is not replaced by a confident AI diagnosis.",
+    "source_refs": [
+      "S1:306",
+      "S2:264"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-150",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Ink Chemistry Education"
+    ],
+    "phase": "X/R",
+    "behavior": "Source-attributed pigment/material articles with dates, jurisdiction context, uncertainty and practitioner-reviewed updates.",
+    "boundary": "Educational content is not individualized safety clearance or endorsement of an unverified ink product.",
+    "acceptance": "Product/ingredient claims link to current sources; outdated content is marked for review and corrected visibly.",
+    "source_refs": [
+      "S1:307",
+      "S2:265"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-151",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Interactive Tattoo Tech"
+    ],
+    "phase": "R",
+    "behavior": "Demonstrate conceptual smart/interactive tattoo behavior through optional overlays, with compatible device/partner requirements and illustrative labels.",
+    "boundary": "Physical availability, biocompatibility and interoperability are not inferred from a digital demo.",
+    "acceptance": "Demo functions without pretending a user owns compatible hardware; exports distinguish speculative elements from ordinary art.",
+    "source_refs": [
+      "S1:308",
+      "S2:266"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-152",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Medical Alert Features"
+    ],
+    "phase": "R",
+    "behavior": "Template-assisted lettering/layout for user-supplied, clinician-reviewed alert information; privacy controls, exact wording approval and print review.",
+    "boundary": "No diagnosis or assumption of universal emergency recognition; never generate medical facts about the user.",
+    "acceptance": "Final export matches approved wording exactly and changes invalidate review; private diagnosis data is not public by default.",
+    "source_refs": [
+      "S1:309",
+      "S2:267"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-153",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Scent-based Experience"
+    ],
+    "phase": "R",
+    "behavior": "Opt-in compatible diffuser pairing, scent selection, intensity/duration, disconnect and immediate stop; store no health assumptions.",
+    "boundary": "Hardware/availability/sensitivity and safety review required; never default on or claim therapeutic benefit.",
+    "acceptance": "Stop/disconnect halts output reliably; the complete design workflow works with no diffuser.",
+    "source_refs": [
+      "S1:310",
+      "S2:268"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-154",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "GDPR Compliance"
+    ],
+    "phase": "F/C",
+    "behavior": "Define data inventory/purpose, access/export/deletion requests, consent records, retention, processor controls and auditability by region.",
+    "boundary": "Compliance is an assessed operating obligation, not a UI toggle; lawful record retention and media deletion can differ.",
+    "acceptance": "Data-subject export/deletion tests cover originals, derived images, cached links and training-consent records with documented exceptions.",
+    "source_refs": [
+      "S1:314",
+      "S2:211"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-155",
+    "domain": "Extensibility and expanded experience",
+    "names": [
+      "Identity Verification"
+    ],
+    "phase": "C",
+    "behavior": "Verify artist/studio identity through a suitable provider/process; display badge scope, status, expiry and appeal/recheck route.",
+    "boundary": "Identity is not proof of artistic skill or medical/professional licensing; do not expose verification documents publicly.",
+    "acceptance": "Pending/failed/expired checks cannot show verified status; restricted documents remain inaccessible to ordinary studio staff.",
+    "source_refs": [
+      "S1:315",
+      "S2:212"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-156",
+    "domain": "AI creation and modern editing contracts",
+    "names": [
+      "Style-based Generation",
+      "Text-to-Tattoo",
+      "Style Transfer",
+      "Custom Modifications"
+    ],
+    "phase": "F/X",
+    "behavior": "Editable prompt/reference/placement brief, styles, palette and constraints produce preview alternatives; refine a selected region, compare and insert approved output as a new asset/version.",
+    "boundary": "Disclose cost/provider and preserve original; do not flatten a whole project to change one object or call raster layers vectors.",
+    "acceptance": "Targeted change preserves unrelated objects/text; canceled/failed job does not consume duplicate credits and old revision remains restorable.",
+    "source_refs": [
+      "S1:36",
+      "S1:37",
+      "S1:38",
+      "S1:39",
+      "S2:33",
+      "S2:34",
+      "S2:35",
+      "S2:36"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-157",
+    "domain": "AI creation and modern editing contracts",
+    "names": [
+      "Artist-specific Training"
+    ],
+    "phase": "R",
+    "behavior": "Creator-approved dataset, permitted purpose/style scope, compensation, model version and revocation terms; preview outputs in a controlled evaluation.",
+    "boundary": "Similarity matching and training are separate consent scopes; no scraping of artists' portfolios by default.",
+    "acceptance": "A revoked/expired training license blocks new training and distribution as specified; model/data provenance is inspectable.",
+    "source_refs": [
+      "S1:40",
+      "S2:37"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-158",
+    "domain": "AI creation and modern editing contracts",
+    "names": [
+      "Draw brushes and tip engines"
+    ],
+    "phase": "F/X",
+    "behavior": "Pen/pencil, airbrush, tattoo-tip, watercolor and crayon presets expose size, opacity, flow, hardness, spacing, smoothing, pressure/tilt and live stroke samples.",
+    "boundary": "Simulated tattoo tips are design tools, not tattoo-machine operation instructions; disclose approximated brush behavior.",
+    "acceptance": "Each named brush produces observably distinct strokes and saves/reopens; size controls also cover eraser and line width.",
+    "source_refs": [
+      "S3:976",
+      "S3:18468",
+      "S4:718"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-159",
+    "domain": "AI creation and modern editing contracts",
+    "names": [
+      "Text and typography tools"
+    ],
+    "phase": "F/X",
+    "behavior": "Fonts/search, rich text, effects, weight/style/decoration, tracking/kerning/line height, alignment, curved/path text and editable text-to-outline copy.",
+    "boundary": "Missing fonts or unsupported scripts are flagged; preserve original text when outlining and licensing metadata when sharing fonts.",
+    "acceptance": "Non-Latin/RTL/multiline text round-trips and exports; editing a word does not move unrelated design objects.",
+    "source_refs": [],
+    "provenance": "Explicit modernization expansion; see main shared-editor contract and current-tech review"
+  },
+  {
+    "id": "CAP-160",
+    "domain": "AI creation and modern editing contracts",
+    "names": [
+      "Select, transforms and precision layout"
+    ],
+    "phase": "F",
+    "behavior": "Click/marquee/lasso, multi-select, duplicate/copy/paste, nested grouping, pivot, numeric transforms, grids/guides/rulers, alignment/distribution and snapping.",
+    "boundary": "Snap can be bypassed; groups retain child relationships; viewport zoom never changes physical dimensions.",
+    "acceptance": "Group/ungroup/alignment after rotation and undo reproduce reference geometry without losing object IDs.",
+    "source_refs": [],
+    "provenance": "Explicit modernization expansion; see main shared-editor contract and current-tech review"
+  },
+  {
+    "id": "CAP-161",
+    "domain": "AI creation and modern editing contracts",
+    "names": [
+      "Lines, curves, symmetry and vector nodes"
+    ],
+    "phase": "F/X",
+    "behavior": "Freehand, line/polyline/Bézier, pen nodes/handles, join/cap/dashes, path operations, symmetry/mirror and shape primitives under Elements.",
+    "boundary": "Distinguish vector nodes from raster edge guesses; simplification/trace is previewed as a new editable object.",
+    "acceptance": "Closed/open paths and mirrored designs round-trip; original reference remains when auto-tracing fails.",
+    "source_refs": [],
+    "provenance": "Explicit modernization expansion; see main shared-editor contract and current-tech review"
+  },
+  {
+    "id": "CAP-162",
+    "domain": "AI creation and modern editing contracts",
+    "names": [
+      "Raster erase, mask and fill"
+    ],
+    "phase": "F",
+    "behavior": "Object delete, selected-region flood fill, tolerance/contiguity, freehand alpha erasure, restore brush and nondestructive mask editing.",
+    "boundary": "Brush erasure must not delete a whole object accidentally; foreground white ink remains selectable separately from background.",
+    "acceptance": "Erase part of a bitmap, undo, recolor only selected region and export with intended alpha.",
+    "source_refs": [],
+    "provenance": "Explicit modernization expansion; see main shared-editor contract and current-tech review"
+  },
+  {
+    "id": "CAP-163",
+    "domain": "AI creation and modern editing contracts",
+    "names": [
+      "Elements, assets and templates"
+    ],
+    "phase": "F",
+    "behavior": "Search/reuse licensed vectors, transparent images, frames, shapes and templates; replace selected asset, preserve intended transform and inspect source rights.",
+    "boundary": "Template availability does not grant all embedded asset rights; malicious SVG/scripts sanitized.",
+    "acceptance": "Unsupported SVG features are reported and user project cannot execute embedded active content.",
+    "source_refs": [
+      "S3:6312"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-164",
+    "domain": "AI creation and modern editing contracts",
+    "names": [
+      "Layer panel and effect stack"
+    ],
+    "phase": "F",
+    "behavior": "Named layers, thumbnails, order, groups, masks, visibility/lock, opacity/blend, isolate, duplicate and reversible image corrections.",
+    "boundary": "Grid/guides are stage overlays, not content; destructive merge requires saved originals or explicit action.",
+    "acceptance": "Reorder/lock/visibility agrees between stage and inspector; undo and reload retain effects without duplicating objects.",
+    "source_refs": [],
+    "provenance": "Explicit modernization expansion; see main shared-editor contract and current-tech review"
+  },
+  {
+    "id": "CAP-165",
+    "domain": "AI creation and modern editing contracts",
+    "names": [
+      "Multi-artboard and output tools"
+    ],
+    "phase": "F/X",
+    "behavior": "Custom/preset sizes, unit conversion, pages/boards, margins/bleed, resize anchors, selective export, batch variants and print preflight.",
+    "boundary": "Resizing artboard differs from scaling all content; PDF/PNG/SVG capabilities accurately labeled.",
+    "acceptance": "Export selected boards in correct order, dimensions and background; no handles or guides included.",
+    "source_refs": [
+      "S3:16216"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-166",
+    "domain": "AI creation and modern editing contracts",
+    "names": [
+      "History, autosave and recovery"
+    ],
+    "phase": "F",
+    "behavior": "Unified command history, named versions, autosave local/cloud states, offline edits, conflict branch and crash recovery across all studio modes.",
+    "boundary": "Source operations, placement operations and financial actions have distinct histories; no blanket undo of sent money.",
+    "acceptance": "Crash after acknowledged save recovers art; offline conflict exposes alternatives and does not silently overwrite.",
+    "source_refs": [
+      "S3:6391",
+      "S4:769"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-167",
+    "domain": "AI creation and modern editing contracts",
+    "names": [
+      "Full editing in Digital Try-on"
+    ],
+    "phase": "F",
+    "behavior": "Reuse all editor categories in body modes; select Edit design versus Adjust placement; inverse-map edits to source and project immediately with optional flat inset.",
+    "boundary": "Ambiguous folds/occluded targets prompt view change; no forced repeated export/re-import loop.",
+    "acceptance": "Draw, recolor, text edit, SAM mask and erase on a body preview update editable source without moving placement.",
+    "source_refs": [
+      "S3:92",
+      "S3:18761",
+      "S3:18831"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-168",
+    "domain": "AI creation and modern editing contracts",
+    "names": [
+      "User Test Studio"
+    ],
+    "phase": "F/X/R",
+    "behavior": "Save comparable fit/scale/light/ink/motion/age/rights/output scenarios, run defined checks, compare A–B and annotate a chosen revision.",
+    "boundary": "Developer tests and user simulations are distinct; physiological predictions remain gated.",
+    "acceptance": "A scenario report identifies changed variables and assumptions and can be reproduced from the saved revision.",
+    "source_refs": [
+      "S3:1039"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-169",
+    "domain": "AI creation and modern editing contracts",
+    "names": [
+      "Video, sound and presentation suite"
+    ],
+    "phase": "X",
+    "behavior": "Clip timeline with trim/split/reorder, tracks, simple keyframes, captions, narration/licensed audio, timelapse and consultation presentation playback.",
+    "boundary": "Recorded evidence and generated frames are distinguishable; paid/licensed audio cannot be included without rights.",
+    "acceptance": "Rendered clip preserves art orientation, timestamps, captions and permissioned audio; failed render keeps timeline editable.",
+    "source_refs": [],
+    "provenance": "Explicit modernization expansion; see main shared-editor contract and current-tech review"
+  },
+  {
+    "id": "CAP-170",
+    "domain": "AI creation and modern editing contracts",
+    "names": [
+      "Whiteboards, briefs and studio brand kits"
+    ],
+    "phase": "F/C/X",
+    "behavior": "Editable mood board, document/consultation deck, studio palette/fonts/templates and approved asset sets share project references and access rules.",
+    "boundary": "Brand constraints apply only to intended public/studio outputs, never change a client's tattoo colors without consent.",
+    "acceptance": "One approved artwork revision appears consistently in brief, deck and promo layout; updating it shows pending review.",
+    "source_refs": [],
+    "provenance": "Explicit modernization expansion; see main shared-editor contract and current-tech review"
+  },
+  {
+    "id": "CAP-171",
+    "domain": "AI creation and modern editing contracts",
+    "names": [
+      "Forms, tables and publishing suite"
+    ],
+    "phase": "C/X",
+    "behavior": "Structured brief/consent/feedback forms, client/booking/earnings tables, public artist pages, email/social drafts and reusable templates.",
+    "boundary": "General-purpose spreadsheet/web-builder parity is an expansion decision; sending/publishing requires explicit authorized action.",
+    "acceptance": "Form response respects field-level privacy and outputs keep source revision/license; draft generation never auto-publishes.",
+    "source_refs": [],
+    "provenance": "Explicit modernization expansion; see main shared-editor contract and current-tech review"
+  },
+  {
+    "id": "CAP-172",
+    "domain": "AI creation and modern editing contracts",
+    "names": [
+      "Layered image decomposition"
+    ],
+    "phase": "X/R",
+    "behavior": "Offer Convert to editable layers; choose target/count, preview RGBA components, inspect recomposition difference and accept a new version.",
+    "boundary": "Inferred layers can hallucinate occluded content; neither exact recovery of original layers nor true vector reconstruction is promised.",
+    "acceptance": "Fine lines, text and white ink survive recomposition within agreed error; failure leaves original untouched.",
+    "source_refs": [],
+    "provenance": "Explicit modernization expansion; see main shared-editor contract and current-tech review"
+  },
+  {
+    "id": "CAP-173",
+    "domain": "AI creation and modern editing contracts",
+    "names": [
+      "Selection-aware assistant commands"
+    ],
+    "phase": "X",
+    "behavior": "Optional text/voice acts on named selected objects through validated editor commands with before/after diff, cost and one-step undo.",
+    "boundary": "A new conversational paradigm must not supersede the confirmed direct-manipulation/editor-first experience.",
+    "acceptance": "'Recolor this flower' changes only the selected flower; denied scope or ambiguous target yields clarification, not a guessed global edit.",
+    "source_refs": [
+      "S3:74"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-174",
+    "domain": "AI creation and modern editing contracts",
+    "names": [
+      "Capture, measurement and quality provenance"
+    ],
+    "phase": "F/X",
+    "behavior": "Label each body model/preview as observed, calibrated, inferred or generated; retain model/version, scale source, uncertainty and quality flags through handoff.",
+    "boundary": "A visually convincing generated body is not personal anatomy measurement.",
+    "acceptance": "An uncalibrated generative preview cannot be exported as a calibrated stencil placement without explicit validated registration.",
+    "source_refs": [],
+    "provenance": "Explicit modernization expansion; see main shared-editor contract and current-tech review"
+  },
+  {
+    "id": "CAP-175",
+    "domain": "Product, business and research gates",
+    "names": [
+      "Cross-device usability and accessibility"
+    ],
+    "phase": "F",
+    "behavior": "Consistent tools and project semantics across supported desktop/tablet/mobile, adaptive drawers, readable labels, touch and keyboard alternatives.",
+    "boundary": "Device capability differences are surfaced, not hidden behind broken controls.",
+    "acceptance": "Supported-device core task suite passes; no clipped properties or missing canvas at documented breakpoints.",
+    "source_refs": [
+      "S1:319",
+      "S1:322",
+      "S1:323",
+      "S1:324"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-176",
+    "domain": "Product, business and research gates",
+    "names": [
+      "Realism and performance budgets"
+    ],
+    "phase": "F/X/R",
+    "behavior": "Instrument open-to-edit, input-to-frame, masks/fit, frame rate, drift, battery and thermal behavior using named fixtures and supported devices.",
+    "boundary": "Three-second goal applies to scoped loading; older universal FPS/accuracy promises are historical, not proven.",
+    "acceptance": "Publish percentiles and per-condition failures under main §12; mock logs do not satisfy a real-device gate.",
+    "source_refs": [
+      "S1:320",
+      "S1:321"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-177",
+    "domain": "Product, business and research gates",
+    "names": [
+      "Self-funding business and growth validation"
+    ],
+    "phase": "C",
+    "behavior": "Track repeat artist use, accepted handoffs, paid conversion, contribution margin, refunds/support costs and acquisition cohorts.",
+    "boundary": "Historical viral/download/revenue figures are unverified aspirations, not forecasts; current budget unknown.",
+    "acceptance": "A dated dashboard distinguishes actuals, targets and modeled scenarios and never counts failed retries as successful value.",
+    "source_refs": [
+      "S1:330",
+      "S1:331",
+      "S1:332",
+      "S1:333",
+      "S1:353",
+      "S1:354",
+      "S1:355",
+      "S1:356"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-178",
+    "domain": "Product, business and research gates",
+    "names": [
+      "Revenue and pricing validation"
+    ],
+    "phase": "C",
+    "behavior": "Model subscriptions, compute credits, design/POD royalties, one-time sales and professional plans against actual costs, usage and willingness to pay.",
+    "boundary": "Historical tier/credit/fee conflicts remain visible; proposal cannot silently lock prices or remove retained benefits.",
+    "acceptance": "Sensitivity analysis shows cost per successful task, margin and cancellation/refund effects before a pricing decision.",
+    "source_refs": [
+      "S1:337",
+      "S1:338",
+      "S1:339",
+      "S1:340",
+      "S1:341",
+      "S1:342"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-179",
+    "domain": "Product, business and research gates",
+    "names": [
+      "Partnership validation"
+    ],
+    "phase": "X",
+    "behavior": "Document studio/artist/brand opportunity, specific technical surface, compensation, deliverables and measured campaign impact.",
+    "boundary": "Partner interest is not a signed agreement; sponsored reach is not organic retention.",
+    "acceptance": "Each active partnership has accepted scope, asset rights and accountable outcomes tied to consented data.",
+    "source_refs": [
+      "S1:346",
+      "S1:347",
+      "S1:348",
+      "S1:349"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-180",
+    "domain": "Product, business and research gates",
+    "names": [
+      "Lensa case-study research"
+    ],
+    "phase": "R",
+    "behavior": "Preserve requested 2018–2022 chronology, viral-event, UX, technology, distribution, pricing and transferable-pattern analysis as an explicit research work item.",
+    "boundary": "Old 19.3M/$30.7M figures and causal claims are not reverified here; do not force the roadmap to mirror a different product.",
+    "acceptance": "Primary/reputable dated evidence supports each statistic; distinguish correlation/causation and propose a testable ARTOO experiment for any transfer.",
+    "source_refs": [
+      "S1:362",
+      "S1:363",
+      "S1:364",
+      "S1:365",
+      "S1:366",
+      "S1:367",
+      "S1:368"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-181",
+    "domain": "Product, business and research gates",
+    "names": [
+      "Adaptive model evaluation and consented learning"
+    ],
+    "phase": "X/R",
+    "behavior": "Compare baseline and candidate render/mapping methods using labeled fixtures, optional user corrections, data provenance, evaluation versions, monitored rollout and rollback.",
+    "boundary": "No automatic training from private captures; synthetic augmentation is labeled and cannot replace diverse real validation.",
+    "acceptance": "Candidate promotes only after fixed holdout evaluation, per-condition checks, cost/latency limits and tested rollback; consent withdrawal follows declared dataset policy.",
+    "source_refs": [],
+    "provenance": "Explicit modernization expansion; see main shared-editor contract and current-tech review"
+  },
+  {
+    "id": "CAP-182",
+    "domain": "Product, business and research gates",
+    "names": [
+      "About, FAQ, feedback and Easter egg"
+    ],
+    "phase": "C/X",
+    "behavior": "Provide accessible product/contact/FAQ, feedback intake and social references; preserve requested secret Easter egg as optional discoverable delight.",
+    "boundary": "S6 question labels are clipped, so exact hidden content/links are unresolved; no essential function depends on finding it.",
+    "acceptance": "Main workflows and help work without the Easter egg; feedback has a receipt/status and no unexpected marketing subscription.",
+    "source_refs": [
+      "S6:1"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-183",
+    "domain": "Product, business and research gates",
+    "names": [
+      "Authentication and environment separation"
+    ],
+    "phase": "F",
+    "behavior": "Supported sign-in including requested Google OAuth, session/account recovery and isolated development/test/production data and credentials.",
+    "boundary": "Auth provider is not assumed selected; demo users cannot access live body media or payments.",
+    "acceptance": "Test tokens fail in production, sign-out invalidates protected access, and profile switch never changes underlying account identity.",
+    "source_refs": [
+      "S3:3"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-184",
+    "domain": "Additional recovered workflow details",
+    "names": [
+      "Prompt Library"
+    ],
+    "phase": "F/X",
+    "behavior": "Curate searchable prompt recipes with style, placement and palette placeholders, examples, author/license notes and editable saved personal variants.",
+    "boundary": "Recipes suggest concepts without guaranteeing artist imitation or identical results; versions identify provider/model used.",
+    "acceptance": "User edits a recipe, generates alternatives and can recover the exact submitted prompt without overwriting the shared recipe.",
+    "source_refs": [
+      "S4:684"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-185",
+    "domain": "Additional recovered workflow details",
+    "names": [
+      "Local artist and service map"
+    ],
+    "phase": "C",
+    "behavior": "Map/list nearby artists, shops and guest spots with optional device location or manual city/radius, styles, accessibility, availability and booking links.",
+    "boundary": "Location permission is optional; private client locations are never published and geocoding failures have list/manual fallback.",
+    "acceptance": "User with location disabled can find an eligible artist in an entered city and reach the correct branch/service page.",
+    "source_refs": [
+      "S3:3"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-186",
+    "domain": "Additional recovered workflow details",
+    "names": [
+      "Consultation screen sharing"
+    ],
+    "phase": "X",
+    "behavior": "Opt-in share a chosen workspace view during a call with participant list, visible sharing indicator, stop control and optional co-pointer.",
+    "boundary": "Screen sharing is separate from edit permission and recording; health forms, messages and unrelated tabs excluded by default.",
+    "acceptance": "Stopping ends transmission, a viewer cannot edit, and private panels remain hidden in the selected shared surface.",
+    "source_refs": [
+      "S4:732"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-187",
+    "domain": "Additional recovered workflow details",
+    "names": [
+      "Organization workflow configuration"
+    ],
+    "phase": "C/X",
+    "behavior": "Define custom project stages, required documents, approval gates, message/contract templates and aftercare checklists; show responsible role and blocking reason.",
+    "boundary": "Custom labels cannot bypass canonical payment, license or approval states; policy changes apply prospectively.",
+    "acceptance": "Missing consent blocks only the defined downstream action and an authorized exception is auditable; status does not fabricate payment evidence.",
+    "source_refs": [
+      "S4:757"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-188",
+    "domain": "Additional recovered workflow details",
+    "names": [
+      "Media standardization and asset optimization"
+    ],
+    "phase": "F/X",
+    "behavior": "EXIF orientation, color-profile handling, quality/resolution checks, video-frame extraction, comparable camera views, progressive thumbnails and cached renders retain source originals.",
+    "boundary": "Compression/upscale cannot silently alter print dimensions or represent generated detail as original; cache keys include revision/render settings.",
+    "acceptance": "Reopened project resolves original art, correct alpha and frame timestamps; stale thumbnails never replace newly edited content.",
+    "source_refs": [
+      "S4:706"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  },
+  {
+    "id": "CAP-189",
+    "domain": "Additional recovered workflow details",
+    "names": [
+      "Skin-region acquisition"
+    ],
+    "phase": "F/R",
+    "behavior": "Combine candidate segmentation, landmarks/depth and user correction to isolate visible target skin, with confidence, selected body/side and occlusion boundaries.",
+    "boundary": "HSV/YCrCb/Canny may help bounded cases but are not universal skin detection; person masks can contain clothes and background.",
+    "acceptance": "Diverse-tone, hairy, scarred, tattooed and clothed-edge fixtures report mask/fit errors separately; uncertain input prompts correction.",
+    "source_refs": [
+      "S4:13"
+    ],
+    "provenance": "Source-linked; elaboration proposed"
+  }
+]
