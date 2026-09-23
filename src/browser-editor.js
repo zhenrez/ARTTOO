@@ -13,11 +13,13 @@ const mmPoint = (svg, event) => {
 
 function pathData(points) { return points.map((point, index) => `${index ? 'L' : 'M'} ${point.x} ${point.y}`).join(' '); }
 function finiteNumber(input, label) { const value = Number(input.value); if (!Number.isFinite(value)) throw new Error(`${label} must be finite`); return value; }
+function svgTransform(transform) { return `translate(${transform.x} ${transform.y}) scale(${transform.scaleX} ${transform.scaleY}) rotate(${transform.rotationDeg})`; }
 
 export function mountBrowserEditor({ project, artboardId, svg, undoButton, redoButton, status, transformControls = null }) {
   if (!svg || !undoButton || !redoButton) throw new Error('browser editor requires artboard and undo/redo controls');
   let activePoints = null;
   let selectedObjectId = null;
+  let moveGesture = null;
   const adapter = {
     render(view) {
       const board = view.artboard;
@@ -30,7 +32,7 @@ export function mountBrowserEditor({ project, artboardId, svg, undoButton, redoB
         path.setAttribute('stroke-width', stroke.style.width);
         path.setAttribute('stroke-opacity', stroke.style.opacity);
         path.setAttribute('stroke-linecap', 'round');
-        path.setAttribute('transform', `translate(${stroke.transform.x} ${stroke.transform.y}) scale(${stroke.transform.scaleX} ${stroke.transform.scaleY}) rotate(${stroke.transform.rotationDeg})`);
+        path.setAttribute('transform', svgTransform(stroke.transform));
         path.dataset.objectId = stroke.objectId;
         if (stroke.objectId === selectedObjectId) path.dataset.selected = 'true';
         return path;
@@ -65,14 +67,40 @@ export function mountBrowserEditor({ project, artboardId, svg, undoButton, redoB
     host.dispatch({ type: 'stroke.add', expectedRevision: current.revision, artboardId, points: activePoints, style: { preset: 'round', color: '#18151E', width: 1.5, opacity: 1 } });
     activePoints = null;
   };
+  const beginMove = (event, objectId) => {
+    selectedObjectId = objectId;
+    activePoints = null;
+    const object = host.getProject().objects[objectId];
+    moveGesture = { pointerId: event.pointerId, start: mmPoint(svg, event), transform: { ...object.transform }, target: event.target };
+    svg.setPointerCapture?.(event.pointerId);
+    host.render();
+  };
+  const previewMove = (event) => {
+    if (!moveGesture || event.pointerId !== moveGesture.pointerId) return;
+    const point = mmPoint(svg, event);
+    const preview = { ...moveGesture.transform, x: moveGesture.transform.x + point.x - moveGesture.start.x, y: moveGesture.transform.y + point.y - moveGesture.start.y };
+    const selectedPath = svg.children.find?.((child) => child.dataset?.objectId === selectedObjectId) ?? moveGesture.target;
+    selectedPath?.setAttribute?.('transform', svgTransform(preview));
+  };
+  const commitMove = (event) => {
+    if (!moveGesture || event.pointerId !== moveGesture.pointerId) return false;
+    const gesture = moveGesture;
+    moveGesture = null;
+    const point = mmPoint(svg, event);
+    const x = gesture.transform.x + point.x - gesture.start.x;
+    const y = gesture.transform.y + point.y - gesture.start.y;
+    if (x !== gesture.transform.x || y !== gesture.transform.y) transformSelected({ x, y });
+    else host.render();
+    return true;
+  };
   svg.addEventListener('pointerdown', (event) => {
     const objectId = event.target?.dataset?.objectId;
-    if (objectId) { selectedObjectId = objectId; activePoints = null; host.render(); return; }
+    if (objectId) { beginMove(event, objectId); return; }
     activePoints = [mmPoint(svg, event)]; svg.setPointerCapture?.(event.pointerId);
   });
-  svg.addEventListener('pointermove', (event) => { if (activePoints) activePoints.push(mmPoint(svg, event)); });
-  svg.addEventListener('pointerup', () => commitStroke());
-  svg.addEventListener('pointercancel', () => { activePoints = null; });
+  svg.addEventListener('pointermove', (event) => { if (moveGesture) previewMove(event); else if (activePoints) activePoints.push(mmPoint(svg, event)); });
+  svg.addEventListener('pointerup', (event) => { if (!commitMove(event)) commitStroke(); });
+  svg.addEventListener('pointercancel', () => { activePoints = null; moveGesture = null; host.render(); });
   undoButton.addEventListener('click', () => host.undo());
   redoButton.addEventListener('click', () => host.redo());
   if (transformControls) {
