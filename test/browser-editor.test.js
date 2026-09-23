@@ -9,7 +9,7 @@ class FakeElement {
   setAttribute(name, value) { this.attributes[name] = String(value); if (name === 'viewBox') { const [, , width, height] = String(value).split(' ').map(Number); this.viewBox.baseVal = { width, height }; } }
   replaceChildren(...children) { this.children = children; }
   getBoundingClientRect() { return { left: 0, top: 0, width: 200, height: 200 }; }
-  emit(type, event = {}) { for (const fn of this.listeners[type] ?? []) fn({ pointerId: 1, clientX: 0, clientY: 0, pressure: 0, target: this, preventDefault() { this.prevented = true; }, ...event }); }
+  emit(type, event = {}) { for (const fn of this.listeners[type] ?? []) fn({ pointerId: 1, pointerType: 'mouse', clientX: 0, clientY: 0, pressure: 0, target: this, preventDefault() { this.prevented = true; }, ...event }); }
 }
 
 function fixture() { let project = createProject({ ownerId: 'browser-user', name: 'browser fixture' }); return applyCommand(project, { type: 'artboard.add', artboardId: 'board', widthMm: 100, heightMm: 100 }); }
@@ -34,13 +34,31 @@ test('selection exposes numeric transform, scale and flip through reversible can
   const keyListeners = fakeDocument(); const svg = new FakeElement(); const controls = transformControls();
   let project = fixture(); project = applyCommand(project, { type: 'stroke.add', artboardId: 'board', objectId: 'stroke-1', points: [{ x: 10, y: 10 }, { x: 20, y: 20 }], style: { preset: 'round', color: '#18151e', width: 1.5, opacity: 1 } });
   const mounted = mountBrowserEditor({ project, artboardId: 'board', svg, undoButton: new FakeElement(), redoButton: new FakeElement(), transformControls: controls });
-  assert.equal(controls.fieldset.disabled, true); svg.emit('pointerdown', { target: svg.children[0] }); assert.equal(mounted.getSelectedObjectId(), 'stroke-1'); assert.equal(controls.fieldset.disabled, false); assert.equal(controls.scaleX.value, 1);
+  assert.equal(controls.fieldset.disabled, true); svg.emit('pointerdown', { target: svg.children[0] }); svg.emit('pointerup', { target: svg.children[0] }); assert.equal(mounted.getSelectedObjectId(), 'stroke-1'); assert.equal(controls.fieldset.disabled, false); assert.equal(controls.scaleX.value, 1);
   controls.x.value = '12'; controls.y.value = '8'; controls.rotation.value = '30'; controls.scaleX.value = '1.5'; controls.scaleY.value = '0.75'; controls.apply.emit('click');
   assert.deepEqual(mounted.host.getProject().objects['stroke-1'].transform, { x: 12, y: 8, scaleX: 1.5, scaleY: 0.75, rotationDeg: 30 }); assert.match(svg.children[0].attributes.transform, /translate\(12 8\) scale\(1.5 0.75\) rotate\(30\)/);
   controls.flipX.emit('click'); assert.equal(mounted.host.getProject().objects['stroke-1'].transform.scaleX, -1.5); assert.match(svg.children[0].attributes.transform, /scale\(-1.5 0.75\)/);
   mounted.host.undo(); assert.equal(mounted.host.getProject().objects['stroke-1'].transform.scaleX, 1.5);
   controls.flipY.emit('click'); assert.equal(mounted.host.getProject().objects['stroke-1'].transform.scaleY, -0.75);
   const right = { ctrlKey: false, metaKey: false, altKey: false, shiftKey: false, key: 'ArrowRight', preventDefault() { this.prevented = true; } }; keyListeners[0](right); assert.equal(right.prevented, true); assert.equal(mounted.host.getProject().objects['stroke-1'].transform.x, 13);
+  mounted.destroy(); delete globalThis.document;
+});
+
+test('touch pointer drag previews ephemerally then commits one canonical move that undo restores', () => {
+  fakeDocument(); const svg = new FakeElement();
+  let project = fixture(); project = applyCommand(project, { type: 'stroke.add', artboardId: 'board', objectId: 'stroke-1', points: [{ x: 10, y: 10 }, { x: 20, y: 20 }] });
+  const mounted = mountBrowserEditor({ project, artboardId: 'board', svg, undoButton: new FakeElement(), redoButton: new FakeElement() });
+  const revisionBefore = mounted.host.getProject().revision;
+  svg.emit('pointerdown', { pointerId: 7, pointerType: 'touch', clientX: 20, clientY: 20, target: svg.children[0] });
+  svg.emit('pointermove', { pointerId: 7, pointerType: 'touch', clientX: 60, clientY: 80 });
+  assert.equal(mounted.host.getProject().revision, revisionBefore);
+  assert.match(svg.children[0].attributes.transform, /translate\(20 30\)/);
+  svg.emit('pointerup', { pointerId: 7, pointerType: 'touch', clientX: 60, clientY: 80 });
+  assert.equal(mounted.host.getProject().revision, revisionBefore + 1);
+  assert.deepEqual({ x: mounted.host.getProject().objects['stroke-1'].transform.x, y: mounted.host.getProject().objects['stroke-1'].transform.y }, { x: 20, y: 30 });
+  assert.match(svg.children[0].attributes.transform, /translate\(20 30\)/);
+  mounted.host.undo();
+  assert.deepEqual({ x: mounted.host.getProject().objects['stroke-1'].transform.x, y: mounted.host.getProject().objects['stroke-1'].transform.y }, { x: 0, y: 0 });
   mounted.destroy(); delete globalThis.document;
 });
 
