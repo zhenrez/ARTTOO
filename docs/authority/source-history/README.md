@@ -13,3 +13,7 @@ These files are **historical evidence**, not current architecture authority. Res
 | S7 | 13 Mar 2025 architecture proposal | `S7_ARTOO_Architecture_Proposal_2025-03-13.txt` | Historical architecture proposal; not proof the architecture existed or remains desired. |
 
 The current machine-readable traceability map is `../ARTOO_Source_Traceability.csv`. The capability contracts and modern spec are sufficient for ordinary MVP implementation. Retrieve a full historical source only when a disputed or unresolved decision actually depends on it.
+
+## Implementation audit archive
+
+Superseded, PR-specific execution audits are retained under `implementation-audits/`. They document what was known at a particular repository state and are **not** current acceptance status. Current status belongs in `../mvp-autopilot/STATE.md` and executable repository/CI evidence.
