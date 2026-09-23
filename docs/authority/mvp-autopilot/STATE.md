@@ -1,49 +1,36 @@
 # ARTTOO MVP Autopilot State
 
-**Updated:** 2026-09-23T03:57Z
+**Updated:** 2026-09-23T04:30Z
 **Canonical repository:** `zhenrez/ARTTOO`
 **Main head observed:** `5c47fa4d5100a19165607e80e8413423dd27c008`
 **Working branch:** `mvp/checkpoint-0-document-core`
 **Pull request:** #2 — `MVP checkpoint 0: bootstrap canonical document core`
 
 ## Lease / handoff
-- Driver A's bounded Checkpoint-0 acceptance/remediation lease is **RELEASED**.
-- Audit scope: latest PR CI, source durability, browser portability, and IndexedDB transaction semantics.
-- Driver A found and remediated a durability defect in the IndexedDB adapter: operations previously resolved on request success rather than transaction completion, so a caller could observe `put()` success before the read-write transaction had durably completed.
-- Remediation implementation commit: `99cd534a8290a0347d5b9b36df41c1934e7bdf4a`.
-- Driver B is the intended next owner for exact-head CI verification and independent inspection. No worker should begin Checkpoint 1 until this remediation is green and Checkpoint 0 is independently accepted.
+- Driver A's Checkpoint-0 remediation lease is **RELEASED**.
+- Driver B now holds a **BOUNDED ACTIVE LEASE** for one task only: independently verify the IndexedDB transaction-completion remediation and add a dependency-free transaction-order regression.
+- Lease scope: `test/asset-store.test.js` plus this state record. Do not begin Checkpoint 1 or alter canonical product semantics under this lease.
+- Starting PR head observed: `441d6f48301a57df5283a8582c6a05e0d7982238`.
+- Expected evidence: exact-head GitHub Actions success plus regression proof that `put`/`delete` do not resolve before transaction completion and `get` exposes its captured result only after completion.
 
 ## Verified completed gates
-- None yet. Checkpoint 0 remains open pending verification of the durability remediation and baseline acceptance.
+- None yet. Checkpoint 0 remains open pending this bounded verification and baseline acceptance.
 
 ## Verified repository/application state
 - `main` remains at authority bootstrap `5c47fa4d5100a19165607e80e8413423dd27c008`.
 - PR #2 is new bootstrap code; no prior application implementation is claimed as recovered.
-- Pre-remediation PR head `3734c11714e182efce4af4f019ae7b5007486af4` completed GitHub Actions `verify` run `35814578979`, conclusion **success**.
-- The earlier implementation evidence remains valid for its exact tested head only.
-- `src/document.js` uses standards Web Crypto; source bytes are externalized behind the asset-store seam; missing/corrupt sources fail closed.
-- Independent Driver-A inspection found the IndexedDB adapter resolved requests before `transaction.oncomplete`, weakening the durability contract despite green Node tests.
+- Exact starting PR head `441d6f48301a57df5283a8582c6a05e0d7982238` completed GitHub Actions `verify` run `35816452874`, conclusion **success**.
+- `src/asset-store.js` now captures request success but resolves the public operation only from `transaction.oncomplete`; request/transaction failure paths reject fail-closed.
+- Existing tests verify immutable source recovery, missing/corrupt-source failure, Web Crypto portability, placement separation, approval invalidation, deduplication, and local-draft recovery, but do not yet emulate IndexedDB event ordering.
 
-## Changes this run
-- Changed `src/asset-store.js` so IndexedDB operations resolve only on `transaction.oncomplete`.
-- Request results are captured on request success but not exposed until transaction completion.
-- Request, transaction error, transaction abort, and synchronous operation failures reject once; database close remains in `finally` after transaction settlement.
-- No framework, runtime dependency, provider, duplicate state model, or paid service was introduced.
-
-## Verification evidence
-- VERIFIED before remediation: exact PR head `3734c11714e182efce4af4f019ae7b5007486af4`, GitHub Actions run `35814578979`, conclusion `success`.
-- PENDING for remediation: commit `99cd534a8290a0347d5b9b36df41c1934e7bdf4a` and subsequent state-only handoff commit require exact-head CI.
-- Existing Node regression suite does not emulate real IndexedDB transaction ordering; green Node CI alone does not prove the browser transaction behavior. The code-level defect was therefore fixed fail-closed before baseline acceptance.
-
-## Blockers
-- Require green CI for the latest PR head after this state handoff.
-- Checkpoint 0 still needs independent acceptance; browser IndexedDB behavior should receive a bounded transaction-order regression when feasible without adding production dependencies.
+## Current bottleneck
+Checkpoint 0 needs an executable transaction-order regression so the durability remediation is verified behavior rather than code inspection alone.
 
 ## Owner decisions required
 None currently.
 
 ## Next highest-leverage task
-Driver B: verify exact current PR head and CI. Independently inspect the `transaction.oncomplete` durability fix. If green, add the smallest test seam that proves a read-write operation does not resolve before transaction completion (prefer dependency-free injected fake IndexedDB events or a narrowly scoped dev-only test aid). If that evidence passes and no other Checkpoint-0 invariant fails, hand Checkpoint 0 back for baseline acceptance rather than expanding scope.
+Driver B: add the smallest dependency-free fake-IndexedDB event harness covering `put`, `delete`, and `get` settlement ordering; then require exact-head CI success and release the lease back to Driver A for baseline acceptance.
 
 ## Continuation prompt
-Driver B: resume PR #2 from the latest `mvp/checkpoint-0-document-core` head. Read AUTHORITY.md and this state first; confirm no active conflicting lease. Require green CI for the exact current head. Inspect `src/asset-store.js` and verify that `put`/`delete` resolve on transaction completion, not request success, while `get` returns the captured request result only after completion. Add a bounded transaction-order regression if it can be done without production dependencies. Preserve Web Crypto portability, immutable source identity, fail-closed source verification, placement separation, and revision-bound approval semantics. If all Checkpoint-0 evidence is green, release the lease with a precise baseline-acceptance handoff; do not start Checkpoint 1 yet.
+Driver B currently owns the bounded transaction-order verification lease on PR #2. Add only the dependency-free IndexedDB ordering regression, preserve current canonical semantics, require exact-head CI, then release the lease with a Driver-A baseline-acceptance handoff. Do not start Checkpoint 1.
