@@ -1,9 +1,32 @@
-import { createHash, randomUUID } from 'node:crypto';
-
 export const SCHEMA_VERSION = 1;
 const clone = (value) => structuredClone(value);
 const now = () => new Date().toISOString();
-const id = (prefix) => `${prefix}_${randomUUID()}`;
+
+function id(prefix) {
+  const uuid = globalThis.crypto?.randomUUID?.();
+  if (!uuid) throw new Error('crypto.randomUUID is required');
+  return `${prefix}_${uuid}`;
+}
+
+function asBytes(value) {
+  if (value instanceof Uint8Array) return value;
+  if (value instanceof ArrayBuffer) return new Uint8Array(value);
+  if (ArrayBuffer.isView(value)) return new Uint8Array(value.buffer, value.byteOffset, value.byteLength);
+  throw new Error('bytes must be an ArrayBuffer or typed array');
+}
+
+export async function hashBytes(bytes) {
+  if (!globalThis.crypto?.subtle) throw new Error('Web Crypto subtle API is required');
+  const view = asBytes(bytes);
+  const digest = await globalThis.crypto.subtle.digest('SHA-256', view);
+  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, '0')).join('');
+}
+
+function assertAssetStore(assetStore) {
+  if (!assetStore || typeof assetStore.put !== 'function' || typeof assetStore.get !== 'function') {
+    throw new Error('assetStore must implement put(checksum, bytes) and get(checksum)');
+  }
+}
 
 export function createProject({ ownerId, name = 'Untitled project' }) {
   if (!ownerId) throw new Error('ownerId is required');
@@ -11,14 +34,30 @@ export function createProject({ ownerId, name = 'Untitled project' }) {
   return { schemaVersion: SCHEMA_VERSION, projectId: id('project'), ownerId, name, revision: 0, createdAt: timestamp, updatedAt: timestamp, artboards: [], assets: {}, objects: {}, bodyTargets: {}, placements: {}, reviews: {}, exports: {}, history: [] };
 }
 
-export function importAsset(project, { bytes, mimeType, width, height, provenance, licenseRef = null }) {
-  const checksum = createHash('sha256').update(bytes).digest('hex');
+export async function importAsset(project, { bytes, mimeType, width, height, provenance, licenseRef = null }, assetStore) {
+  assertAssetStore(assetStore);
+  const sourceBytes = asBytes(bytes);
+  const checksum = await hashBytes(sourceBytes);
   const existing = Object.values(project.assets).find((asset) => asset.checksum === checksum);
+  await assetStore.put(checksum, sourceBytes);
   if (existing) return { project, assetId: existing.assetId, deduplicated: true };
   const assetId = id('asset');
   const next = clone(project);
-  next.assets[assetId] = { assetId, checksum, mimeType, width, height, provenance, licenseRef, immutable: true };
+  next.assets[assetId] = { assetId, checksum, byteLength: sourceBytes.byteLength, mimeType, width, height, provenance, licenseRef, immutable: true };
   return { project: commit(next, project, 'asset.import', { assetId, checksum }), assetId, deduplicated: false };
+}
+
+export async function verifyAssetSource(project, assetId, assetStore) {
+  assertAssetStore(assetStore);
+  const asset = project.assets[assetId];
+  if (!asset) throw new Error('asset not found');
+  const bytes = await assetStore.get(asset.checksum);
+  if (bytes == null) throw new Error(`source bytes missing for asset: ${assetId}`);
+  const sourceBytes = asBytes(bytes);
+  if (sourceBytes.byteLength !== asset.byteLength) throw new Error(`source bytes corrupt for asset: ${assetId}`);
+  const checksum = await hashBytes(sourceBytes);
+  if (checksum !== asset.checksum) throw new Error(`source checksum mismatch for asset: ${assetId}`);
+  return sourceBytes;
 }
 
 export function applyCommand(project, command) {
