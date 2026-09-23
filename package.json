@@ -6,7 +6,8 @@
   "scripts": {
     "test": "node --test test/*.test.js",
     "test:e2e": "playwright test --config=playwright.config.js",
-    "check": "node --check src/document.js && node --check src/asset-store.js && node --check src/local-draft.js && node --check src/editor-adapter.js && node --check src/editor-conformance.js && node --check src/browser-editor.js && node --check web/main.js && node --check test/drawing.test.js && node --check test/browser-editor.test.js && node --test test/*.test.js"
+    "check:syntax": "node scripts/check-js-syntax.js",
+    "check": "npm run check:syntax && npm test"
   },
   "devDependencies": {
     "@playwright/test": "1.55.0"
