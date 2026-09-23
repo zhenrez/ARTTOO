@@ -37,10 +37,33 @@ export function createIndexedDbAssetStore({ indexedDB = globalThis.indexedDB, da
       return await new Promise((resolve, reject) => {
         const transaction = db.transaction(storeName, mode);
         const store = transaction.objectStore(storeName);
-        const request = operation(store);
-        request.onsuccess = () => resolve(request.result ?? null);
-        request.onerror = () => reject(request.error ?? new Error('IndexedDB request failed'));
-        transaction.onabort = () => reject(transaction.error ?? new Error('IndexedDB transaction aborted'));
+        let requestResult = null;
+        let settled = false;
+
+        const rejectOnce = (error) => {
+          if (settled) return;
+          settled = true;
+          reject(error);
+        };
+
+        let request;
+        try {
+          request = operation(store);
+        } catch (error) {
+          try { transaction.abort(); } catch {}
+          rejectOnce(error);
+          return;
+        }
+
+        request.onsuccess = () => { requestResult = request.result ?? null; };
+        request.onerror = () => rejectOnce(request.error ?? new Error('IndexedDB request failed'));
+        transaction.onabort = () => rejectOnce(transaction.error ?? new Error('IndexedDB transaction aborted'));
+        transaction.onerror = () => rejectOnce(transaction.error ?? new Error('IndexedDB transaction failed'));
+        transaction.oncomplete = () => {
+          if (settled) return;
+          settled = true;
+          resolve(requestResult);
+        };
       });
     } finally {
       db.close();
