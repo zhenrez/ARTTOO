@@ -3,7 +3,6 @@ import assert from 'node:assert/strict';
 import { applyCommand, createProject, importAsset, isApprovalCurrent, reopenProject, serializeProject } from '../src/document.js';
 
 const source = Buffer.from('immutable tattoo source fixture');
-
 function fixture() {
   let project = createProject({ ownerId: 'owner_fixture', name: 'Golden Journey Seed' });
   const imported = importAsset(project, { bytes: source, mimeType: 'image/png', width: 1000, height: 1000, provenance: 'test-fixture' });
@@ -33,12 +32,11 @@ test('body placement is separate from source-art transform state', () => {
   assert.equal(project.placements.placement_1.physicalSizeMm.width, 72);
 });
 
-test('approval binds to exact revision and becomes stale after dependent edit', () => {
+test('approval binds to exact resulting revision and becomes stale after dependent edit', () => {
   let { project } = fixture();
   project = applyCommand(project, { type: 'review.approve', reviewId: 'approval_1', authorId: 'artist_fixture' });
-  assert.equal(isApprovalCurrent(project, 'approval_1'), false, 'approval command itself advances the revision');
-  const approvedRevision = project.reviews.approval_1.revision;
-  assert.equal(approvedRevision, project.revision - 1);
+  assert.equal(project.reviews.approval_1.revision, project.revision);
+  assert.equal(isApprovalCurrent(project, 'approval_1'), true);
   project = applyCommand(project, { type: 'object.transform', objectId: 'design_main', transform: { rotationDeg: 5 } });
   assert.equal(isApprovalCurrent(project, 'approval_1'), false);
 });
