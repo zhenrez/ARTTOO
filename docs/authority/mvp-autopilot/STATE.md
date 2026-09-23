@@ -1,59 +1,58 @@
 # ARTTOO MVP Autopilot State
 
-**Updated:** 2026-09-23T21:56Z
+**Updated:** 2026-09-23T22:34Z
 **Canonical repository:** `zhenrez/ARTTOO`
-**Main head observed:** `1c46dd0c51b8afb52b50a44637af61406425abe4`
-**Last verified main head:** `1c46dd0c51b8afb52b50a44637af61406425abe4` — workflow `35913212401` SUCCESS
-**Working branch:** `mvp/checkpoint-1-real-browser-smoke`
-**Pull request:** #17 open
+**Main head observed:** `00353ff356ae9609ffd5ff8467f5bcaa6a5623ed` (PR #17 squash merge; merged-main CI in progress at observation)
+**Last verified main head:** `1b6e17cb72d4a60dd3e4d6f01861c382b39a1c78` — workflow `35926361492` SUCCESS
+**Working branch:** none — implementation lease released
+**Pull request:** #17 merged; #18 documentation-only cleanup remains open
 
 ## Lease / handoff
-- Driver B repaired PR #17 Node/Playwright suite isolation and handed exact-head verification to Driver A.
-- Driver A verified PR #17 head `9670fc315380fc0f37ca008e892b5dec5ebb262f` in workflow `35922644247` SUCCESS.
-- Owner stop-the-line direction then made CI reliability the immediate bounded lease before any further feature/device expansion.
-- Driver A replaced the manually enumerated `node --check` chain with automatic recursive JavaScript discovery under `src/`, `web/`, `test/`, and `scripts/` via `scripts/check-js-syntax.js`; `npm run check` now runs discovered syntax verification plus the bounded Node unit suite.
-- Driver A **RELEASED / HANDOFF TO DRIVER B** after proposing the reliability repair. Exact-latest-head CI is required before merge.
-- Governor PR #16 remains open and separately owned; do not race its authority artifact.
+- Driver A handed PR #17 exact-head verification/integration to Driver B after the stop-the-line CI reliability repair.
+- Driver B verified exact PR #17 head `fc4338062f9fc07355d5492b523b6270c2a09f2c` in workflow `35925945750` SUCCESS: both `node` and `browser-smoke` jobs passed.
+- Driver B independently inspected the browser acceptance fixture and CI job boundary, then squash-merged PR #17 with expected-head protection as `00353ff356ae9609ffd5ff8467f5bcaa6a5623ed`.
+- Driver B **RELEASED / HANDOFF TO DRIVER A**. No product implementation lease is active.
+- PR #18 is documentation-only and must not be allowed to overwrite the newer live STATE or cleaned authority structure without reconciliation.
 
 ## Verified completed gates
 - **Checkpoint 0 complete / merged.**
-- **Checkpoint 1 partial.** PRs #3–#15 are merged and verified on main. PR #17 has a previously green head but its latest CI-reliability repair is pending exact-head verification.
+- **Checkpoint 1 partial.** PRs #3–#15 are verified on main. PR #17 is merged after exact-head green evidence; exact merged-main CI is still pending.
 
 ## Verified repository/application state
-- Current main `1c46dd0c51b8afb52b50a44637af61406425abe4` is VERIFIED GREEN in workflow `35913212401`.
-- PR #17 pre-reliability-repair head `9670fc315380fc0f37ca008e892b5dec5ebb262f` is VERIFIED GREEN in workflow `35922644247`.
-- Visible drawing/history/selection, canonical numeric/direct transforms, visible canonical save/reopen, semantic-layer projection, and visible keyboard-operable Layers are verified on main.
+- Main `1b6e17cb72d4a60dd3e4d6f01861c382b39a1c78` is VERIFIED GREEN in workflow `35926361492`; this includes the documentation cleanup/reorganization.
+- PR #17 exact head `fc4338062f9fc07355d5492b523b6270c2a09f2c` is VERIFIED GREEN in workflow `35925945750`.
+- PR #17 adds an actual Chromium acceptance route loading the production web graph and proving drawing -> Layers/selection -> local save -> reload -> same canonical project/revision/object continuity.
+- CI now separates bounded Node verification from Playwright browser evidence and uses automatic recursive JavaScript syntax discovery rather than manual file enumeration.
 - Browser automation remains evidence-only; canonical project/document state remains authoritative.
 - No editor SDK/vendor has been selected.
 
 ## Work completed this run
-- Re-read authority, automation, current product/technology/capability/bootstrap doctrine and refreshed main/open PR evidence.
-- Confirmed PR #17 was exact-head green before the owner stop-the-line CI reliability directive.
-- Confirmed `package.json` still manually enumerated syntax-check targets, leaving newly added JavaScript files vulnerable to omission.
-- Added `scripts/check-js-syntax.js`, which recursively discovers every `.js` file under `src`, `web`, `test`, and `scripts`, sorts targets deterministically, fails closed if none are found, and runs `node --check` on every discovered file.
-- Replaced the manual `node --check ... && ...` chain with `check:syntax` plus `npm test`; Playwright remains isolated under `test:e2e`.
-- No product semantics, canonical state, provider choice, export path, or MVP scope changed.
+- Re-read the cleaned authority manifest, automation contract, live state, current main, open PRs, and PR #17 evidence.
+- Confirmed exact PR #17 latest head green in workflow `35925945750`.
+- Confirmed both CI jobs passed: Node `npm run check` and Chromium `npm run test:e2e`.
+- Inspected the browser fixture: it draws through the production workspace, verifies semantic Layers/selection, saves canonical state to browser localStorage, reloads, and asserts the same project ID, revision, object ID, and object payload survive.
+- Squash-merged PR #17 with exact expected-head protection as `00353ff356ae9609ffd5ff8467f5bcaa6a5623ed`.
+- Merged-main workflow `35928951479` started and remained in progress at observation; merged-main green is not yet claimed.
 
 ## Productive fallback
-- Local/container pre-push execution was attempted first, but the execution environment could not resolve `github.com`, so it could not clone the repository. This is recorded as an environment limitation, not evidence of failure or success.
-- Repository mutation remained available through the authorized GitHub connector, so the bounded repair was proposed and exact-head CI is the required verification boundary.
+Not used. The primary verification/integration path was available.
 
 ## Verification evidence
-- Main `1c46dd0c51b8afb52b50a44637af61406425abe4`: workflow `35913212401` SUCCESS.
-- PR #17 prior head `9670fc315380fc0f37ca008e892b5dec5ebb262f`: workflow `35922644247` SUCCESS.
-- CI reliability commits: `c9d6b53b4a92890a35147ec0a6ec81bb503955f1` (automatic syntax discovery) and `91f0de46ff4ee551a70b05c4ef73af2ae6966e07` (package gate replacement).
-- Exact-latest-head CI after this state handoff has not yet been established; do not call the reliability repair green until it passes.
+- Last verified main before PR #17: `1b6e17cb72d4a60dd3e4d6f01861c382b39a1c78`, workflow `35926361492` SUCCESS.
+- PR #17 exact head: `fc4338062f9fc07355d5492b523b6270c2a09f2c`, workflow `35925945750` SUCCESS.
+- Workflow `35925945750` jobs: `node` SUCCESS and `browser-smoke` SUCCESS.
+- PR #17 merge: `00353ff356ae9609ffd5ff8467f5bcaa6a5623ed`.
+- Exact merged-main workflow: `35928951479` IN PROGRESS at observation.
 
 ## Blockers
-- Exact-latest-head PR #17 Node + browser-smoke CI must pass with the automatic syntax-discovery gate.
-- Local pre-push execution is unavailable in Driver A's current container because DNS resolution for `github.com` failed; do not treat that as product evidence.
-- Governor PR #16 remains open but non-conflicting.
+- Exact merged-main workflow `35928951479` must pass before `00353ff356ae9609ffd5ff8467f5bcaa6a5623ed` is promoted to verified-main evidence.
+- PR #18 is stale relative to the already-merged documentation cleanup and newer STATE; reconcile rather than blindly merge it.
 
 ## Owner decisions required
 None.
 
 ## Next highest-leverage task
-FIRST require exact-latest-head PR #17 CI and inspect the Node job to prove `npm run check` executes `scripts/check-js-syntax.js` and discovers the current source/test surface. If green, merge PR #17 with expected-head protection and verify merged-main CI. Only after that resume Checkpoint-1 device/viewport evidence. Do not add features while the reliability increment is unverified.
+FIRST verify workflow `35928951479` for exact merged main `00353ff356ae9609ffd5ff8467f5bcaa6a5623ed` and reconcile/close stale documentation PR #18 without regressing authority or STATE. If merged-main is green and no newer lease conflicts, continue the Checkpoint-1 exit audit. The next evidence increment should target the smallest remaining device/viewport/accessibility continuity gap required by current authority, not begin Checkpoint 2 or select an editor/vendor.
 
 ## Continuation prompt
-Driver B: STOP-THE-LINE CI reliability remains the first task. PR #17 pre-repair head `9670fc315380fc0f37ca008e892b5dec5ebb262f` is green in workflow `35922644247`, but Driver A found the manual syntax enumeration still present. Driver A added recursive automatic JavaScript discovery in `scripts/check-js-syntax.js` (`c9d6b53b4a92890a35147ec0a6ec81bb503955f1`) and replaced the package gate with `npm run check:syntax && npm test` (`91f0de46ff4ee551a70b05c4ef73af2ae6966e07`). FIRST require exact-latest-head Node + browser-smoke CI and inspect logs to prove automatic discovery ran. If green, merge PR #17 with expected-head protection and verify merged-main CI. Do not resume cross-device expansion, begin Checkpoint 2, or select an editor/vendor until this reliability repair is green. Recheck Governor PR #16 separately and do not race its authority path.
+Driver A: FIRST verify exact merged-main workflow `35928951479` for PR #17 merge `00353ff356ae9609ffd5ff8467f5bcaa6a5623ed`. PR #17 exact head `fc4338062f9fc07355d5492b523b6270c2a09f2c` was independently VERIFIED GREEN in workflow `35925945750` with both Node and actual Chromium browser-smoke jobs passing, then squash-merged with expected-head protection. Reconcile stale docs PR #18 against the already-merged docs cleanup and this newer STATE; do not let it overwrite current authority/state. Once merged-main is green and no lease conflicts exist, audit the remaining Checkpoint-1 device/viewport/accessibility continuity evidence and take only the smallest bounded missing proof. Do not begin Checkpoint 2 or select an editor/vendor.
