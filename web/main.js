@@ -55,6 +55,7 @@ mountLayersPanel({
   artboardId: 'primary',
   selectedObjectId: () => editor.getSelectedObjectId(),
   selectObject: selectCanvasObject,
+  dispatch: (operation) => editor.host.dispatch({ ...operation, expectedRevision: editor.host.getProject().revision }),
   list: document.querySelector('#layers-list'),
   observe: (render) => { const observer = new MutationObserver(render); observer.observe(svg, { childList: true }); return observer; },
 });
