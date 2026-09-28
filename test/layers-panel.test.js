@@ -8,6 +8,7 @@ class FakeElement {
   addEventListener(type, fn) { (this.listeners[type] ??= []).push(fn); }
   setAttribute(name, value) { this.attributes[name] = String(value); }
   replaceChildren(...children) { this.children = children; }
+  appendChild(child) { this.children.push(child); return child; }
   emit(type, event = {}) {
     if (!('key' in event)) event.key = '';
     if (!event.preventDefault) event.preventDefault = function preventDefault() { this.prevented = true; };
