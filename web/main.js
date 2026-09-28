@@ -1,10 +1,13 @@
 import { createProject, applyCommand } from '../src/document.js';
+import { createIndexedDbAssetStore } from '../src/asset-store.js';
+import { imageAssetUrls, ingestImageAsset } from '../src/image-ingestion.js';
 import { mountBrowserEditor } from '../src/browser-editor.js';
 import { mountLayersPanel } from '../src/layers-panel.js';
 import { reopenWorkspace, saveWorkspace } from '../src/workspace-session.js';
 
 const saveStatus = document.querySelector('#save-status');
 const recovery = reopenWorkspace(localStorage);
+const assetStore = createIndexedDbAssetStore();
 let project;
 if (recovery.status === 'reopened') {
   project = recovery.project;
@@ -15,11 +18,13 @@ if (recovery.status === 'reopened') {
   saveStatus.textContent = recovery.status === 'empty' ? 'Not saved' : 'Recovery unavailable · new project not saved';
 }
 
+const assetHrefs = await imageAssetUrls(project, assetStore);
 const svg = document.querySelector('#artboard');
 const editor = mountBrowserEditor({
   project,
   artboardId: 'primary',
   svg,
+  assetHrefs,
   undoButton: document.querySelector('#undo'),
   redoButton: document.querySelector('#redo'),
   status: document.querySelector('#status'),
@@ -52,6 +57,32 @@ mountLayersPanel({
   selectObject: selectCanvasObject,
   list: document.querySelector('#layers-list'),
   observe: (render) => { const observer = new MutationObserver(render); observer.observe(svg, { childList: true }); return observer; },
+});
+
+document.querySelector('#image-import').addEventListener('change', async (event) => {
+  const input = event.currentTarget;
+  const file = input.files?.[0];
+  if (!file) return;
+  saveStatus.textContent = 'Importing image…';
+  try {
+    if (!file.type.startsWith('image/')) throw new Error('Choose an image file');
+    const bitmap = await createImageBitmap(file);
+    const width = bitmap.width;
+    const height = bitmap.height;
+    bitmap.close();
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    const result = await ingestImageAsset(editor.host.getProject(), {
+      bytes, mimeType: file.type, width, height, provenance: 'user-upload'
+    }, assetStore, { artboardId: 'primary' });
+    const href = URL.createObjectURL(new Blob([bytes], { type: file.type }));
+    editor.setAssetHref(result.assetId, href);
+    editor.host.replaceProject(result.project);
+    saveStatus.textContent = `Imported · revision ${result.project.revision} · save to keep project state`;
+  } catch (error) {
+    saveStatus.textContent = `Import failed · ${error.message}`;
+  } finally {
+    input.value = '';
+  }
 });
 
 document.querySelector('#save').addEventListener('click', () => {
