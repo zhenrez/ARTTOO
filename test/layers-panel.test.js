@@ -30,3 +30,24 @@ test('visible semantic layers synchronize selection and keyboard traversal witho
   assert.equal(project.revision, revision);
   panel.destroy(); delete globalThis.document;
 });
+
+
+test('layer controls expose visibility lock and reorder through canonical operations', () => {
+  globalThis.document = { createElement() { return new FakeElement(); } };
+  let project = createProject({ ownerId: 'layers-user' });
+  project = applyCommand(project, { type: 'artboard.add', artboardId: 'board', widthMm: 100, heightMm: 100 });
+  project = applyCommand(project, { type: 'stroke.add', artboardId: 'board', objectId: 'a', points: [{x:1,y:1},{x:2,y:2}] });
+  project = applyCommand(project, { type: 'stroke.add', artboardId: 'board', objectId: 'b', points: [{x:3,y:3},{x:4,y:4}] });
+  let selected = 'a'; const list = new FakeElement();
+  const dispatch = (op) => { project = applyCommand(project, op); };
+  mountLayersPanel({ projectSource: () => project, artboardId: 'board', selectedObjectId: () => selected, selectObject: (id) => { selected=id; }, dispatch, list });
+  const row = list.children[0];
+  assert.equal(row.children.length, 4);
+  row.children[1].emit('click');
+  assert.equal(project.objects.a.visible, false);
+  row.children[2].emit('click');
+  assert.equal(project.objects.a.locked, true);
+  row.children[3].emit('click');
+  assert.deepEqual(project.artboards[0].objectIds, ['b','a']);
+  delete globalThis.document;
+});
