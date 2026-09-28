@@ -1,6 +1,6 @@
 import { applyCommand } from './document.js';
 
-const SUPPORTED_EDITOR_OPERATIONS = new Set(['object.transform', 'stroke.add']);
+const SUPPORTED_EDITOR_OPERATIONS = new Set(['object.transform', 'object.visibility', 'object.lock', 'object.reorder', 'stroke.add']);
 const clone = (value) => structuredClone(value);
 function assertAdapter(adapter) { if (!adapter || typeof adapter.render !== 'function') throw new Error('editor adapter must implement render(view)'); }
 function assertOperation(operation) { if (!operation || !SUPPORTED_EDITOR_OPERATIONS.has(operation.type)) throw new Error(`unsupported editor operation: ${operation?.type ?? 'missing'}`); }
@@ -16,6 +16,9 @@ export function applyEditorOperation(project, operation) {
   if (operation.expectedRevision !== project.revision) throw new Error(`stale editor operation: expected revision ${operation.expectedRevision}, current ${project.revision}`);
   switch (operation.type) {
     case 'object.transform': return applyCommand(project, { type: 'object.transform', objectId: operation.objectId, transform: clone(operation.transform ?? {}) });
+    case 'object.visibility': return applyCommand(project, { type: 'object.visibility', objectId: operation.objectId, visible: operation.visible });
+    case 'object.lock': return applyCommand(project, { type: 'object.lock', objectId: operation.objectId, locked: operation.locked });
+    case 'object.reorder': return applyCommand(project, { type: 'object.reorder', artboardId: operation.artboardId, objectId: operation.objectId, toIndex: operation.toIndex });
     case 'stroke.add': return applyCommand(project, { type: 'stroke.add', artboardId: operation.artboardId, objectId: operation.objectId, points: clone(operation.points), style: clone(operation.style ?? {}) });
     default: throw new Error(`unsupported editor operation: ${operation.type}`);
   }
