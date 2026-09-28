@@ -24,8 +24,8 @@ test('visible semantic layers synchronize selection and keyboard traversal witho
   project = applyCommand(project, { type: 'stroke.add', artboardId: 'board', objectId: 'stroke-b', points: [{ x: 3, y: 3 }, { x: 4, y: 4 }] });
   const revision = project.revision; let selected = null; const list = new FakeElement();
   const panel = mountLayersPanel({ projectSource: () => project, artboardId: 'board', selectedObjectId: () => selected, selectObject: (id) => { selected = id; }, list });
-  assert.deepEqual(list.children.map((item) => item.textContent), ['Stroke 1', 'Stroke 2']);
-  list.children[1].emit('click'); assert.equal(selected, 'stroke-b'); assert.equal(list.children[1].attributes['aria-selected'], 'true');
+  assert.deepEqual(list.children.map((item) => item.children[0].textContent), ['Stroke 1', 'Stroke 2']);
+  list.children[1].children[0].emit('click'); assert.equal(selected, 'stroke-b'); assert.equal(list.children[1].attributes['aria-selected'], 'true');
   const up = { key: 'ArrowUp', preventDefault() { this.prevented = true; } }; list.emit('keydown', up); assert.equal(up.prevented, true); assert.equal(selected, 'stroke-a'); assert.equal(list.children[0].attributes['aria-selected'], 'true');
   const down = { key: 'ArrowDown', preventDefault() { this.prevented = true; } }; list.emit('keydown', down); assert.equal(down.prevented, true); assert.equal(selected, 'stroke-b');
   assert.equal(project.revision, revision);
