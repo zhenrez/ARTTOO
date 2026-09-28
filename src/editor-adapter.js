@@ -32,6 +32,22 @@ function reversibleCommands(project, operation) {
       const stroke = clone(next.objects[objectId]);
       return { next, undo: { type: 'object.remove', objectId }, redo: { type: 'stroke.add', artboardId: operation.artboardId, objectId, points: stroke.points, style: stroke.style } };
     }
+    case 'object.visibility': {
+      const object = project.objects[operation.objectId]; if (!object) throw new Error('object not found');
+      const next = applyEditorOperation(project, operation);
+      return { next, undo: { type: 'object.visibility', objectId: operation.objectId, visible: object.visible !== false }, redo: { type: 'object.visibility', objectId: operation.objectId, visible: operation.visible } };
+    }
+    case 'object.lock': {
+      const object = project.objects[operation.objectId]; if (!object) throw new Error('object not found');
+      const next = applyEditorOperation(project, operation);
+      return { next, undo: { type: 'object.lock', objectId: operation.objectId, locked: object.locked === true }, redo: { type: 'object.lock', objectId: operation.objectId, locked: operation.locked } };
+    }
+    case 'object.reorder': {
+      const artboard = project.artboards.find((item) => item.artboardId === operation.artboardId); if (!artboard) throw new Error('artboard not found');
+      const fromIndex = artboard.objectIds.indexOf(operation.objectId);
+      const next = applyEditorOperation(project, operation);
+      return { next, undo: { type: 'object.reorder', artboardId: operation.artboardId, objectId: operation.objectId, toIndex: fromIndex }, redo: { type: 'object.reorder', artboardId: operation.artboardId, objectId: operation.objectId, toIndex: operation.toIndex } };
+    }
     case 'object.transform': {
       const object = project.objects[operation.objectId];
       if (!object) throw new Error('object not found');
