@@ -52,3 +52,36 @@ test('production workspace draws, exposes Layers, saves, and reopens the same ca
   expect(after.project.revision).toBe(before.project.revision);
   expect(after.project.objects[objectId]).toEqual(before.project.objects[objectId]);
 });
+
+
+test('production workspace imports an image as an editable persistent layer and reopens it', async ({ page }) => {
+  await page.goto('/web/index.html');
+  const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=', 'base64');
+  await page.locator('#image-import').setInputFiles({ name: 'tattoo.png', mimeType: 'image/png', buffer: png });
+  await expect(page.locator('#save-status')).toContainText('Imported');
+  await expect(page.locator('#artboard image[data-object-id]')).toHaveCount(1);
+  await expect(page.locator('#layers-list [role="option"]')).toHaveCount(1);
+
+  const objectId = await page.locator('#artboard image[data-object-id]').getAttribute('data-object-id');
+  await page.locator('#layers-list [role="option"]').click();
+  await page.locator('#transform-x').fill('12');
+  await page.locator('#transform-y').fill('8');
+  await page.locator('#transform-rotation').fill('15');
+  await page.locator('#apply-transform').click();
+  await page.locator('#save').click();
+  await expect(page.locator('#save-status')).toContainText('Saved locally');
+
+  await page.reload();
+  await expect(page.locator('#artboard image[data-object-id]').toHaveCount(1);
+  await expect(page.locator('#artboard image[data-object-id]')).toHaveAttribute('data-object-id', objectId);
+  const reopened = await page.evaluate((id) => {
+    const projectId = localStorage.getItem('artoo:active-project');
+    const project = JSON.parse(localStorage.getItem(`artoo:draft:${projectId}`));
+    return project.objects[id];
+  }, objectId);
+  expect(reopened.type).toBe('image');
+  expect(reopened.transform.x).toBe(12);
+  expect(reopened.transform.y).toBe(8);
+  expect(reopened.transform.rotationDeg).toBe(15);
+  expect(reopened.sourceAssetId).toBeTruthy();
+});
