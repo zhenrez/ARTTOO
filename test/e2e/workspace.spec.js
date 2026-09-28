@@ -72,7 +72,7 @@ test('production workspace imports an image as an editable persistent layer and 
   await expect(page.locator('#save-status')).toContainText('Saved locally');
 
   await page.reload();
-  await expect(page.locator('#artboard image[data-object-id]').toHaveCount(1);
+  await expect(page.locator('#artboard image[data-object-id]')).toHaveCount(1);
   await expect(page.locator('#artboard image[data-object-id]')).toHaveAttribute('data-object-id', objectId);
   const reopened = await page.evaluate((id) => {
     const projectId = localStorage.getItem('artoo:active-project');
