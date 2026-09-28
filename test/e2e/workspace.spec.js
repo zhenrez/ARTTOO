@@ -23,7 +23,7 @@ test('production workspace draws, exposes Layers, saves, and reopens the same ca
 
   const layer = page.locator('#layers-list [role="option"]');
   await expect(layer).toHaveCount(1);
-  await layer.click();
+  await layer.locator('button').first().click();
   await expect(page.locator('#selection')).toContainText(objectId);
   await expect(layer).toHaveAttribute('aria-selected', 'true');
 
@@ -63,7 +63,7 @@ test('production workspace imports an image as an editable persistent layer and 
   await expect(page.locator('#layers-list [role="option"]')).toHaveCount(1);
 
   const objectId = await page.locator('#artboard image[data-object-id]').getAttribute('data-object-id');
-  await page.locator('#layers-list [role="option"]').click();
+  await page.locator('#layers-list [role="option"] button').first().click();
   await page.locator('#transform-x').fill('12');
   await page.locator('#transform-y').fill('8');
   await page.locator('#transform-rotation').fill('15');
