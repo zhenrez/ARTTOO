@@ -51,6 +51,14 @@ export function createEditorHost({ project, artboardId, adapter }) {
     canUndo() { return undoStack.length > 0; },
     canRedo() { return redoStack.length > 0; },
     render,
+    replaceProject(nextProject) {
+      if (!nextProject || nextProject.projectId !== canonicalProject.projectId) throw new Error('replacement project must preserve projectId');
+      canonicalProject = nextProject;
+      undoStack.length = 0;
+      redoStack.length = 0;
+      render();
+      return canonicalProject;
+    },
     dispatch(operation) {
       const reversible = reversibleCommands(canonicalProject, operation);
       canonicalProject = reversible.next;
