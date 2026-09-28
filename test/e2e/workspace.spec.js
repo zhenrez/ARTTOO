@@ -85,3 +85,27 @@ test('production workspace imports an image as an editable persistent layer and 
   expect(reopened.transform.rotationDeg).toBe(15);
   expect(reopened.sourceAssetId).toBeTruthy();
 });
+
+
+test('Layers controls hide, lock and reorder canonical canvas objects', async ({ page }) => {
+  await page.goto('/web/index.html');
+  const artboard = page.locator('#artboard');
+  const box = await artboard.boundingBox();
+  for (const offset of [0.2, 0.6]) {
+    await page.mouse.move(box.x + box.width * offset, box.y + box.height * 0.2);
+    await page.mouse.down();
+    await page.mouse.move(box.x + box.width * offset, box.y + box.height * 0.4);
+    await page.mouse.up();
+  }
+  const rows = page.locator('#layers-list [role="option"]');
+  await expect(rows).toHaveCount(2);
+  const firstId = await rows.nth(0).getAttribute('data-object-id');
+  await rows.nth(0).locator('[data-action="visibility"]').click();
+  await expect(artboard.locator(`[data-object-id="${firstId}"]`)).toHaveCount(0);
+  await rows.nth(0).locator('[data-action="visibility"]').click();
+  await expect(artboard.locator(`[data-object-id="${firstId}"]`)).toHaveCount(1);
+  await rows.nth(0).locator('[data-action="lock"]').click();
+  await expect(artboard.locator(`[data-object-id="${firstId}"]`)).toHaveAttribute('data-locked', 'true');
+  await rows.nth(0).locator('[data-action="reorder"]').click();
+  await expect(page.locator('#layers-list [role="option"]').nth(1)).toHaveAttribute('data-object-id', firstId);
+});
