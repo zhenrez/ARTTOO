@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('production workspace draws, exposes Layers, saves, and reopens the same canonical revision', async ({ page }) => {
+async function exerciseCanonicalWorkspace(page) {
   await page.goto('/web/index.html');
   await expect(page.locator('#status')).toHaveText('Revision 1');
   await expect(page.locator('#save-status')).toHaveText('Not saved');
@@ -51,4 +51,13 @@ test('production workspace draws, exposes Layers, saves, and reopens the same ca
   expect(after.projectId).toBe(before.projectId);
   expect(after.project.revision).toBe(before.project.revision);
   expect(after.project.objects[objectId]).toEqual(before.project.objects[objectId]);
+}
+
+test('production workspace draws, exposes Layers, saves, and reopens the same canonical revision', async ({ page }) => {
+  await exerciseCanonicalWorkspace(page);
+});
+
+test('tablet-class viewport preserves canonical drawing/layers/save/reopen continuity', async ({ page }) => {
+  await page.setViewportSize({ width: 1024, height: 768 });
+  await exerciseCanonicalWorkspace(page);
 });
