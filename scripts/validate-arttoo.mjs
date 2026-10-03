@@ -10,7 +10,7 @@ const required=['editor-core','virtual-try-on','tattoo-generation','cover-up-pla
 const ids=new Set(m.productBar.map(x=>x.id));
 for(const id of required) if(!ids.has(id)) fail(`missing product-bar capability: ${id}`);
 if(m.execution.currentTask!=='task-2-editor-core') fail('current task drift');
-if(m.execution.nextBoundedUnit!=='task-2b-raster-corrections') fail('next bounded unit drift');
+if(m.execution.nextBoundedUnit!=='task-2b2-raster-mask-erase') fail('next bounded unit drift');
 if(m.execution.marketplaceBlockedUntil!=='task-6-pre-marketplace-acceptance') fail('marketplace gate drift');
 if(!plan.includes('### Task 2: Professional editor core')) fail('canonical plan lost Task 2');
 if(!plan.includes('### Task 6: Exact-size production/stencil and pre-marketplace acceptance')) fail('canonical plan lost Task 6');
