@@ -109,3 +109,43 @@ test('Layers controls hide, lock and reorder canonical canvas objects', async ({
   await rows.nth(0).locator('[data-action="reorder"]').click();
   await expect(page.locator('#layers-list [role="option"]').nth(1)).toHaveAttribute('data-object-id', firstId);
 });
+
+
+test('image crop is visibly non-destructive and persists through save/reopen', async ({ page }) => {
+  await page.goto('/web/index.html');
+  const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAIAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=', 'base64');
+  await page.locator('#image-import').setInputFiles({ name: 'wide-tattoo.png', mimeType: 'image/png', buffer: png });
+  await page.locator('#layers-list [role="option"] button').first().click();
+
+  await expect(page.locator('#crop')).toBeEnabled();
+  await page.locator('#crop-x').fill('0.25');
+  await page.locator('#crop-y').fill('0');
+  await page.locator('#crop-width').fill('0.5');
+  await page.locator('#crop-height').fill('1');
+  await page.locator('#apply-crop').click();
+
+  const objectId = await page.locator('#layers-list [role="option"]').first().getAttribute('data-object-id');
+  const cropped = page.locator(`#artboard [data-object-id="${objectId}"][data-cropped="true"]`);
+  await expect(cropped).toHaveCount(1);
+
+  const before = await page.evaluate((id) => {
+    const projectId = localStorage.getItem('artoo:active-project');
+    const project = JSON.parse(localStorage.getItem(`artoo:draft:${projectId}`) || 'null');
+    return project?.objects?.[id] ?? null;
+  }, objectId);
+  expect(before).toBeNull();
+
+  await page.locator('#save').click();
+  await page.reload();
+  await expect(page.locator(`#artboard [data-object-id="${objectId}"][data-cropped="true"]`)).toHaveCount(1);
+  const reopened = await page.evaluate((id) => {
+    const projectId = localStorage.getItem('artoo:active-project');
+    const project = JSON.parse(localStorage.getItem(`artoo:draft:${projectId}`));
+    return project.objects[id];
+  }, objectId);
+  expect(reopened.crop).toEqual({ x: 0.25, y: 0, width: 0.5, height: 1 });
+
+  await page.locator('#layers-list [role="option"] button').first().click();
+  await page.locator('#clear-crop').click();
+  await expect(page.locator(`#artboard [data-object-id="${objectId}"][data-cropped="true"]`)).toHaveCount(0);
+});
