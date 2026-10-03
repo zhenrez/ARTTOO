@@ -113,7 +113,7 @@ test('Layers controls hide, lock and reorder canonical canvas objects', async ({
 
 test('image crop is visibly non-destructive and persists through save/reopen', async ({ page }) => {
   await page.goto('/web/index.html');
-  const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAIAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=', 'base64');
+  const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=', 'base64');
   await page.locator('#image-import').setInputFiles({ name: 'wide-tattoo.png', mimeType: 'image/png', buffer: png });
   await page.locator('#layers-list [role="option"] button').first().click();
 
