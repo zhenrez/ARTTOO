@@ -28,6 +28,15 @@ const editor = mountBrowserEditor({
   undoButton: document.querySelector('#undo'),
   redoButton: document.querySelector('#redo'),
   status: document.querySelector('#status'),
+  cropControls: {
+    fieldset: document.querySelector('#crop'),
+    x: document.querySelector('#crop-x'),
+    y: document.querySelector('#crop-y'),
+    width: document.querySelector('#crop-width'),
+    height: document.querySelector('#crop-height'),
+    apply: document.querySelector('#apply-crop'),
+    clear: document.querySelector('#clear-crop'),
+  },
   transformControls: {
     fieldset: document.querySelector('#transform'),
     selection: document.querySelector('#selection'),
