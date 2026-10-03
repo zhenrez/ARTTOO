@@ -81,3 +81,85 @@ test('crop persists across save/reopen and can be explicitly cleared', () => {
   });
   assert.equal(cleared.objects.image.crop, undefined);
 });
+
+
+test('erase masks are normalized, additive, non-destructive, and persist across save/reopen', () => {
+  const original = imageFixture();
+  const sourceAsset = structuredClone(original.assets.asset);
+  const first = applyCommand(original, {
+    type: 'object.erase',
+    objectId: 'image',
+    stroke: { points: [{ x: 0.1, y: 0.2 }, { x: 0.3, y: 0.4 }], radius: 0.05 },
+  });
+  const second = applyCommand(first, {
+    type: 'object.erase',
+    objectId: 'image',
+    stroke: { points: [{ x: 0.6, y: 0.7 }, { x: 0.8, y: 0.9 }], radius: 0.1 },
+  });
+
+  assert.deepEqual(second.objects.image.masks, [
+    {
+      kind: 'erase-stroke',
+      coordinateSpace: 'source-normalized',
+      points: [{ x: 0.1, y: 0.2 }, { x: 0.3, y: 0.4 }],
+      radius: 0.05,
+    },
+    {
+      kind: 'erase-stroke',
+      coordinateSpace: 'source-normalized',
+      points: [{ x: 0.6, y: 0.7 }, { x: 0.8, y: 0.9 }],
+      radius: 0.1,
+    },
+  ]);
+  assert.deepEqual(original.objects.image.masks, []);
+  assert.deepEqual(second.assets.asset, sourceAsset);
+  assert.equal(second.assets.asset.immutable, true);
+
+  const reopened = reopenProject(serializeProject(second));
+  assert.deepEqual(reopened.objects.image.masks, second.objects.image.masks);
+});
+
+test('erase rejects malformed, out-of-bounds, and non-image input', () => {
+  const project = imageFixture();
+  const invalid = [
+    { points: [{ x: 0.1, y: 0.2 }], radius: 0.05 },
+    { points: [{ x: -0.1, y: 0.2 }, { x: 0.3, y: 0.4 }], radius: 0.05 },
+    { points: [{ x: 0.1, y: 0.2 }, { x: 1.1, y: 0.4 }], radius: 0.05 },
+    { points: [{ x: 0.1, y: 0.2 }, { x: 0.3, y: 0.4 }], radius: 0 },
+    { points: [{ x: 0.1, y: 0.2 }, { x: 0.3, y: 0.4 }], radius: 1.1 },
+  ];
+  for (const stroke of invalid) {
+    assert.throws(
+      () => applyCommand(project, { type: 'object.erase', objectId: 'image', stroke }),
+      /erase/,
+    );
+  }
+
+  let withStroke = applyCommand(project, {
+    type: 'stroke.add',
+    artboardId: 'board',
+    objectId: 'drawn',
+    points: [{ x: 1, y: 1 }, { x: 2, y: 2 }],
+  });
+  assert.throws(
+    () => applyCommand(withStroke, {
+      type: 'object.erase',
+      objectId: 'drawn',
+      stroke: { points: [{ x: 0.1, y: 0.2 }, { x: 0.3, y: 0.4 }], radius: 0.05 },
+    }),
+    /only supported for image objects/,
+  );
+});
+
+test('erase masks can be explicitly cleared without changing the immutable source asset', () => {
+  let project = imageFixture();
+  const sourceAsset = structuredClone(project.assets.asset);
+  project = applyCommand(project, {
+    type: 'object.erase',
+    objectId: 'image',
+    stroke: { points: [{ x: 0.2, y: 0.2 }, { x: 0.4, y: 0.4 }], radius: 0.08 },
+  });
+  const cleared = applyCommand(project, { type: 'object.erase.clear', objectId: 'image' });
+  assert.deepEqual(cleared.objects.image.masks, []);
+  assert.deepEqual(cleared.assets.asset, sourceAsset);
+});
