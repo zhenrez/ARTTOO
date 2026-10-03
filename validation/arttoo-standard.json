@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "authority": {
+    "canonicalPlan": "docs/plans/2026-09-27-pre-marketplace-creation-pipeline.md",
+    "ownerValidationDirective": "2026-10-02",
+    "manualAcceptanceRequired": false,
+    "acceptancePolicy": "Automated evidence may advance only the already-authorized bounded lane. A passing gate never implies unimplemented product capabilities are complete."
+  },
+  "execution": {
+    "currentTask": "task-2-editor-core",
+    "completedBoundedUnits": [
+      "task-1-image-ingestion",
+      "task-2a-layer-selection"
+    ],
+    "nextBoundedUnit": "task-2b-raster-corrections",
+    "marketplaceBlockedUntil": "task-6-pre-marketplace-acceptance",
+    "forbiddenExternalProjects": [
+      "Panoptes",
+      "Interception",
+      "Forge",
+      "Jev",
+      "Appium"
+    ]
+  },
+  "productBar": [
+    {
+      "id": "editor-core",
+      "source": "canonical-plan-task-2",
+      "state": "active",
+      "acceptance": [
+        "node-tests",
+        "playwright",
+        "performance-evidence"
+      ]
+    },
+    {
+      "id": "tattoo-generation",
+      "source": "canonical-plan-task-3",
+      "state": "required-future",
+      "acceptance": [
+        "contract-tests",
+        "editable-insertion"
+      ]
+    },
+    {
+      "id": "virtual-try-on",
+      "source": "canonical-plan-task-4",
+      "state": "required-future",
+      "acceptance": [
+        "measured-placement",
+        "mask-wrap-evidence",
+        "device-browser-coverage",
+        "explicit-uncertainty"
+      ]
+    },
+    {
+      "id": "cover-up-planning",
+      "source": "owner-directive-2026-10-02",
+      "state": "required-future",
+      "acceptance": [
+        "deterministic-fixtures",
+        "visual-regression",
+        "editable-lineage"
+      ]
+    },
+    {
+      "id": "artist-profiles",
+      "source": "owner-directive-2026-10-02",
+      "state": "blocked-pre-marketplace",
+      "acceptance": [
+        "identity-auth",
+        "lifecycle-tests"
+      ]
+    },
+    {
+      "id": "design-marketplace",
+      "source": "owner-directive-2026-10-02",
+      "state": "blocked-pre-marketplace",
+      "acceptance": [
+        "task-6-first",
+        "listing-purchase-licensing-tests"
+      ]
+    },
+    {
+      "id": "scheduling",
+      "source": "owner-directive-2026-10-02",
+      "state": "blocked-pre-marketplace",
+      "acceptance": [
+        "task-6-first",
+        "booking-state-machine"
+      ]
+    },
+    {
+      "id": "platform-payments",
+      "source": "owner-directive-2026-10-02",
+      "state": "blocked-pre-marketplace",
+      "acceptance": [
+        "task-6-first",
+        "sandbox-contract-tests",
+        "idempotency"
+      ]
+    },
+    {
+      "id": "artist-payouts",
+      "source": "owner-directive-2026-10-02",
+      "state": "blocked-pre-marketplace",
+      "acceptance": [
+        "task-6-first",
+        "sandbox-payout-tests",
+        "reconciliation"
+      ]
+    },
+    {
+      "id": "autonomous-company-operations",
+      "source": "owner-directive-2026-10-02",
+      "state": "required-future",
+      "acceptance": [
+        "policy-bounded-agents",
+        "audit-log",
+        "rollback",
+        "human-escalation-for-irreversible-actions"
+      ]
+    }
+  ]
+}
