@@ -11,12 +11,12 @@ function finiteNumber(input, label) { const value = Number(input.value); if (!Nu
 function svgTransform(transform) { return `translate(${transform.x} ${transform.y}) scale(${transform.scaleX} ${transform.scaleY}) rotate(${transform.rotationDeg})`; }
 function objectBounds(object, project, board) {
   if (object.type === 'stroke') { const xs = object.points.map((point) => point.x); const ys = object.points.map((point) => point.y); return { minX: Math.min(...xs), maxX: Math.max(...xs), minY: Math.min(...ys), maxY: Math.max(...ys) }; }
-  if (object.type === 'image') { const asset = project.assets[object.sourceAssetId]; const width = Math.min(board.widthMm * 0.6, board.heightMm * 0.6 * (asset?.width ?? 1) / Math.max(asset?.height ?? 1, 1)); const height = width * (asset?.height ?? 1) / Math.max(asset?.width ?? 1, 1); return { minX: 0, minY: 0, maxX: width, maxY: height }; }
+  if (object.type === 'image') { const asset = project.assets[object.sourceAssetId]; const width = Math.min(board.widthMm * 0.6, board.heightMm * 0.6 * (asset?.width ?? 1) / Math.max(asset?.height ?? 1, 1)); const height = width * (asset?.height ?? 1) / Math.max(asset?.width ?? 1, 1); const crop = object.crop ?? { x: 0, y: 0, width: 1, height: 1 }; return { minX: width * crop.x, minY: height * crop.y, maxX: width * (crop.x + crop.width), maxY: height * (crop.y + crop.height) }; }
   return { minX: 0, minY: 0, maxX: 1, maxY: 1 };
 }
 const angleDeg = (center, point) => Math.atan2(point.y - center.y, point.x - center.x) * 180 / Math.PI;
 
-export function mountBrowserEditor({ project, artboardId, svg, undoButton, redoButton, status, transformControls = null, assetHrefs = new Map() }) {
+export function mountBrowserEditor({ project, artboardId, svg, undoButton, redoButton, status, transformControls = null, cropControls = null, assetHrefs = new Map() }) {
   if (!svg || !undoButton || !redoButton) throw new Error('browser editor requires artboard and undo/redo controls');
   let activePoints = null; let selectedObjectId = null; let moveGesture = null; let resizeGesture = null; let rotateGesture = null;
   const adapter = {
@@ -25,7 +25,19 @@ export function mountBrowserEditor({ project, artboardId, svg, undoButton, redoB
       const rendered = view.objects.flatMap((object) => {
         if (object.visible === false) return [];
         if (object.type === 'stroke') { const path = document.createElementNS(SVG_NS, 'path'); path.setAttribute('d', pathData(object.points)); path.setAttribute('fill', 'none'); path.setAttribute('stroke', object.style.color); path.setAttribute('stroke-width', object.style.width); path.setAttribute('stroke-opacity', object.style.opacity); path.setAttribute('stroke-linecap', 'round'); path.setAttribute('transform', svgTransform(object.transform)); path.dataset.objectId = object.objectId; path.dataset.locked = object.locked ? 'true' : 'false'; if (object.objectId === selectedObjectId) path.dataset.selected = 'true'; return [path]; }
-        if (object.type === 'image') { const href = assetHrefs.get(object.sourceAssetId); if (!href) return []; const bounds = objectBounds(object, host.getProject(), board); const image = document.createElementNS(SVG_NS, 'image'); image.setAttribute('href', href); image.setAttribute('x', bounds.minX); image.setAttribute('y', bounds.minY); image.setAttribute('width', bounds.maxX - bounds.minX); image.setAttribute('height', bounds.maxY - bounds.minY); image.setAttribute('preserveAspectRatio', 'xMidYMid meet'); image.setAttribute('transform', svgTransform(object.transform)); image.dataset.objectId = object.objectId; image.dataset.locked = object.locked ? 'true' : 'false'; if (object.objectId === selectedObjectId) image.dataset.selected = 'true'; return [image]; }
+        if (object.type === 'image') {
+          const href = assetHrefs.get(object.sourceAssetId); if (!href) return [];
+          const project = host.getProject(); const asset = project.assets[object.sourceAssetId]; const bounds = objectBounds(object, project, board);
+          const crop = object.crop ?? { x: 0, y: 0, width: 1, height: 1 };
+          const frame = document.createElementNS(SVG_NS, 'svg');
+          frame.setAttribute('x', bounds.minX); frame.setAttribute('y', bounds.minY);
+          frame.setAttribute('width', bounds.maxX - bounds.minX); frame.setAttribute('height', bounds.maxY - bounds.minY);
+          frame.setAttribute('viewBox', `${(asset?.width ?? 1) * crop.x} ${(asset?.height ?? 1) * crop.y} ${(asset?.width ?? 1) * crop.width} ${(asset?.height ?? 1) * crop.height}`);
+          frame.setAttribute('preserveAspectRatio', 'none'); frame.setAttribute('overflow', 'hidden'); frame.setAttribute('transform', svgTransform(object.transform));
+          frame.dataset.objectId = object.objectId; frame.dataset.locked = object.locked ? 'true' : 'false'; if (object.crop) frame.dataset.cropped = 'true'; if (object.objectId === selectedObjectId) frame.dataset.selected = 'true';
+          const image = document.createElementNS(SVG_NS, 'image'); image.setAttribute('href', href); image.setAttribute('x', '0'); image.setAttribute('y', '0'); image.setAttribute('width', asset?.width ?? 1); image.setAttribute('height', asset?.height ?? 1); image.setAttribute('preserveAspectRatio', 'none'); image.dataset.objectId = object.objectId; frame.appendChild(image);
+          return [frame];
+        }
         return [];
       });
       if (selectedObjectId && !view.objects.some((object) => object.objectId === selectedObjectId)) selectedObjectId = null;
@@ -37,11 +49,13 @@ export function mountBrowserEditor({ project, artboardId, svg, undoButton, redoB
       }
       svg.replaceChildren(...rendered);
       if (transformControls) { transformControls.fieldset.disabled = !selected; if (selected) { transformControls.x.value = selected.transform.x; transformControls.y.value = selected.transform.y; transformControls.rotation.value = selected.transform.rotationDeg; if (transformControls.scaleX) transformControls.scaleX.value = selected.transform.scaleX; if (transformControls.scaleY) transformControls.scaleY.value = selected.transform.scaleY; } transformControls.selection.textContent = selected ? `Selected ${selected.objectId}` : 'No object selected'; }
+      if (cropControls) { const imageSelected = selected?.type === 'image'; cropControls.fieldset.disabled = !imageSelected; if (imageSelected) { const crop = selected.crop ?? { x: 0, y: 0, width: 1, height: 1 }; cropControls.x.value = crop.x; cropControls.y.value = crop.y; cropControls.width.value = crop.width; cropControls.height.value = crop.height; cropControls.clear.disabled = !selected.crop; } else cropControls.clear.disabled = true; }
       undoButton.disabled = !host.canUndo(); redoButton.disabled = !host.canRedo(); if (status) status.textContent = `Revision ${view.revision}`;
     },
   };
   const host = createEditorHost({ project, artboardId, adapter });
   const transformSelected = (patch) => { if (!selectedObjectId) return; const current = host.getProject(); host.dispatch({ type: 'object.transform', expectedRevision: current.revision, objectId: selectedObjectId, transform: patch }); };
+  const cropSelected = (crop) => { if (!selectedObjectId) return; const current = host.getProject(); host.dispatch({ type: 'object.crop', expectedRevision: current.revision, objectId: selectedObjectId, crop }); };
   const commitStroke = () => { if (!activePoints || activePoints.length < 2) { activePoints = null; return; } const current = host.getProject(); host.dispatch({ type: 'stroke.add', expectedRevision: current.revision, artboardId, points: activePoints, style: { preset: 'round', color: '#18151E', width: 1.5, opacity: 1 } }); activePoints = null; };
   const beginMove = (event, objectId) => { selectedObjectId = objectId; activePoints = null; const object = host.getProject().objects[objectId]; moveGesture = { pointerId: event.pointerId, start: mmPoint(svg, event), transform: { ...object.transform } }; svg.setPointerCapture?.(event.pointerId); host.render(); };
   const beginResize = (event, objectId) => { selectedObjectId = objectId; activePoints = null; moveGesture = null; rotateGesture = null; const object = host.getProject().objects[objectId]; const bounds = objectBounds(object, host.getProject(), host.getProject().artboards.find((item) => item.artboardId === artboardId)); const width = Math.max(bounds.maxX - bounds.minX, 0.001); const height = Math.max(bounds.maxY - bounds.minY, 0.001); resizeGesture = { pointerId: event.pointerId, start: mmPoint(svg, event), transform: { ...object.transform }, width, height }; svg.setPointerCapture?.(event.pointerId); host.render(); };
@@ -63,6 +77,10 @@ export function mountBrowserEditor({ project, artboardId, svg, undoButton, redoB
     transformControls.apply.addEventListener('click', () => { const patch = { x: finiteNumber(transformControls.x, 'x'), y: finiteNumber(transformControls.y, 'y'), rotationDeg: finiteNumber(transformControls.rotation, 'rotation') }; if (transformControls.scaleX) patch.scaleX = finiteNumber(transformControls.scaleX, 'scale x'); if (transformControls.scaleY) patch.scaleY = finiteNumber(transformControls.scaleY, 'scale y'); transformSelected(patch); });
     transformControls.nudgeLeft.addEventListener('click', () => { if (!selectedObjectId) return; const object = host.getProject().objects[selectedObjectId]; transformSelected({ x: object.transform.x - 1 }); }); transformControls.nudgeRight.addEventListener('click', () => { if (!selectedObjectId) return; const object = host.getProject().objects[selectedObjectId]; transformSelected({ x: object.transform.x + 1 }); });
     transformControls.flipX?.addEventListener('click', () => { if (!selectedObjectId) return; const object = host.getProject().objects[selectedObjectId]; transformSelected({ scaleX: -object.transform.scaleX }); }); transformControls.flipY?.addEventListener('click', () => { if (!selectedObjectId) return; const object = host.getProject().objects[selectedObjectId]; transformSelected({ scaleY: -object.transform.scaleY }); });
+  }
+  if (cropControls) {
+    cropControls.apply.addEventListener('click', () => cropSelected({ x: finiteNumber(cropControls.x, 'crop x'), y: finiteNumber(cropControls.y, 'crop y'), width: finiteNumber(cropControls.width, 'crop width'), height: finiteNumber(cropControls.height, 'crop height') }));
+    cropControls.clear.addEventListener('click', () => cropSelected(null));
   }
   const onKeyDown = (event) => { if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z') { event.preventDefault(); if (event.shiftKey) host.redo(); else host.undo(); return; } if (!selectedObjectId || event.ctrlKey || event.metaKey || event.altKey) return; const delta = event.shiftKey ? 10 : 1; const moves = { ArrowLeft: [-delta, 0], ArrowRight: [delta, 0], ArrowUp: [0, -delta], ArrowDown: [0, delta] }; const move = moves[event.key]; if (!move) return; event.preventDefault(); const object = host.getProject().objects[selectedObjectId]; transformSelected({ x: object.transform.x + move[0], y: object.transform.y + move[1] }); };
   document.addEventListener('keydown', onKeyDown); host.render(); return { host, getSelectedObjectId() { return selectedObjectId; }, setAssetHref(assetId, href) { assetHrefs.set(assetId, href); host.render(); }, destroy() { document.removeEventListener('keydown', onKeyDown); } };
