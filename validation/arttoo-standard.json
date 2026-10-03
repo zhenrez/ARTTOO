@@ -10,9 +10,10 @@
     "currentTask": "task-2-editor-core",
     "completedBoundedUnits": [
       "task-1-image-ingestion",
-      "task-2a-layer-selection"
+      "task-2a-layer-selection",
+      "task-2b1-raster-crop"
     ],
-    "nextBoundedUnit": "task-2b-raster-corrections",
+    "nextBoundedUnit": "task-2b2-raster-mask-erase",
     "marketplaceBlockedUntil": "task-6-pre-marketplace-acceptance",
     "forbiddenExternalProjects": [
       "Panoptes",
