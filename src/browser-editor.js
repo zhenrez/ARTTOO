@@ -28,14 +28,17 @@ export function mountBrowserEditor({ project, artboardId, svg, undoButton, redoB
         if (object.type === 'image') {
           const href = assetHrefs.get(object.sourceAssetId); if (!href) return [];
           const project = host.getProject(); const asset = project.assets[object.sourceAssetId]; const bounds = objectBounds(object, project, board);
-          const crop = object.crop ?? { x: 0, y: 0, width: 1, height: 1 };
+          if (!object.crop) {
+            const image = document.createElementNS(SVG_NS, 'image'); image.setAttribute('href', href); image.setAttribute('x', bounds.minX); image.setAttribute('y', bounds.minY); image.setAttribute('width', bounds.maxX - bounds.minX); image.setAttribute('height', bounds.maxY - bounds.minY); image.setAttribute('preserveAspectRatio', 'xMidYMid meet'); image.setAttribute('transform', svgTransform(object.transform)); image.dataset.objectId = object.objectId; image.dataset.locked = object.locked ? 'true' : 'false'; if (object.objectId === selectedObjectId) image.dataset.selected = 'true'; return [image];
+          }
+          const crop = object.crop;
           const frame = document.createElementNS(SVG_NS, 'svg');
           frame.setAttribute('x', bounds.minX); frame.setAttribute('y', bounds.minY);
           frame.setAttribute('width', bounds.maxX - bounds.minX); frame.setAttribute('height', bounds.maxY - bounds.minY);
           frame.setAttribute('viewBox', `${(asset?.width ?? 1) * crop.x} ${(asset?.height ?? 1) * crop.y} ${(asset?.width ?? 1) * crop.width} ${(asset?.height ?? 1) * crop.height}`);
           frame.setAttribute('preserveAspectRatio', 'none'); frame.setAttribute('overflow', 'hidden'); frame.setAttribute('transform', svgTransform(object.transform));
-          frame.dataset.objectId = object.objectId; frame.dataset.locked = object.locked ? 'true' : 'false'; if (object.crop) frame.dataset.cropped = 'true'; if (object.objectId === selectedObjectId) frame.dataset.selected = 'true';
-          const image = document.createElementNS(SVG_NS, 'image'); image.setAttribute('href', href); image.setAttribute('x', '0'); image.setAttribute('y', '0'); image.setAttribute('width', asset?.width ?? 1); image.setAttribute('height', asset?.height ?? 1); image.setAttribute('preserveAspectRatio', 'none'); image.dataset.objectId = object.objectId; frame.appendChild(image);
+          frame.dataset.objectId = object.objectId; frame.dataset.locked = object.locked ? 'true' : 'false'; frame.dataset.cropped = 'true'; if (object.objectId === selectedObjectId) frame.dataset.selected = 'true';
+          const image = document.createElementNS(SVG_NS, 'image'); image.setAttribute('href', href); image.setAttribute('x', '0'); image.setAttribute('y', '0'); image.setAttribute('width', asset?.width ?? 1); image.setAttribute('height', asset?.height ?? 1); image.setAttribute('preserveAspectRatio', 'none'); image.dataset.objectId = object.objectId; frame.replaceChildren(image);
           return [frame];
         }
         return [];
