@@ -26,7 +26,7 @@ test('ARTTOO ships an autonomous quality gate tied to the full product standard'
   ]) assert.equal(ids.has(id), true, `missing product-bar capability: ${id}`);
 
   assert.equal(manifest.execution.currentTask, 'task-2-editor-core');
-  assert.equal(manifest.execution.nextBoundedUnit, 'task-2b-raster-corrections');
+  assert.equal(manifest.execution.nextBoundedUnit, 'task-2b2-raster-mask-erase');
   assert.equal(manifest.execution.marketplaceBlockedUntil, 'task-6-pre-marketplace-acceptance');
 });
 
