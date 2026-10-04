@@ -9,36 +9,65 @@ const mmPoint = (svg, event) => {
 function pathData(points) { return points.map((point, index) => `${index ? 'L' : 'M'} ${point.x} ${point.y}`).join(' '); }
 function finiteNumber(input, label) { const value = Number(input.value); if (!Number.isFinite(value)) throw new Error(`${label} must be finite`); return value; }
 function svgTransform(transform) { return `translate(${transform.x} ${transform.y}) scale(${transform.scaleX} ${transform.scaleY}) rotate(${transform.rotationDeg})`; }
-function strokeBounds(stroke) { const xs = stroke.points.map((point) => point.x); const ys = stroke.points.map((point) => point.y); return { minX: Math.min(...xs), maxX: Math.max(...xs), minY: Math.min(...ys), maxY: Math.max(...ys) }; }
+function objectBounds(object, project, board) {
+  if (object.type === 'stroke') { const xs = object.points.map((point) => point.x); const ys = object.points.map((point) => point.y); return { minX: Math.min(...xs), maxX: Math.max(...xs), minY: Math.min(...ys), maxY: Math.max(...ys) }; }
+  if (object.type === 'image') { const asset = project.assets[object.sourceAssetId]; const width = Math.min(board.widthMm * 0.6, board.heightMm * 0.6 * (asset?.width ?? 1) / Math.max(asset?.height ?? 1, 1)); const height = width * (asset?.height ?? 1) / Math.max(asset?.width ?? 1, 1); const crop = object.crop ?? { x: 0, y: 0, width: 1, height: 1 }; return { minX: width * crop.x, minY: height * crop.y, maxX: width * (crop.x + crop.width), maxY: height * (crop.y + crop.height) }; }
+  return { minX: 0, minY: 0, maxX: 1, maxY: 1 };
+}
 const angleDeg = (center, point) => Math.atan2(point.y - center.y, point.x - center.x) * 180 / Math.PI;
 
-export function mountBrowserEditor({ project, artboardId, svg, undoButton, redoButton, status, transformControls = null }) {
+export function mountBrowserEditor({ project, artboardId, svg, undoButton, redoButton, status, transformControls = null, cropControls = null, assetHrefs = new Map() }) {
   if (!svg || !undoButton || !redoButton) throw new Error('browser editor requires artboard and undo/redo controls');
   let activePoints = null; let selectedObjectId = null; let moveGesture = null; let resizeGesture = null; let rotateGesture = null;
   const adapter = {
     render(view) {
       const board = view.artboard; svg.setAttribute('viewBox', `0 0 ${board.widthMm} ${board.heightMm}`);
-      const rendered = view.objects.filter((object) => object.type === 'stroke').map((stroke) => {
-        const path = document.createElementNS(SVG_NS, 'path'); path.setAttribute('d', pathData(stroke.points)); path.setAttribute('fill', 'none'); path.setAttribute('stroke', stroke.style.color); path.setAttribute('stroke-width', stroke.style.width); path.setAttribute('stroke-opacity', stroke.style.opacity); path.setAttribute('stroke-linecap', 'round'); path.setAttribute('transform', svgTransform(stroke.transform)); path.dataset.objectId = stroke.objectId; if (stroke.objectId === selectedObjectId) path.dataset.selected = 'true'; return path;
+      const rendered = view.objects.flatMap((object) => {
+        if (object.visible === false) return [];
+        if (object.type === 'stroke') { const path = document.createElementNS(SVG_NS, 'path'); path.setAttribute('d', pathData(object.points)); path.setAttribute('fill', 'none'); path.setAttribute('stroke', object.style.color); path.setAttribute('stroke-width', object.style.width); path.setAttribute('stroke-opacity', object.style.opacity); path.setAttribute('stroke-linecap', 'round'); path.setAttribute('transform', svgTransform(object.transform)); path.dataset.objectId = object.objectId; path.dataset.locked = object.locked ? 'true' : 'false'; if (object.objectId === selectedObjectId) path.dataset.selected = 'true'; return [path]; }
+        if (object.type === 'image') {
+          const href = assetHrefs.get(object.sourceAssetId); if (!href) return [];
+          const project = host.getProject(); const asset = project.assets[object.sourceAssetId]; const bounds = objectBounds(object, project, board);
+          const sourceWidth = asset?.width ?? 1; const sourceHeight = asset?.height ?? 1;
+          const crop = object.crop ?? { x: 0, y: 0, width: 1, height: 1 };
+          const frame = document.createElementNS(SVG_NS, 'svg');
+          frame.setAttribute('x', bounds.minX); frame.setAttribute('y', bounds.minY);
+          frame.setAttribute('width', bounds.maxX - bounds.minX); frame.setAttribute('height', bounds.maxY - bounds.minY);
+          frame.setAttribute('viewBox', `${sourceWidth * crop.x} ${sourceHeight * crop.y} ${sourceWidth * crop.width} ${sourceHeight * crop.height}`);
+          frame.setAttribute('preserveAspectRatio', 'none'); frame.setAttribute('overflow', 'hidden'); frame.setAttribute('transform', svgTransform(object.transform));
+          frame.dataset.objectId = object.objectId; frame.dataset.locked = object.locked ? 'true' : 'false'; if (object.crop) frame.dataset.cropped = 'true'; if (object.objectId === selectedObjectId) frame.dataset.selected = 'true';
+          const image = document.createElementNS(SVG_NS, 'image'); image.setAttribute('href', href); image.setAttribute('x', '0'); image.setAttribute('y', '0'); image.setAttribute('width', sourceWidth); image.setAttribute('height', sourceHeight); image.setAttribute('preserveAspectRatio', 'none'); image.dataset.objectId = object.objectId;
+          const eraseMasks = (object.masks ?? []).filter((mask) => mask.kind === 'erase-stroke' && mask.coordinateSpace === 'source-normalized');
+          if (eraseMasks.length) {
+            const mask = document.createElementNS(SVG_NS, 'mask'); const maskId = `erase-${object.objectId}`; mask.setAttribute('id', maskId); mask.setAttribute('maskUnits', 'userSpaceOnUse'); mask.setAttribute('x', '0'); mask.setAttribute('y', '0'); mask.setAttribute('width', sourceWidth); mask.setAttribute('height', sourceHeight);
+            const base = document.createElementNS(SVG_NS, 'rect'); base.setAttribute('x', '0'); base.setAttribute('y', '0'); base.setAttribute('width', sourceWidth); base.setAttribute('height', sourceHeight); base.setAttribute('fill', 'white');
+            const cuts = eraseMasks.map((erase) => { const path = document.createElementNS(SVG_NS, 'path'); path.setAttribute('d', pathData(erase.points.map((point) => ({ x: point.x * sourceWidth, y: point.y * sourceHeight })))); path.setAttribute('fill', 'none'); path.setAttribute('stroke', 'black'); path.setAttribute('stroke-width', 2 * erase.radius * Math.min(sourceWidth, sourceHeight)); path.setAttribute('stroke-linecap', 'round'); path.setAttribute('stroke-linejoin', 'round'); return path; });
+            mask.replaceChildren(base, ...cuts); image.setAttribute('mask', `url(#${maskId})`); frame.replaceChildren(mask, image); frame.dataset.masked = 'true';
+          } else frame.replaceChildren(image);
+          return [frame];
+        }
+        return [];
       });
       if (selectedObjectId && !view.objects.some((object) => object.objectId === selectedObjectId)) selectedObjectId = null;
       const selected = view.objects.find((object) => object.objectId === selectedObjectId);
-      if (selected?.type === 'stroke') {
-        const bounds = strokeBounds(selected);
+      if (selected && (selected.type === 'stroke' || selected.type === 'image')) {
+        const bounds = objectBounds(selected, host.getProject(), board);
         const resize = document.createElementNS(SVG_NS, 'circle'); resize.setAttribute('cx', bounds.maxX); resize.setAttribute('cy', bounds.maxY); resize.setAttribute('r', 3); resize.setAttribute('transform', svgTransform(selected.transform)); resize.setAttribute('tabindex', '0'); resize.setAttribute('role', 'slider'); resize.setAttribute('aria-label', 'Resize selected object'); resize.dataset.resizeObjectId = selected.objectId; rendered.push(resize);
         const rotate = document.createElementNS(SVG_NS, 'circle'); rotate.setAttribute('cx', (bounds.minX + bounds.maxX) / 2); rotate.setAttribute('cy', bounds.minY - 8); rotate.setAttribute('r', 3); rotate.setAttribute('transform', svgTransform(selected.transform)); rotate.setAttribute('tabindex', '0'); rotate.setAttribute('role', 'slider'); rotate.setAttribute('aria-label', 'Rotate selected object'); rotate.dataset.rotateObjectId = selected.objectId; rendered.push(rotate);
       }
       svg.replaceChildren(...rendered);
       if (transformControls) { transformControls.fieldset.disabled = !selected; if (selected) { transformControls.x.value = selected.transform.x; transformControls.y.value = selected.transform.y; transformControls.rotation.value = selected.transform.rotationDeg; if (transformControls.scaleX) transformControls.scaleX.value = selected.transform.scaleX; if (transformControls.scaleY) transformControls.scaleY.value = selected.transform.scaleY; } transformControls.selection.textContent = selected ? `Selected ${selected.objectId}` : 'No object selected'; }
+      if (cropControls) { const imageSelected = selected?.type === 'image'; cropControls.fieldset.disabled = !imageSelected; if (imageSelected) { const crop = selected.crop ?? { x: 0, y: 0, width: 1, height: 1 }; cropControls.x.value = crop.x; cropControls.y.value = crop.y; cropControls.width.value = crop.width; cropControls.height.value = crop.height; cropControls.clear.disabled = !selected.crop; } else cropControls.clear.disabled = true; }
       undoButton.disabled = !host.canUndo(); redoButton.disabled = !host.canRedo(); if (status) status.textContent = `Revision ${view.revision}`;
     },
   };
   const host = createEditorHost({ project, artboardId, adapter });
   const transformSelected = (patch) => { if (!selectedObjectId) return; const current = host.getProject(); host.dispatch({ type: 'object.transform', expectedRevision: current.revision, objectId: selectedObjectId, transform: patch }); };
+  const cropSelected = (crop) => { if (!selectedObjectId) return; const current = host.getProject(); host.dispatch({ type: 'object.crop', expectedRevision: current.revision, objectId: selectedObjectId, crop }); };
   const commitStroke = () => { if (!activePoints || activePoints.length < 2) { activePoints = null; return; } const current = host.getProject(); host.dispatch({ type: 'stroke.add', expectedRevision: current.revision, artboardId, points: activePoints, style: { preset: 'round', color: '#18151E', width: 1.5, opacity: 1 } }); activePoints = null; };
   const beginMove = (event, objectId) => { selectedObjectId = objectId; activePoints = null; const object = host.getProject().objects[objectId]; moveGesture = { pointerId: event.pointerId, start: mmPoint(svg, event), transform: { ...object.transform } }; svg.setPointerCapture?.(event.pointerId); host.render(); };
-  const beginResize = (event, objectId) => { selectedObjectId = objectId; activePoints = null; moveGesture = null; rotateGesture = null; const object = host.getProject().objects[objectId]; const bounds = strokeBounds(object); const width = Math.max(bounds.maxX - bounds.minX, 0.001); const height = Math.max(bounds.maxY - bounds.minY, 0.001); resizeGesture = { pointerId: event.pointerId, start: mmPoint(svg, event), transform: { ...object.transform }, width, height }; svg.setPointerCapture?.(event.pointerId); host.render(); };
-  const beginRotate = (event, objectId) => { selectedObjectId = objectId; activePoints = null; moveGesture = null; resizeGesture = null; const object = host.getProject().objects[objectId]; const bounds = strokeBounds(object); const center = { x: object.transform.x + ((bounds.minX + bounds.maxX) / 2) * object.transform.scaleX, y: object.transform.y + ((bounds.minY + bounds.maxY) / 2) * object.transform.scaleY }; rotateGesture = { pointerId: event.pointerId, center, startAngle: angleDeg(center, mmPoint(svg, event)), transform: { ...object.transform } }; svg.setPointerCapture?.(event.pointerId); host.render(); };
+  const beginResize = (event, objectId) => { selectedObjectId = objectId; activePoints = null; moveGesture = null; rotateGesture = null; const object = host.getProject().objects[objectId]; const bounds = objectBounds(object, host.getProject(), host.getProject().artboards.find((item) => item.artboardId === artboardId)); const width = Math.max(bounds.maxX - bounds.minX, 0.001); const height = Math.max(bounds.maxY - bounds.minY, 0.001); resizeGesture = { pointerId: event.pointerId, start: mmPoint(svg, event), transform: { ...object.transform }, width, height }; svg.setPointerCapture?.(event.pointerId); host.render(); };
+  const beginRotate = (event, objectId) => { selectedObjectId = objectId; activePoints = null; moveGesture = null; resizeGesture = null; const object = host.getProject().objects[objectId]; const bounds = objectBounds(object, host.getProject(), host.getProject().artboards.find((item) => item.artboardId === artboardId)); const center = { x: object.transform.x + ((bounds.minX + bounds.maxX) / 2) * object.transform.scaleX, y: object.transform.y + ((bounds.minY + bounds.maxY) / 2) * object.transform.scaleY }; rotateGesture = { pointerId: event.pointerId, center, startAngle: angleDeg(center, mmPoint(svg, event)), transform: { ...object.transform } }; svg.setPointerCapture?.(event.pointerId); host.render(); };
   const resizePatch = (gesture, event) => { const point = mmPoint(svg, event); const dx = point.x - gesture.start.x; const dy = point.y - gesture.start.y; return { scaleX: gesture.transform.scaleX * Math.max(0.01, 1 + dx / gesture.width), scaleY: gesture.transform.scaleY * Math.max(0.01, 1 + dy / gesture.height) }; };
   const rotationPatch = (gesture, event) => ({ rotationDeg: gesture.transform.rotationDeg + angleDeg(gesture.center, mmPoint(svg, event)) - gesture.startAngle });
   const previewMove = (event) => { if (!moveGesture || event.pointerId !== moveGesture.pointerId) return; const point = mmPoint(svg, event); const preview = { ...moveGesture.transform, x: moveGesture.transform.x + point.x - moveGesture.start.x, y: moveGesture.transform.y + point.y - moveGesture.start.y }; Array.from(svg.children).find((child) => child.dataset?.objectId === selectedObjectId)?.setAttribute?.('transform', svgTransform(preview)); };
@@ -57,6 +86,10 @@ export function mountBrowserEditor({ project, artboardId, svg, undoButton, redoB
     transformControls.nudgeLeft.addEventListener('click', () => { if (!selectedObjectId) return; const object = host.getProject().objects[selectedObjectId]; transformSelected({ x: object.transform.x - 1 }); }); transformControls.nudgeRight.addEventListener('click', () => { if (!selectedObjectId) return; const object = host.getProject().objects[selectedObjectId]; transformSelected({ x: object.transform.x + 1 }); });
     transformControls.flipX?.addEventListener('click', () => { if (!selectedObjectId) return; const object = host.getProject().objects[selectedObjectId]; transformSelected({ scaleX: -object.transform.scaleX }); }); transformControls.flipY?.addEventListener('click', () => { if (!selectedObjectId) return; const object = host.getProject().objects[selectedObjectId]; transformSelected({ scaleY: -object.transform.scaleY }); });
   }
+  if (cropControls) {
+    cropControls.apply.addEventListener('click', () => cropSelected({ x: finiteNumber(cropControls.x, 'crop x'), y: finiteNumber(cropControls.y, 'crop y'), width: finiteNumber(cropControls.width, 'crop width'), height: finiteNumber(cropControls.height, 'crop height') }));
+    cropControls.clear.addEventListener('click', () => cropSelected(null));
+  }
   const onKeyDown = (event) => { if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z') { event.preventDefault(); if (event.shiftKey) host.redo(); else host.undo(); return; } if (!selectedObjectId || event.ctrlKey || event.metaKey || event.altKey) return; const delta = event.shiftKey ? 10 : 1; const moves = { ArrowLeft: [-delta, 0], ArrowRight: [delta, 0], ArrowUp: [0, -delta], ArrowDown: [0, delta] }; const move = moves[event.key]; if (!move) return; event.preventDefault(); const object = host.getProject().objects[selectedObjectId]; transformSelected({ x: object.transform.x + move[0], y: object.transform.y + move[1] }); };
-  document.addEventListener('keydown', onKeyDown); host.render(); return { host, getSelectedObjectId() { return selectedObjectId; }, destroy() { document.removeEventListener('keydown', onKeyDown); } };
+  document.addEventListener('keydown', onKeyDown); host.render(); return { host, getSelectedObjectId() { return selectedObjectId; }, setAssetHref(assetId, href) { assetHrefs.set(assetId, href); host.render(); }, destroy() { document.removeEventListener('keydown', onKeyDown); } };
 }
