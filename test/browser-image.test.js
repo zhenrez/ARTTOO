@@ -55,7 +55,7 @@ test('browser editor composes crop and erase mask in immutable source coordinate
   project = applyCommand(project, { type: 'object.crop', objectId: 'image-mask', crop: { x: 0.25, y: 0.2, width: 0.5, height: 0.6 } });
   project = applyCommand(project, { type: 'object.erase', objectId: 'image-mask', stroke: { points: [{ x: 0.3, y: 0.25 }, { x: 0.7, y: 0.75 }], radius: 0.05 } });
 
-  const bytesBefore = await store.get(imported.assetId);
+  const bytesBefore = await store.get(project.assets[imported.assetId].checksum);
   const svg = new FakeElement();
   const mounted = mountBrowserEditor({ project, artboardId: 'board', svg, undoButton: new FakeElement(), redoButton: new FakeElement(), assetHrefs: new Map([[imported.assetId, 'blob:masked-image']]) });
   const frame = svg.children.find((child) => child.dataset.objectId === 'image-mask');
@@ -78,7 +78,7 @@ test('browser editor composes crop and erase mask in immutable source coordinate
   assert.equal(cut.attributes['stroke-linecap'], 'round');
   assert.equal(cut.attributes['stroke-linejoin'], 'round');
 
-  const bytesAfter = await store.get(imported.assetId);
+  const bytesAfter = await store.get(project.assets[imported.assetId].checksum);
   assert.deepEqual(Array.from(bytesAfter), Array.from(bytesBefore));
   assert.deepEqual(Array.from(bytesAfter), Array.from(sourceBytes));
   mounted.destroy();
