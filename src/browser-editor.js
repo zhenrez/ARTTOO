@@ -28,17 +28,22 @@ export function mountBrowserEditor({ project, artboardId, svg, undoButton, redoB
         if (object.type === 'image') {
           const href = assetHrefs.get(object.sourceAssetId); if (!href) return [];
           const project = host.getProject(); const asset = project.assets[object.sourceAssetId]; const bounds = objectBounds(object, project, board);
-          if (!object.crop) {
-            const image = document.createElementNS(SVG_NS, 'image'); image.setAttribute('href', href); image.setAttribute('x', bounds.minX); image.setAttribute('y', bounds.minY); image.setAttribute('width', bounds.maxX - bounds.minX); image.setAttribute('height', bounds.maxY - bounds.minY); image.setAttribute('preserveAspectRatio', 'xMidYMid meet'); image.setAttribute('transform', svgTransform(object.transform)); image.dataset.objectId = object.objectId; image.dataset.locked = object.locked ? 'true' : 'false'; if (object.objectId === selectedObjectId) image.dataset.selected = 'true'; return [image];
-          }
-          const crop = object.crop;
+          const sourceWidth = asset?.width ?? 1; const sourceHeight = asset?.height ?? 1;
+          const crop = object.crop ?? { x: 0, y: 0, width: 1, height: 1 };
           const frame = document.createElementNS(SVG_NS, 'svg');
           frame.setAttribute('x', bounds.minX); frame.setAttribute('y', bounds.minY);
           frame.setAttribute('width', bounds.maxX - bounds.minX); frame.setAttribute('height', bounds.maxY - bounds.minY);
-          frame.setAttribute('viewBox', `${(asset?.width ?? 1) * crop.x} ${(asset?.height ?? 1) * crop.y} ${(asset?.width ?? 1) * crop.width} ${(asset?.height ?? 1) * crop.height}`);
+          frame.setAttribute('viewBox', `${sourceWidth * crop.x} ${sourceHeight * crop.y} ${sourceWidth * crop.width} ${sourceHeight * crop.height}`);
           frame.setAttribute('preserveAspectRatio', 'none'); frame.setAttribute('overflow', 'hidden'); frame.setAttribute('transform', svgTransform(object.transform));
-          frame.dataset.objectId = object.objectId; frame.dataset.locked = object.locked ? 'true' : 'false'; frame.dataset.cropped = 'true'; if (object.objectId === selectedObjectId) frame.dataset.selected = 'true';
-          const image = document.createElementNS(SVG_NS, 'image'); image.setAttribute('href', href); image.setAttribute('x', '0'); image.setAttribute('y', '0'); image.setAttribute('width', asset?.width ?? 1); image.setAttribute('height', asset?.height ?? 1); image.setAttribute('preserveAspectRatio', 'none'); image.dataset.objectId = object.objectId; frame.replaceChildren(image);
+          frame.dataset.objectId = object.objectId; frame.dataset.locked = object.locked ? 'true' : 'false'; if (object.crop) frame.dataset.cropped = 'true'; if (object.objectId === selectedObjectId) frame.dataset.selected = 'true';
+          const image = document.createElementNS(SVG_NS, 'image'); image.setAttribute('href', href); image.setAttribute('x', '0'); image.setAttribute('y', '0'); image.setAttribute('width', sourceWidth); image.setAttribute('height', sourceHeight); image.setAttribute('preserveAspectRatio', 'none'); image.dataset.objectId = object.objectId;
+          const eraseMasks = (object.masks ?? []).filter((mask) => mask.kind === 'erase-stroke' && mask.coordinateSpace === 'source-normalized');
+          if (eraseMasks.length) {
+            const mask = document.createElementNS(SVG_NS, 'mask'); const maskId = `erase-${object.objectId}`; mask.setAttribute('id', maskId); mask.setAttribute('maskUnits', 'userSpaceOnUse'); mask.setAttribute('x', '0'); mask.setAttribute('y', '0'); mask.setAttribute('width', sourceWidth); mask.setAttribute('height', sourceHeight);
+            const base = document.createElementNS(SVG_NS, 'rect'); base.setAttribute('x', '0'); base.setAttribute('y', '0'); base.setAttribute('width', sourceWidth); base.setAttribute('height', sourceHeight); base.setAttribute('fill', 'white');
+            const cuts = eraseMasks.map((erase) => { const path = document.createElementNS(SVG_NS, 'path'); path.setAttribute('d', pathData(erase.points.map((point) => ({ x: point.x * sourceWidth, y: point.y * sourceHeight })))); path.setAttribute('fill', 'none'); path.setAttribute('stroke', 'black'); path.setAttribute('stroke-width', 2 * erase.radius * Math.min(sourceWidth, sourceHeight)); path.setAttribute('stroke-linecap', 'round'); path.setAttribute('stroke-linejoin', 'round'); return path; });
+            mask.replaceChildren(base, ...cuts); image.setAttribute('mask', `url(#${maskId})`); frame.replaceChildren(mask, image); frame.dataset.masked = 'true';
+          } else frame.replaceChildren(image);
           return [frame];
         }
         return [];
