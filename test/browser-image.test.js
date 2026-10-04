@@ -53,7 +53,7 @@ test('browser editor composes crop and erase mask in immutable source coordinate
   project = applyCommand(project, { type: 'artboard.add', artboardId: 'board', widthMm: 100, heightMm: 100 });
   project = applyCommand(project, { type: 'object.add', objectId: 'image-mask', objectType: 'image', artboardId: 'board', assetId: imported.assetId });
   project = applyCommand(project, { type: 'object.crop', objectId: 'image-mask', crop: { x: 0.25, y: 0.2, width: 0.5, height: 0.6 } });
-  project = applyCommand(project, { type: 'object.erase', objectId: 'image-mask', points: [{ x: 0.3, y: 0.25 }, { x: 0.7, y: 0.75 }], radius: 0.05 });
+  project = applyCommand(project, { type: 'object.erase', objectId: 'image-mask', stroke: { points: [{ x: 0.3, y: 0.25 }, { x: 0.7, y: 0.75 }], radius: 0.05 } });
 
   const bytesBefore = await store.get(imported.assetId);
   const svg = new FakeElement();
