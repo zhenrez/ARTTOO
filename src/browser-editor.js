@@ -16,6 +16,26 @@ function objectBounds(object, project, board) {
 }
 const angleDeg = (center, point) => Math.atan2(point.y - center.y, point.x - center.x) * 180 / Math.PI;
 
+export function boardPointToImageSourceNormalized({ object, project, board, point }) {
+  if (!object || object.type !== 'image') throw new Error('source mapping requires an image object');
+  const asset = project?.assets?.[object.sourceAssetId];
+  if (!asset) throw new Error('source mapping requires the image source asset');
+  const { x, y, scaleX, scaleY, rotationDeg } = object.transform ?? {};
+  if (![x, y, scaleX, scaleY, rotationDeg].every(Number.isFinite)) throw new Error('source mapping requires a finite transform');
+  if (scaleX === 0 || scaleY === 0) throw new Error('source mapping requires non-zero scale');
+  if (!Number.isFinite(point?.x) || !Number.isFinite(point?.y)) throw new Error('source mapping requires a finite board point');
+  const scaledX = (point.x - x) / scaleX;
+  const scaledY = (point.y - y) / scaleY;
+  const radians = -rotationDeg * Math.PI / 180;
+  const localX = scaledX * Math.cos(radians) - scaledY * Math.sin(radians);
+  const localY = scaledX * Math.sin(radians) + scaledY * Math.cos(radians);
+  const fullBounds = objectBounds({ ...object, crop: null }, project, board);
+  const width = fullBounds.maxX - fullBounds.minX;
+  const height = fullBounds.maxY - fullBounds.minY;
+  if (!(width > 0) || !(height > 0)) throw new Error('source mapping requires non-zero image geometry');
+  return { x: (localX - fullBounds.minX) / width, y: (localY - fullBounds.minY) / height };
+}
+
 export function mountBrowserEditor({ project, artboardId, svg, undoButton, redoButton, status, transformControls = null, cropControls = null, assetHrefs = new Map() }) {
   if (!svg || !undoButton || !redoButton) throw new Error('browser editor requires artboard and undo/redo controls');
   let activePoints = null; let selectedObjectId = null; let moveGesture = null; let resizeGesture = null; let rotateGesture = null;
