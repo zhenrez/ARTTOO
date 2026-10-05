@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createProject, applyCommand } from '../src/document.js';
-import { mountBrowserEditor } from '../src/browser-editor.js';
+import { mountBrowserEditor, boardPointToImageSourceNormalized } from '../src/browser-editor.js';
 
 class FakeElement {
   constructor() { this.listeners = {}; this.attributes = {}; this.children = []; this.disabled = false; this.dataset = {}; this.value = ''; this.textContent = ''; this.viewBox = { baseVal: { width: 100, height: 100 } }; }
@@ -64,4 +64,21 @@ test('touch resize handle previews ephemerally then commits one canonical scale 
 test('canonical transform rejects non-finite, zero scale and unknown transform fields', () => {
   let project = fixture(); project = applyCommand(project, { type: 'stroke.add', artboardId: 'board', objectId: 'stroke-1', points: [{ x: 1, y: 1 }, { x: 2, y: 2 }] });
   assert.throws(() => applyCommand(project, { type: 'object.transform', objectId: 'stroke-1', transform: { scaleX: 0 } }), /scaleX must be non-zero/); assert.throws(() => applyCommand(project, { type: 'object.transform', objectId: 'stroke-1', transform: { x: Number.NaN } }), /x must be finite/); assert.throws(() => applyCommand(project, { type: 'object.transform', objectId: 'stroke-1', transform: { skewX: 1 } }), /unsupported transform field/);
+});
+
+
+test('board point maps deterministically to immutable image source coordinates across transforms and crop', () => {
+  const project = { assets: { asset: { width: 400, height: 200 } } };
+  const board = { widthMm: 100, heightMm: 100 };
+  const base = { type: 'image', sourceAssetId: 'asset', transform: { x: 0, y: 0, scaleX: 1, scaleY: 1, rotationDeg: 0 } };
+  const map = (object, point) => boardPointToImageSourceNormalized({ object, project, board, point });
+  assert.deepEqual(map(base, { x: 30, y: 15 }), { x: 0.5, y: 0.5 });
+  assert.deepEqual(map({ ...base, transform: { ...base.transform, x: 10, y: 20 } }, { x: 40, y: 35 }), { x: 0.5, y: 0.5 });
+  assert.deepEqual(map({ ...base, transform: { ...base.transform, scaleX: 2, scaleY: 0.5 } }, { x: 60, y: 7.5 }), { x: 0.5, y: 0.5 });
+  assert.deepEqual(map({ ...base, transform: { ...base.transform, scaleX: -1, scaleY: 1 } }, { x: -30, y: 15 }), { x: 0.5, y: 0.5 });
+  const rotated = map({ ...base, transform: { ...base.transform, rotationDeg: 90 } }, { x: -15, y: 30 });
+  assert.ok(Math.abs(rotated.x - 0.5) < 1e-12); assert.ok(Math.abs(rotated.y - 0.5) < 1e-12);
+  assert.deepEqual(map({ ...base, crop: { x: 0.25, y: 0.25, width: 0.5, height: 0.5 } }, { x: 30, y: 15 }), { x: 0.5, y: 0.5 });
+  assert.throws(() => map({ ...base, sourceAssetId: 'missing' }, { x: 1, y: 1 }), /source asset/);
+  assert.throws(() => map({ ...base, transform: { ...base.transform, scaleX: 0 } }, { x: 1, y: 1 }), /non-zero scale/);
 });
