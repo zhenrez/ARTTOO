@@ -76,6 +76,7 @@ test('board point maps deterministically to immutable image source coordinates a
   assert.deepEqual(map({ ...base, transform: { ...base.transform, x: 10, y: 20 } }, { x: 40, y: 35 }), { x: 0.5, y: 0.5 });
   assert.deepEqual(map({ ...base, transform: { ...base.transform, scaleX: 2, scaleY: 0.5 } }, { x: 60, y: 7.5 }), { x: 0.5, y: 0.5 });
   assert.deepEqual(map({ ...base, transform: { ...base.transform, scaleX: -1, scaleY: 1 } }, { x: -30, y: 15 }), { x: 0.5, y: 0.5 });
+  assert.deepEqual(map({ ...base, transform: { ...base.transform, scaleX: 1, scaleY: -1 } }, { x: 30, y: -15 }), { x: 0.5, y: 0.5 });
   const rotated = map({ ...base, transform: { ...base.transform, rotationDeg: 90 } }, { x: -15, y: 30 });
   assert.ok(Math.abs(rotated.x - 0.5) < 1e-12); assert.ok(Math.abs(rotated.y - 0.5) < 1e-12);
   assert.deepEqual(map({ ...base, crop: { x: 0.25, y: 0.25, width: 0.5, height: 0.5 } }, { x: 30, y: 15 }), { x: 0.5, y: 0.5 });
