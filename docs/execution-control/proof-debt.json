@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-07T00:01:22-07:00",
+  "items": [
+    {
+      "id": "pd-raster-mask-browser",
+      "state": "OPEN",
+      "capability": "raster mask/erase",
+      "missingEvidence": [
+        "real browser erase interaction",
+        "visual rendering correctness",
+        "save/reopen visual acceptance"
+      ]
+    },
+    {
+      "id": "pd-canvas-performance",
+      "state": "OPEN",
+      "capability": "canvas quality",
+      "missingEvidence": [
+        "pointer-to-visible-ink latency",
+        "frame pacing",
+        "undo/redo latency",
+        "representative tattoo workload memory"
+      ]
+    },
+    {
+      "id": "pd-device-coverage",
+      "state": "OPEN",
+      "capability": "cross-device canvas",
+      "missingEvidence": [
+        "tablet-class interaction",
+        "desktop artist interaction",
+        "phone canvas continuity"
+      ]
+    }
+  ]
+}
