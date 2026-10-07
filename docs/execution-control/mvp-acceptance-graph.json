@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-07T00:01:22-07:00",
+  "goldenJourney": [
+    {
+      "id": "create",
+      "label": "create/import/generate artwork",
+      "state": "PARTIAL",
+      "evidence": [
+        "Task 1 image ingestion accepted; basic drawing exists"
+      ],
+      "gaps": [
+        "integrated generation Task 3"
+      ]
+    },
+    {
+      "id": "edit",
+      "label": "edit professionally",
+      "state": "ACTIVE",
+      "evidence": [
+        "layer/selection, crop, mask/erase canonical primitives"
+      ],
+      "gaps": [
+        "shapes/vector/text/layout/snap",
+        "brush/input depth",
+        "canvas quality evidence"
+      ]
+    },
+    {
+      "id": "vto",
+      "label": "place on body/VTO",
+      "state": "WAITING",
+      "gaps": [
+        "Task 4"
+      ]
+    },
+    {
+      "id": "correct",
+      "label": "correct masks/wrap/physical sizing",
+      "state": "PARTIAL_MODEL_ONLY",
+      "evidence": [
+        "canonical raster mask/erase primitive"
+      ],
+      "gaps": [
+        "browser mask correction",
+        "wrap",
+        "calibration"
+      ]
+    },
+    {
+      "id": "persist",
+      "label": "persist/reopen/cross-device continue",
+      "state": "PARTIAL",
+      "evidence": [
+        "local canonical save/reopen"
+      ],
+      "gaps": [
+        "Task 5 cloud/cross-device/conflict evidence"
+      ]
+    },
+    {
+      "id": "approve",
+      "label": "client revision/approval",
+      "state": "WAITING",
+      "gaps": [
+        "Task 5"
+      ]
+    },
+    {
+      "id": "produce",
+      "label": "exact-size production/stencil/export",
+      "state": "WAITING",
+      "gaps": [
+        "Task 6"
+      ]
+    }
+  ],
+  "releaseRule": "One stateful project must complete the full golden journey without export/re-import."
+}
