@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-07T01:03:14-07:00",
+  "evidenceRule": "Only observable repository/CI evidence may populate metrics; null means not measured.",
+  "runs": {
+    "total": 2,
+    "VERIFIED_INCREMENT": 1,
+    "VERIFIED_BLOCKER": 1,
+    "VERIFIED_NOOP": 0
+  },
+  "acceptedCommits": {
+    "value": null,
+    "note": "Not yet normalized across historical PR commits; do not infer from branch length."
+  },
+  "testsAddedOrChanged": {
+    "value": null,
+    "note": "Not measured this run."
+  },
+  "regressionsFound": {
+    "value": 0,
+    "evidence": []
+  },
+  "blockerRecurrence": {
+    "value": 0,
+    "evidence": []
+  },
+  "recoveryOverhead": null,
+  "implementationVerificationRatio": null,
+  "proofDebt": {
+    "created": 3,
+    "retired": 0
+  },
+  "pluginOutcomes": {
+    "GitHub": {
+      "success": 2,
+      "failure": 0
+    },
+    "FilesAuthorityRecovery": {
+      "success": 1,
+      "failure": 0
+    }
+  },
+  "criticalPathMovement": [
+    "control-plane bootstrap established queue/acceptance/canvas/proof-debt artifacts",
+    "historical scope registry now preserves CAP-001..CAP-190"
+  ],
+  "note": "VERIFIED_INCREMENT count for current run is contingent on final exact-head verification and must be corrected if that verification fails."
+}
