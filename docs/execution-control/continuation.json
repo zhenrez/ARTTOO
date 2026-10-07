@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-07T02:08:00-07:00",
+  "repository": "zhenrez/ARTTOO",
+  "exactSha": "6d1bcdf678b5719fb03b649e9dadb85b3f044ffc",
+  "activePr": 22,
+  "isolatedPr": 21,
+  "gate": "Task 2 Professional editor core",
+  "nextOperation": "task-2c-shapes-vector-text",
+  "capabilityIds": [
+    "CAP-159",
+    "CAP-160",
+    "CAP-161"
+  ],
+  "goldenJourneyGap": "edit professionally",
+  "relevantFiles": [
+    "src/document.js",
+    "src/editor-adapter.js",
+    "src/editor.js",
+    "src/render-svg.js",
+    "test/"
+  ],
+  "invariants": [
+    "canonical Project/document source of truth",
+    "immutable source assets",
+    "reversible/versioned derived edits",
+    "one shared editor semantics",
+    "marketplace blocked until Task 6 acceptance",
+    "PR #21 isolated"
+  ],
+  "passingEvidence": [
+    "workflow 37591501137 SUCCESS at exact head 6d1bcdf678b5719fb03b649e9dadb85b3f044ffc"
+  ],
+  "proofDebt": [
+    "pd-raster-mask-browser OPEN",
+    "pd-canvas-performance OPEN",
+    "pd-device-coverage OPEN"
+  ],
+  "nextOperationDetail": "Implement the smallest canonical reversible shape/vector/text slice with save/reopen and undo/redo before browser interaction expansion.",
+  "acceptanceCriteria": [
+    "canonical reversible shape/vector/text operations",
+    "save/reopen fidelity",
+    "undo/redo",
+    "browser-visible interaction",
+    "Node + Playwright exact-head verification"
+  ],
+  "retryState": {
+    "priorCheckpointWriteBlocker": "resolved by normal contents API create_file if this commit succeeds"
+  }
+}
