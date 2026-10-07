@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-07T01:03:14-07:00",
+  "updatedAt": "2026-10-07T04:01:54-07:00",
   "evidenceRule": "Only observable repository/CI evidence may populate metrics; null means not measured.",
   "runs": {
-    "total": 2,
-    "VERIFIED_INCREMENT": 1,
+    "total": 3,
+    "VERIFIED_INCREMENT": 2,
     "VERIFIED_BLOCKER": 1,
     "VERIFIED_NOOP": 0
   },
@@ -27,12 +27,12 @@
   "recoveryOverhead": null,
   "implementationVerificationRatio": null,
   "proofDebt": {
-    "created": 3,
-    "retired": 0
+    "created": 4,
+    "retired": 1
   },
   "pluginOutcomes": {
     "GitHub": {
-      "success": 2,
+      "success": 3,
       "failure": 0
     },
     "FilesAuthorityRecovery": {
@@ -42,7 +42,8 @@
   },
   "criticalPathMovement": [
     "control-plane bootstrap established queue/acceptance/canvas/proof-debt artifacts",
-    "historical scope registry now preserves CAP-001..CAP-190"
+    "historical scope registry now preserves CAP-001..CAP-190",
+    "Task 2c focused canonical shape/path/text semantic proof landed and passed node + browser-smoke CI; browser interaction remains next."
   ],
-  "note": "VERIFIED_INCREMENT count for current run is contingent on final exact-head verification and must be corrected if that verification fails."
+  "note": "Metrics remain evidence-only; current run verified focused Task 2c semantic tests at workflow 37611478785."
 }
