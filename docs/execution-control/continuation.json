@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-07T02:08:00-07:00",
+  "updatedAt": "2026-10-07T04:01:54-07:00",
   "repository": "zhenrez/ARTTOO",
-  "exactSha": "6d1bcdf678b5719fb03b649e9dadb85b3f044ffc",
+  "exactSha": "3373c1773d28f727d2f0afa3d77eee1fb17fac2f",
   "activePr": 22,
   "isolatedPr": 21,
   "gate": "Task 2 Professional editor core",
@@ -29,14 +29,17 @@
     "PR #21 isolated"
   ],
   "passingEvidence": [
-    "workflow 37591501137 SUCCESS at exact head 6d1bcdf678b5719fb03b649e9dadb85b3f044ffc"
+    "workflow 37611478785: node SUCCESS (npm run check) at exact head 3373c1773d28f727d2f0afa3d77eee1fb17fac2f",
+    "workflow 37611478785: browser-smoke SUCCESS (npm run test:e2e) at exact head 3373c1773d28f727d2f0afa3d77eee1fb17fac2f",
+    "test/shape-path-text.test.js proves canonical save/reopen, malformed-state rejection, and transform/content separation"
   ],
   "proofDebt": [
     "pd-raster-mask-browser OPEN",
     "pd-canvas-performance OPEN",
-    "pd-device-coverage OPEN"
+    "pd-device-coverage OPEN",
+    "pd-task2c-browser-interaction OPEN"
   ],
-  "nextOperationDetail": "Implement the smallest canonical reversible shape/vector/text slice with save/reopen and undo/redo before browser interaction expansion.",
+  "nextOperationDetail": "Add reversible editor-adapter shape/path/text operations and browser-visible SVG rendering/interaction; retain canonical document semantics.",
   "acceptanceCriteria": [
     "canonical reversible shape/vector/text operations",
     "save/reopen fidelity",
@@ -45,6 +48,6 @@
     "Node + Playwright exact-head verification"
   ],
   "retryState": {
-    "priorCheckpointWriteBlocker": "resolved by normal contents API create_file if this commit succeeds"
+    "priorFocusedTestWriteBlocker": "RESOLVED: normal contents API create_file succeeded at 3373c1773d28f727d2f0afa3d77eee1fb17fac2f"
   }
 }
