@@ -53,6 +53,56 @@ const editor = mountBrowserEditor({
   },
 });
 
+// Task 2c: expose existing canonical shape, path and text commands in the
+// working editor. The same project and command history power every mode.
+const elementsPanel = document.createElement('section');
+elementsPanel.className = 'elements-panel';
+elementsPanel.setAttribute('aria-labelledby', 'elements-heading');
+elementsPanel.style.cssText = 'display:grid;gap:8px;padding-bottom:18px;margin-bottom:18px;border-bottom:1px solid #34313b';
+elementsPanel.innerHTML = `
+  <h2 id="elements-heading">Elements</h2>
+  <div role="group" aria-label="Shapes">
+    <button id="create-rectangle" type="button">Rectangle</button>
+  </div>
+  <button id="create-vector-path" type="button">Vector path</button>
+  <label for="elements-text">Text content</label>
+  <input id="elements-text" type="text" maxlength="200" placeholder="Lettering">
+  <button id="create-text" type="button">Add text</button>
+  <small>Use Layers to select, transform, reorder or hide artwork. Save to retain changes.</small>
+`;
+const layersSection = document.querySelector('#layers-heading')?.closest('section');
+if (layersSection) layersSection.before(elementsPanel);
+else document.querySelector('aside')?.prepend(elementsPanel);
+
+const insertCanonicalElement = (command) => {
+  try {
+    const revision = editor.host.getProject().revision;
+    editor.host.dispatch({ ...command, artboardId: 'primary', expectedRevision: revision });
+    saveStatus.textContent = `Edited · revision ${editor.host.getProject().revision} · save to keep changes`;
+  } catch (error) {
+    saveStatus.textContent = `Insertion failed · ${error.message`;
+  }
+};
+elementsPanel.querySelector('#create-rectangle').addEventListener('click', () => insertCanonicalElement({
+  type: 'shape.add', shape: 'rect', geometry: { x: 20, y: 20, width: 45, height: 28 },
+  paint: { fill: 'none', stroke: '#18151e', strokeWidth: 1.5 },
+}));
+elementsPanel.querySelector('#create-vector-path').addEventListener('click', () => insertCanonicalElement({
+  type: 'path.add',
+  points: [{ x: 18, y: 100 }, { x: 45, y: 88 }, { x: 75, y: 113 }, { x: 110, y: 97 }],
+  closed: false, paint: { fill: 'none', stroke: '#18151e', strokeWidth: 1.5 },
+}));
+elementsPanel.querySelector('#create-text').addEventListener('click', () => {
+  const input = elementsPanel.querySelector('#elements-text');
+  const value = input.value.trim();
+  if (!value) {
+    saveStatus.textContent = 'Enter text content before adding lettering';
+    input.focus();
+    return;
+  }
+  insertCanonicalElement({ type: 'text.add', text: value, x: 20, y: 151, style: { fontSize: 14, fill: '#18151e' } });
+});
+
 const selectCanvasObject = (objectId) => {
   const target = Array.from(svg.children).find((child) => child.dataset?.objectId === objectId);
   if (!target) throw new Error(`rendered object not found: ${objectId}`);
