@@ -7,10 +7,13 @@
     "test": "node --test test/*.test.js",
     "test:e2e": "playwright test --config=playwright.config.js",
     "check:syntax": "node scripts/check-js-syntax.js",
-    "check": "npm run check:syntax && npm test"
+    "check": "npm run check:syntax && npm run validate && npm test",
+    "validate": "node scripts/validate-arttoo.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.55.0"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  }
 }

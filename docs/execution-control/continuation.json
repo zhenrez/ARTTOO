@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-07T04:56:48-07:00",
+  "repository": "zhenrez/ARTTOO",
+  "exactSha": "488b8a41af0f16d8807938b5393250c89be8ae3c",
+  "activePr": 22,
+  "isolatedPr": 21,
+  "gate": "Task 2 Professional editor core",
+  "nextOperation": "task-2c-shapes-vector-text",
+  "capabilityIds": [
+    "CAP-159",
+    "CAP-160",
+    "CAP-161"
+  ],
+  "goldenJourneyGap": "edit professionally",
+  "relevantFiles": [
+    "src/document.js",
+    "src/editor-adapter.js",
+    "src/editor.js",
+    "src/render-svg.js",
+    "test/"
+  ],
+  "invariants": [
+    "canonical Project/document source of truth",
+    "immutable source assets",
+    "reversible/versioned derived edits",
+    "one shared editor semantics",
+    "marketplace blocked until Task 6 acceptance",
+    "PR #21 isolated"
+  ],
+  "passingEvidence": [
+    "workflow 37617996219: node SUCCESS (npm run check) at exact head 488b8a41af0f16d8807938b5393250c89be8ae3c",
+    "workflow 37617996219: browser-smoke SUCCESS (npm run test:e2e) at exact head 488b8a41af0f16d8807938b5393250c89be8ae3c",
+    "src/editor-adapter.js admits reversible shape.add/path.add/text.add through canonical applyCommand semantics",
+    "test/shape-path-text.test.js remains focused canonical save/reopen and validation proof"
+  ],
+  "proofDebt": [
+    "pd-raster-mask-browser OPEN",
+    "pd-canvas-performance OPEN",
+    "pd-device-coverage OPEN",
+    "pd-task2c-browser-interaction OPEN"
+  ],
+  "nextOperationDetail": "Add browser-visible SVG rendering and interaction for canonical shape/path/text objects; then add focused browser acceptance and save/reopen/undo proof.",
+  "acceptanceCriteria": [
+    "canonical reversible shape/vector/text operations",
+    "save/reopen fidelity",
+    "undo/redo",
+    "browser-visible interaction",
+    "Node + Playwright exact-head verification"
+  ],
+  "retryState": {
+    "editorAdapterAcceptanceTestWrite": "BLOCKED by mutation safety; implementation independently passes existing node + browser-smoke CI; focused adapter test remains proof debt."
+  }
+}

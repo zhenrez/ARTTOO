@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-07T00:01:22-07:00",
+  "families": {
+    "inputEngine": {
+      "implementation": "PARTIAL",
+      "proof": "PARTIAL",
+      "known": [
+        "pointer drawing",
+        "touch move/resize",
+        "pressure captured on stroke points"
+      ],
+      "gaps": [
+        "tilt/azimuth",
+        "eraser/barrel semantics",
+        "gesture coexistence evidence",
+        "device-class acceptance"
+      ]
+    },
+    "brushInk": {
+      "implementation": "PARTIAL",
+      "proof": "MODEL_BROWSER_BASIC",
+      "known": [
+        "round preset",
+        "width/color/opacity",
+        "pressure persistence"
+      ],
+      "gaps": [
+        "preset depth",
+        "taper",
+        "spacing",
+        "texture/jitter",
+        "stabilization",
+        "eraser parity",
+        "quality benchmarks"
+      ]
+    },
+    "layersCompositing": {
+      "implementation": "PARTIAL",
+      "proof": "PARTIAL",
+      "known": [
+        "reorder",
+        "visibility",
+        "lock",
+        "selection",
+        "raster erase masks"
+      ],
+      "gaps": [
+        "grouping",
+        "opacity control",
+        "blend modes",
+        "clipping/alpha-lock/reference behavior",
+        "visual mask proof"
+      ]
+    },
+    "selectionTransform": {
+      "implementation": "PARTIAL",
+      "proof": "PARTIAL",
+      "known": [
+        "select",
+        "move",
+        "resize",
+        "rotate",
+        "flip",
+        "numeric transform"
+      ],
+      "gaps": [
+        "lasso/rect selection",
+        "pivot",
+        "distort/warp",
+        "snapping/alignment"
+      ]
+    },
+    "precisionAids": {
+      "implementation": "MINIMAL",
+      "proof": "MINIMAL",
+      "known": [
+        "artboard physical mm dimensions"
+      ],
+      "gaps": [
+        "rulers",
+        "grids",
+        "guides",
+        "shape assist",
+        "symmetry",
+        "exact-size UI"
+      ]
+    },
+    "interoperability": {
+      "implementation": "PARTIAL",
+      "proof": "PARTIAL",
+      "known": [
+        "raster images",
+        "strokes",
+        "save/reopen"
+      ],
+      "gaps": [
+        "vector paths",
+        "text",
+        "shapes",
+        "mixed-media fidelity"
+      ]
+    },
+    "navigation": {
+      "implementation": "NOT_ESTABLISHED",
+      "proof": "NOT_ESTABLISHED",
+      "gaps": [
+        "pan",
+        "zoom",
+        "rotate canvas",
+        "focus mode",
+        "reference imagery",
+        "multi-artboard UX"
+      ]
+    },
+    "tattooSpecific": {
+      "implementation": "NOT_ESTABLISHED",
+      "proof": "NOT_ESTABLISHED",
+      "gaps": [
+        "stencil/line prep",
+        "line-weight cleanup",
+        "symmetry workflow",
+        "negative-space inspection",
+        "cover-up overlays",
+        "exact-size handoff",
+        "VTO round-trip"
+      ]
+    }
+  },
+  "qualityEvidence": {
+    "pointerToInkLatency": "NOT_MEASURED",
+    "framePacing": "NOT_MEASURED",
+    "strokeIntegrity": "BASIC_FUNCTIONAL_TEST_ONLY",
+    "undoRedoLatency": "NOT_MEASURED",
+    "saveReopenFidelity": "PARTIAL_TESTED",
+    "largeDocumentMemory": "NOT_MEASURED",
+    "transformMaskVisualCorrectness": "PARTIAL_MODEL_ONLY"
+  }
+}

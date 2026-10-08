@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-07T04:01:54-07:00",
+  "evidenceRule": "Only observable repository/CI evidence may populate metrics; null means not measured.",
+  "runs": {
+    "total": 3,
+    "VERIFIED_INCREMENT": 2,
+    "VERIFIED_BLOCKER": 1,
+    "VERIFIED_NOOP": 0
+  },
+  "acceptedCommits": {
+    "value": null,
+    "note": "Not yet normalized across historical PR commits; do not infer from branch length."
+  },
+  "testsAddedOrChanged": {
+    "value": null,
+    "note": "Not measured this run."
+  },
+  "regressionsFound": {
+    "value": 0,
+    "evidence": []
+  },
+  "blockerRecurrence": {
+    "value": 0,
+    "evidence": []
+  },
+  "recoveryOverhead": null,
+  "implementationVerificationRatio": null,
+  "proofDebt": {
+    "created": 4,
+    "retired": 1
+  },
+  "pluginOutcomes": {
+    "GitHub": {
+      "success": 3,
+      "failure": 0
+    },
+    "FilesAuthorityRecovery": {
+      "success": 1,
+      "failure": 0
+    }
+  },
+  "criticalPathMovement": [
+    "control-plane bootstrap established queue/acceptance/canvas/proof-debt artifacts",
+    "historical scope registry now preserves CAP-001..CAP-190",
+    "Task 2c focused canonical shape/path/text semantic proof landed and passed node + browser-smoke CI; browser interaction remains next."
+  ],
+  "note": "Metrics remain evidence-only; current run verified focused Task 2c semantic tests at workflow 37611478785."
+}

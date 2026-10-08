@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-07T00:01:22-07:00",
+  "repository": "zhenrez/ARTTOO",
+  "executionRef": "feature/pre-marketplace-creation-pipeline",
+  "observedHead": "a9082c328159ff5c04aaf8c4e8df42415be794ae",
+  "activePr": 22,
+  "isolatedPr": 21,
+  "queue": [
+    {
+      "incrementId": "task-2b2-raster-mask-erase",
+      "status": "DONE",
+      "objective": "Canonical non-destructive raster mask/erase primitive and validated mask restoration",
+      "goldenJourneyGap": "professional editing -> mask correction",
+      "evidence": [
+        "src/document.js object.erase/object.erase.clear/object.masks.set",
+        "test/raster-corrections.test.js",
+        "head a9082c328159ff5c04aaf8c4e8df42415be794ae",
+        "workflow 37367529912 SUCCESS"
+      ],
+      "proofDebt": [
+        "browser interaction/visual mask rendering acceptance remains unproven"
+      ]
+    },
+    {
+      "incrementId": "task-2c-shapes-vector-text",
+      "status": "READY",
+      "objective": "Implement and test canonical shapes/vector paths/text plus layout/alignment/snap as the next dependency-correct professional-editor slice",
+      "goldenJourneyGap": "edit professionally",
+      "dependencies": [
+        "task-1-image-ingestion",
+        "task-2a-layer-selection",
+        "task-2b1-raster-crop",
+        "task-2b2-raster-mask-erase"
+      ],
+      "acceptance": [
+        "canonical reversible commands",
+        "save/reopen fidelity",
+        "undo/redo",
+        "browser-visible interaction",
+        "Node + Playwright exact-head verification"
+      ],
+      "preferredCell": [
+        "GitHub",
+        "tests/CI",
+        "Product Design when interaction semantics require it"
+      ]
+    },
+    {
+      "incrementId": "task-2d-brush-input-quality",
+      "status": "WAITING",
+      "objective": "Expand brush presets/stylus input and establish representative canvas quality evidence",
+      "goldenJourneyGap": "edit professionally",
+      "dependencies": [
+        "task-2c-shapes-vector-text"
+      ],
+      "acceptance": [
+        "pressure semantics",
+        "touch/stylus alternatives",
+        "deterministic persistence",
+        "interaction/performance evidence"
+      ]
+    },
+    {
+      "incrementId": "task-3-generation-contract",
+      "status": "WAITING",
+      "objective": "Provider-neutral tattoo/art generation contract and editable insertion seam",
+      "goldenJourneyGap": "create/import/generate artwork",
+      "dependencies": [
+        "task-2-professional-editor-core"
+      ]
+    },
+    {
+      "incrementId": "task-4-static-vto",
+      "status": "WAITING",
+      "objective": "Static-photo calibrated body placement with correction fallback",
+      "goldenJourneyGap": "place on body/VTO",
+      "dependencies": [
+        "task-3-generation-contract"
+      ]
+    }
+  ],
+  "continuation": {
+    "exactSha": "a9082c328159ff5c04aaf8c4e8df42415be794ae",
+    "activePr": 22,
+    "gate": "Task 2 Professional editor core",
+    "nextOperation": "task-2c-shapes-vector-text",
+    "invariants": [
+      "canonical Project/document source of truth",
+      "immutable source assets",
+      "reversible/versioned derived edits",
+      "marketplace blocked until Task 6 acceptance",
+      "PR #21 isolated"
+    ],
+    "passingEvidence": [
+      "workflow 37367529912 SUCCESS at exact head"
+    ],
+    "proofDebt": [
+      "raster mask/erase has canonical/model tests but browser interaction and visual rendering proof remains pending",
+      "canvas device-class latency/frame/memory budgets not yet established"
+    ],
+    "acceptanceCriteria": [
+      "canonical reversible shapes/vector/text operations",
+      "layout/alignment/snap semantics",
+      "save/reopen and undo/redo",
+      "browser-visible proof",
+      "exact-head Node + Playwright"
+    ]
+  }
+}
