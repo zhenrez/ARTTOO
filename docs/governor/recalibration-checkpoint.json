@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "kind": "ARTTOO_GOVERNOR_RECALIBRATION",
+  "observedAt": "2026-10-08T05:31:07-07:00",
+  "terminalState": "VERIFIED_BLOCKER",
+  "repository": "zhenrez/ARTTOO",
+  "authority": {
+    "mainHead": "00353ff356ae9609ffd5ff8467f5bcaa6a5623ed",
+    "activePR": 22,
+    "activePRHead": "055a36660720a4b74c3cc76f8ace7efc5f180fff",
+    "activePRDraft": true,
+    "isolatedPR": 21
+  },
+  "verification": {
+    "runId": 37725765318,
+    "runConclusion": "failure",
+    "node": "failure",
+    "browserSmoke": "failure",
+    "rootCause": "web/main.js:83 missing closing } in template interpolation; script parse fails; all five Playwright cases fail or timeout due to uninitialized UI",
+    "closure": "NOT_VERIFIED"
+  },
+  "scope": {
+    "baseline": "owner's reduced list plus later explicit activations",
+    "fullCatalogue": "CAP-001..CAP-190 HISTORICAL_CANDIDATE_SURFACE",
+    "exactReducedList": "NOT_RETRIEVED",
+    "registryCurrent": "PRESERVED for all 190 (NONCONFORMING); do not relabel without baseline",
+    "explicitActiveKnown": [
+      "CAP-190"
+    ],
+    "task2c": [
+      "CAP-159",
+      "CAP-160",
+      "CAP-161"
+    ],
+    "unclassifiedCount": 189,
+    "activationByReferenceForbidden": true
+  },
+  "activeSlice": "Task 2c — shapes/vector/text create-render-select-transform-undo-redo-save-reopen-browser",
+  "twoLane": {
+    "laneA": "PR22 implementation work",
+    "laneB": "independent reviewer acceptance NOT_VERIFIED; no PR22 submitted reviews",
+    "collisions": "UNKNOWN",
+    "builderCannotSelfCertify": true
+  },
+  "usableAlpha": {
+    "completed": "NOT_PROVEN",
+    "progress": "PARTIAL editor foundation, not usable alpha",
+    "criticalPath": "Task2c browser → raster mask interaction → basic freehand → static photo try-on → calibrated sizing → edit on body → cross-device continuation → exact-size stencil/export → CAP190"
+  },
+  "drift": [
+    "PR22 current main.js fails syntax; all five browser tests fail as consequence",
+    "critical-path.json pins old a9082c; continuation.json pins old 488b8a, neither equals live 055a",
+    "historical-scope-registry.json uses PRESERVED for all 190, fails required disposition split and CAP190 CORE_ACTIVE",
+    "critical-path.json schedules generation before VTO; latest owner sequence puts generation outside VTO prerequisites",
+    "reference-benchmark-matrix.json maps AI generation to CAP157; historical catalogue assigns generation to CAP156 and CAP157 to artist training",
+    "reference matrix still centers SAM2; SAM3/3.1 evaluation and licensing should be flagged"
+  ],
+  "proofDebt": [
+    "Task2c browser acceptance OPEN",
+    "Raster-mask real-browser proof OPEN",
+    "Canvas performance/device metrics NOT_MEASURED",
+    "Historical reduced active CAP list NOT_RETRIEVED"
+  ],
+  "queue": [
+    {
+      "id": "task2c",
+      "status": "BLOCKED_BY_CI",
+      "acceptance": "single user-visible mixed-media edit/save/reopen golden path"
+    },
+    {
+      "id": "raster-mask-browser",
+      "status": "NEXT",
+      "acceptance": "non-destructive erase/restore/visual round-trip"
+    },
+    {
+      "id": "brush-freehand",
+      "status": "QUEUED",
+      "acceptance": "basic pen/pencil pressure/undo persistence on actual device"
+    },
+    {
+      "id": "static-photo-try-on-plus-calibration",
+      "status": "QUEUED",
+      "acceptance": "source independent of placement; confidence/calibration explicit"
+    },
+    {
+      "id": "edit-on-body-continuity-and-exact-stencil",
+      "status": "DEPENDENCY_GATED",
+      "acceptance": "same revision, cross-device state, exact-size export"
+    }
+  ],
+  "governanceAction": "Non-mutating reconciliation completed; no implementation change, merge, deployment, financial activity.",
+  "attemptedMutations": [
+    {
+      "target": "PR22 reviewer comment",
+      "state": "BLOCKED_BY_TOOL_SAFETY"
+    },
+    {
+      "target": "docs/governor/reference-benchmark-matrix.json",
+      "state": "BLOCKED_BY_TOOL_SAFETY"
+    }
+  ],
+  "telemetry": {
+    "currentHeadCI": {
+      "node": "failure",
+      "browserSmoke": "failure",
+      "browserTestCasesFailed": 5
+    },
+    "qualityPercentiles": "NOT_MEASURED",
+    "genuineMilestoneClosedThisRun": 0
+  },
+  "ownerDecisionRequired": false
+}
