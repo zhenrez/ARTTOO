@@ -1,0 +1,358 @@
+{
+  "schemaVersion": 1,
+  "kind": "ARTTOO_REFERENCE_BENCHMARK_MATRIX",
+  "repository": "zhenrez/ARTTOO",
+  "observedAt": "2026-10-07T17:56:50-07:00",
+  "authority": "GOVERNOR_RESEARCH_AND_REFERENCE_ONLY",
+  "scopeGuard": "A reference, integration candidate, feature mention, or historical example does not activate a capability outside the owner's reduced CORE WORKING SCOPE. CAP-190 is owner-explicit CORE_ACTIVE but remains downstream of exact physical size, immutable source art, revision-bound rights/preflight and fulfillment safety.",
+  "decisionVocabulary": [
+    "BUILD_FROM",
+    "INTEGRATE",
+    "BENCHMARK",
+    "DEFER"
+  ],
+  "entries": [
+    {
+      "family": "canonical_editor_shape_vector_text",
+      "associatedCapabilities": [
+        "CAP-159",
+        "CAP-160",
+        "CAP-161"
+      ],
+      "coreStatus": "CORE_ACTIVE",
+      "references": [
+        {
+          "name": "tldraw",
+          "decision": "BENCHMARK",
+          "kind": "modern editor interaction",
+          "url": "https://github.com/tldraw/tldraw",
+          "status": "REFERENCE_NOT_INSTALLED_OR_BAKEOFF_TESTED"
+        },
+        {
+          "name": "Excalidraw",
+          "decision": "BENCHMARK",
+          "kind": "selection/undo/whiteboard fidelity",
+          "url": "https://github.com/excalidraw/excalidraw",
+          "status": "REFERENCE_NOT_INSTALLED_OR_BAKEOFF_TESTED"
+        },
+        {
+          "name": "Fabric.js",
+          "decision": "BENCHMARK",
+          "kind": "object manipulation/rendering SDK; historical ARTTOO also used Fabric 5.x",
+          "url": "https://github.com/fabricjs/fabric.js",
+          "status": "CURRENT_FIT_NOT_TESTED"
+        },
+        {
+          "name": "Polotno",
+          "decision": "BENCHMARK",
+          "kind": "template/creative editor interaction",
+          "url": "https://polotno.com/",
+          "status": "CURRENT_FIT_NOT_TESTED"
+        },
+        {
+          "name": "Procreate + Tattoo Smart",
+          "decision": "BENCHMARK",
+          "kind": "professional tattoo drawing/output quality",
+          "url": "https://tattoosmart.com/",
+          "status": "CURRENT_FIT_NOT_TESTED"
+        }
+      ],
+      "localBuildDecision": "BUILD_FROM ARTTOO canonical Project/document/adapter semantics; benchmark, do not replace engine without bakeoff.",
+      "acceptanceBar": "Browser-create shape/path/text → visibly render → select → transform → undo/redo → save/reopen preserving mixed-media identity and revision; independent exact-head browser acceptance.",
+      "sourceAuthority": "CURRENT_OWNER_WORK_QUEUE"
+    },
+    {
+      "family": "raster_mask_segmentation_background_removal",
+      "associatedCapabilities": [
+        "CAP-008",
+        "CAP-009"
+      ],
+      "coreStatus": "ONLY_MINIMUM_DEPENDENCY_IF_REQUIRED; exact owner CAP mapping not recovered",
+      "references": [
+        {
+          "name": "Meta Segment Anything / SAM",
+          "decision": "BENCHMARK",
+          "kind": "interactive segmentation, not anatomy identification",
+          "url": "https://github.com/facebookresearch/sam2",
+          "status": "REFERENCE_CURRENT_FAMILY_NOT_EVALUATED"
+        },
+        {
+          "name": "remove.bg",
+          "decision": "INTEGRATE",
+          "kind": "provider-neutral background removal reference; successor migration check mandatory",
+          "url": "https://www.remove.bg/a/api-docs",
+          "status": "VENDOR_TRANSITION_ANNOUNCED_FOR_2026-12-01"
+        },
+        {
+          "name": "OpenCV",
+          "decision": "BENCHMARK",
+          "kind": "mask compositing/coordinate transform primitives",
+          "url": "https://opencv.org/",
+          "status": "REFERENCE_NOT_EVALUATED"
+        }
+      ],
+      "localBuildDecision": "BUILD_FROM ARTTOO non-destructive source-normalized erase/mask commands; provider ports optional and only if core dependency proven.",
+      "acceptanceBar": "Pointer-correct mask/restore in browser, visual correctness across crop/flip/transform, save/reopen and reversibility.",
+      "sourceAuthority": "CURRENT_OWNER_USABLE_ALPHA_WORKFLOW"
+    },
+    {
+      "family": "static_photo_tattoo_vto",
+      "associatedCapabilities": [
+        "CAP-001",
+        "CAP-014"
+      ],
+      "coreStatus": "CORE_ACTIVE per owner Usable Alpha gate",
+      "references": [
+        {
+          "name": "Tattoodo Try It On",
+          "decision": "BENCHMARK",
+          "kind": "tattoo-native discover/photo try-on/artist booking",
+          "url": "https://www.tattoodo.com/try-it-on",
+          "status": "PUBLIC_PRODUCT_PAGE_CONFIRMED_2026-10-07"
+        },
+        {
+          "name": "Tatship artist try-on",
+          "decision": "BENCHMARK",
+          "kind": "artist-private link, client phone body-photo preview",
+          "url": "https://tatship.com/en-US/artist-tech",
+          "status": "PUBLIC_PRODUCT_PAGE_CONFIRMED_2026-10-07"
+        },
+        {
+          "name": "INKHUNTER",
+          "decision": "BENCHMARK",
+          "kind": "tattoo-specific AR placement precedent",
+          "url": "https://apps.apple.com/us/app/inkhunter-ai-tattoo-design/id991558368",
+          "status": "REFERENCE_FROM_PRIOR_RESEARCH"
+        },
+        {
+          "name": "FASHN Try-On API",
+          "decision": "BENCHMARK",
+          "kind": "clothing/fashion user-photo provider quality only, not tattoo geometry",
+          "url": "https://docs.fashn.ai/api-reference/tryon-max",
+          "status": "PUBLIC_PROVIDER_PAGE_CONFIRMED_2026-10-07"
+        },
+        {
+          "name": "Google Shopping Try-On",
+          "decision": "BENCHMARK",
+          "kind": "first-party consumer selfie/photo interaction",
+          "url": "https://blog.google/products-and-platforms/products/shopping/how-to-use-google-shopping-try-it-on/",
+          "status": "REFERENCE_FROM_PRIOR_RESEARCH"
+        }
+      ],
+      "localBuildDecision": "BUILD_FROM ARTTOO body placement model; use provider-neutral optional helpers.",
+      "acceptanceBar": "One imported immutable source art can be placed on a static photo, calibrated or explicitly uncalibrated, manipulated independently from its artwork, edited in-place, and reopened.",
+      "sourceAuthority": "CURRENT_OWNER_USABLE_ALPHA_WORKFLOW"
+    },
+    {
+      "family": "cover_up_planning",
+      "associatedCapabilities": [
+        "CAP-023"
+      ],
+      "coreStatus": "UNDECIDED_UNTIL_REDUCED_OWNER_BASELINE_RETRIEVED",
+      "references": [
+        {
+          "name": "TattooCoverUp.AI",
+          "decision": "BENCHMARK",
+          "kind": "existing-ink informed cover-up strategy",
+          "url": "https://tattoocoverup.ai/",
+          "status": "PUBLIC_COMPETITOR_EVIDENCE"
+        },
+        {
+          "name": "Ombra Tattoo",
+          "decision": "BENCHMARK",
+          "kind": "old tattoo photo to AI concept comparison, professional feasibility caveat",
+          "url": "https://ombratattoo.com/",
+          "status": "PUBLIC_PRODUCT_PAGE_CONFIRMED_2026-10-07"
+        }
+      ],
+      "localBuildDecision": "DEFER separate cover-up intelligence execution unless owner scope activated; preserve canonical mask/edit prerequisite.",
+      "acceptanceBar": "Only if activated: old-ink constraints, editable alternatives, feasibility caveat, comparison and reversible source lineage."
+    },
+    {
+      "family": "ai_tattoo_generation",
+      "associatedCapabilities": [
+        "CAP-157"
+      ],
+      "coreStatus": "OPTIONAL; core activation of exact generator family NOT_CONFIRMED",
+      "references": [
+        {
+          "name": "BlackInk AI",
+          "decision": "BENCHMARK",
+          "kind": "tattoo generation and production outputs",
+          "url": "https://blackink.ai/",
+          "status": "REFERENCE_FROM_PRIOR_RESEARCH"
+        },
+        {
+          "name": "Tatship",
+          "decision": "BENCHMARK",
+          "kind": "AI design plus tattoo try-on",
+          "url": "https://tatship.com/",
+          "status": "PRODUCT_PAGE_CONFIRMED_FOR_TRYON_ONLY"
+        },
+        {
+          "name": "Ombra Tattoo",
+          "decision": "BENCHMARK",
+          "kind": "AI cover-up/generation option",
+          "url": "https://ombratattoo.com/",
+          "status": "PUBLIC_PRODUCT_PAGE_CONFIRMED_2026-10-07"
+        }
+      ],
+      "localBuildDecision": "DEFER mandatory generation dependency; import/manually create must work without AI. If activated, keep assets provenance-aware and undoable.",
+      "acceptanceBar": "Source-edit works without account/provider; generated derivative never overwrites source."
+    },
+    {
+      "family": "tattoo_marketplaces_booking_and_studio_operations",
+      "associatedCapabilities": [
+        "CAP-050",
+        "CAP-051",
+        "CAP-065"
+      ],
+      "coreStatus": "UNDECIDED_UNTIL_REDUCED_OWNER_BASELINE_RETRIEVED; NO_EXECUTION",
+      "references": [
+        {
+          "name": "Tattoodo",
+          "decision": "BENCHMARK",
+          "kind": "artist discovery, provenance, booking",
+          "url": "https://www.tattoodo.com/try-it-on",
+          "status": "PUBLIC_PRODUCT_PAGE_CONFIRMED_2026-10-07"
+        },
+        {
+          "name": "Venue Ink",
+          "decision": "BENCHMARK",
+          "kind": "tattoo studio operations",
+          "url": "https://www.venue.ink/for-tattoo-studios",
+          "status": "REFERENCE_FROM_PRIOR_RESEARCH"
+        },
+        {
+          "name": "Tattoogenda",
+          "decision": "BENCHMARK",
+          "kind": "tattoo calendar, consent, studio flows",
+          "url": "https://tattoogenda.com/",
+          "status": "REFERENCE_FROM_PRIOR_RESEARCH"
+        },
+        {
+          "name": "Tattoo Studio Pro",
+          "decision": "BENCHMARK",
+          "kind": "studio intake, deposit, artist roles",
+          "url": "https://tattoostudiopro.com/product/",
+          "status": "REFERENCE_FROM_PRIOR_RESEARCH"
+        }
+      ],
+      "localBuildDecision": "DEFER marketplace, commercial writes and studio OS implementation from current Usable Alpha construction."
+    },
+    {
+      "family": "exact_size_stencil_and_print_preflight",
+      "associatedCapabilities": [
+        "CAP-066",
+        "CAP-165"
+      ],
+      "coreStatus": "CORE_ACTIVE WORKFLOW; specific CAP-165 disposition UNRESOLVED",
+      "references": [
+        {
+          "name": "Stencil IQ",
+          "decision": "BENCHMARK",
+          "kind": "professional tattoo stencil generation",
+          "url": "https://play.google.com/store/apps/details?id=partners.format.stenciliq",
+          "status": "REFERENCE_FROM_PRIOR_RESEARCH"
+        },
+        {
+          "name": "Tattoo Smart",
+          "decision": "BENCHMARK",
+          "kind": "Procreate body reference/digital tattoo production",
+          "url": "https://tattoosmart.com/",
+          "status": "REFERENCE_FROM_PRIOR_RESEARCH"
+        }
+      ],
+      "localBuildDecision": "BUILD_FROM canonical source/revision/physical-mm scale, validate before any POD integration.",
+      "acceptanceBar": "Export dimensions and resolution match print intent independently of viewport zoom, with revision-bound source identity."
+    },
+    {
+      "family": "physical_temporary_tattoo_pod",
+      "associatedCapabilities": [
+        "CAP-190"
+      ],
+      "coreStatus": "CORE_ACTIVE_EXPLICIT; DOWNSTREAM_GATE",
+      "references": [
+        {
+          "name": "Prodigi",
+          "decision": "INTEGRATE",
+          "kind": "temporary tattoo API/POD candidate, no production connection authorized",
+          "url": "https://www.prodigi.com/products/stickers/temporary-tattoos/",
+          "status": "PUBLIC_PROVIDER_PAGE_CONFIRMED_2026-10-07"
+        },
+        {
+          "name": "Inkbox",
+          "decision": "BENCHMARK",
+          "kind": "physical try-on source artwork and manufacturing requirements",
+          "url": "https://inkbox.com/pages/custom-temporary-tattoos-info",
+          "status": "REFERENCE_FROM_PRIOR_RESEARCH"
+        },
+        {
+          "name": "EasyTatt",
+          "decision": "BENCHMARK",
+          "kind": "custom long-wear/full-size physical tattoo trial",
+          "url": "https://easytatt.com/collections/have-your-own-image-custom-made",
+          "status": "REFERENCE_FROM_PRIOR_RESEARCH"
+        },
+        {
+          "name": "Momentary Ink",
+          "decision": "BENCHMARK",
+          "kind": "custom uploaded designs",
+          "url": "https://momentaryink.com/products/custom-temporary-tattoo-upload-your-own-design",
+          "status": "REFERENCE_FROM_PRIOR_RESEARCH"
+        }
+      ],
+      "localBuildDecision": "INTEGRATE only after exact-size, immutable source, revision, preflight, rights, mock fulfillment and idempotent order lifecycle evidence; never a real-money action without authorization.",
+      "acceptanceBar": "Print from selected source art (never composited skin preview), exact size and orientation, proofing/rights, order draft and sandbox-only fulfillment."
+    },
+    {
+      "family": "historical_alkai_dynamics_think_arttoo",
+      "associatedCapabilities": [
+        "CAP-001",
+        "CAP-004",
+        "CAP-157",
+        "CAP-159",
+        "CAP-160"
+      ],
+      "coreStatus": "HISTORICAL_IMPLEMENTATION_EVIDENCE_ONLY",
+      "references": [
+        {
+          "name": "AlkaiDynamics/ARTTOO",
+          "decision": "BENCHMARK",
+          "kind": "older Next.js14 / Fabric5.3 editor, tool sidebars, image/AI and project flows; superseded stack",
+          "url": "https://github.com/AlkaiDynamics/ARTTOO",
+          "status": "REPOSITORY_AND_PACKAGE_TREE_CONFIRMED_2026-10-07"
+        },
+        {
+          "name": "AlkaiDynamics/th.ink-tattoo-visualization",
+          "decision": "BENCHMARK",
+          "kind": "historical AR/VTO, AI design, editing, marketplace/social intentions; README claims are not implementation proof",
+          "url": "https://github.com/AlkaiDynamics/th.ink-tattoo-visualization",
+          "status": "REPOSITORY_README_CONFIRMED_2026-10-07"
+        },
+        {
+          "name": "AlkaiDynamics/th-ink-vercel",
+          "decision": "BENCHMARK",
+          "kind": "minimal project description only",
+          "url": "https://github.com/AlkaiDynamics/th-ink-vercel",
+          "status": "REPOSITORY_README_CONFIRMED_2026-10-07"
+        },
+        {
+          "name": "AlkaiDynamics/ARTOO-VTo",
+          "decision": "DEFER",
+          "kind": "repository with README-only tree; no implementation confirmed",
+          "url": "https://github.com/AlkaiDynamics/ARTOO-VTo",
+          "status": "REPOSITORY_TREE_CONFIRMED_README_ONLY_2026-10-07"
+        }
+      ],
+      "localBuildDecision": "No legacy architecture/vendor promotion. Preserve UX archaeology and inspect code selectively when it helps current CORE_ACTIVE workflows."
+    }
+  ],
+  "restrictions": [
+    "No vendor adopted by this matrix.",
+    "No historical repository supersedes live zhenrez/ARTTOO authority.",
+    "No undeclared active scope introduced.",
+    "No external paid API call, fulfillment or account creation executed."
+  ],
+  "researchStatus": "SELECTIVE_PRIMARY_SOURCES; NOT_EXHAUSTIVE_COMPETITOR_BAKEOFF"
+}
